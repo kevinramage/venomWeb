@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -19,7 +20,9 @@ func ProceedGetRequest(api WebDriverApi, path string) (interface{}, error) {
 	}
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
-	log.Debug(fmt.Sprintf("Response body: %s", string(body)))
+	if !strings.HasSuffix(path, "/screenshot") {
+		log.Debug(fmt.Sprintf("Response body: %s", string(body)))
+	}
 	if err != nil {
 		log.Error("Error during body reading: ", err)
 		return nil, err

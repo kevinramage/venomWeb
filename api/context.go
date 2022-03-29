@@ -8,12 +8,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-type GetWindowsResponse struct {
-	SessionId string `json:"sessionId"`
-	Status    int    `json:"status"`
-	Value     string `json:"value"`
-}
-
 type SwitchWindowRequest struct {
 	Handle string `json:"handle"`
 }
@@ -26,7 +20,7 @@ type SetWindowRectRequest struct {
 	Width  int `json:"width"`
 	Height int `json:"height"`
 }
-type SetWindowRectResponse struct {
+type RectResponse struct {
 	SessionId string      `json:"sessionId"`
 	Status    int         `json:"status"`
 	Value     common.Rect `json:"value"`
@@ -43,7 +37,7 @@ func (api WebDriverApi) GetWindowHandle() (string, error) {
 	}
 
 	// Manage response
-	responseBody := GetWindowsResponse{}
+	responseBody := StringResponse{}
 	err = mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		log.Error("An error occured during the response decoding")
@@ -85,16 +79,29 @@ func (api WebDriverApi) SwitchWindow(handle string) error {
 }
 
 // https://w3c.github.io/webdriver/#get-window-handles
-func (api WebDriverApi) GetWindowHandles() error {
+func (api WebDriverApi) GetWindowHandles() ([]string, error) {
 
 	// Send request
-	_, err := ProceedGetRequest(api, fmt.Sprintf("session/%s/window/handles", api.SessionId))
+	resp, err := ProceedGetRequest(api, fmt.Sprintf("session/%s/window/handles", api.SessionId))
 	if err != nil {
 		log.Error("An error occured during get window handles request: ", err)
-		return err
+		return []string{}, err
 	}
 
-	return nil
+	// Manage response
+	responseBody := ElementsResponse{}
+	err = mapstructure.Decode(resp, &responseBody)
+	if err != nil {
+		log.Error("An error occured during the response decoding: ", err)
+		return []string{}, err
+	}
+
+	ids := []string{}
+	for i := 0; i < len(responseBody.Value); i++ {
+		ids = append(ids, responseBody.Value[i].Element)
+	}
+
+	return ids, nil
 }
 
 // https://w3c.github.io/webdriver/#new-window
@@ -115,7 +122,7 @@ func (api WebDriverApi) NewWindows(windowType string) (string, error) {
 	}
 
 	// Manage response
-	responseBody := GetWindowsResponse{}
+	responseBody := StringResponse{}
 	err = mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		log.Error("An error occured during the response decoding")
@@ -165,7 +172,7 @@ func (api WebDriverApi) GetWindowRect() (common.Rect, error) {
 	}
 
 	// Manage response
-	responseBody := SetWindowRectResponse{}
+	responseBody := RectResponse{}
 	err = mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		log.Error("An error occured during the response decoding")

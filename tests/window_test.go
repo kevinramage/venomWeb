@@ -16,7 +16,7 @@ func TestResizeWindow(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Impossible to start chrome driver: %s", err)
 	}
-	page, err := webDriver.NewPage()
+	page, err := webDriver.NewSession()
 	if err != nil {
 		t.Fatalf("Impossible to create a new page: %s", err)
 	}

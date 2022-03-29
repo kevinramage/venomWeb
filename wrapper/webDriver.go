@@ -1,6 +1,7 @@
 package venomWeb
 
 import (
+	"errors"
 	"strings"
 	"time"
 
@@ -11,9 +12,10 @@ import (
 )
 
 type WebDriver struct {
-	Driver  common.WebDriverOptions
-	Service service.WebDriverService
-	Api     api.WebDriverApi
+	Driver    common.WebDriverOptions
+	Service   service.WebDriverService
+	Api       api.WebDriverApi
+	isStarted bool
 }
 
 func DefineLogLevel(logLevel string) {
@@ -35,14 +37,20 @@ func DefineLogLevel(logLevel string) {
 ///TODO SetTimeout
 func (w *WebDriver) Start() error {
 	DefineLogLevel(w.Driver.LogLevel)
-	log.Info("WewDriver.Start")
-	w.Service = service.New()
-	err := w.Service.Start(w.Driver.Command, w.Driver.LogLevel)
-	if err != nil {
+	log.Info("WebDriver.Start")
+	if !w.isStarted {
+		w.Service = service.New()
+		err := w.Service.Start(w.Driver.Command, w.Driver.LogLevel)
+		if err != nil {
+			return err
+		}
+		w.isStarted = true
+		err = w.Service.Wait(w.Driver.Timeout, w.Driver.Url)
 		return err
+
+	} else {
+		return errors.New("a web driver is already running")
 	}
-	err = w.Service.Wait(w.Driver.Timeout, w.Driver.Url)
-	return err
 }
 
 ///TODO Stop when start not called
@@ -58,12 +66,17 @@ func (w *WebDriver) Stop() error {
 	return err
 }
 
+func (w *WebDriver) Status() (common.DriverStatus, error) {
+	log.Info("WewDriver.Status")
+	return w.Api.CheckStatus()
+}
+
 ///TODO New page called before start
 ///TODO Manage error
-func (w *WebDriver) NewPage() (Page, error) {
-	log.Info("WewDriver.NewPage")
-	err := w.Api.CreateSession(w.Driver.Args)
-	return Page{w.Api}, err
+func (w *WebDriver) NewSession() (Session, error) {
+	log.Info("WewDriver.NewSession")
+	_, err := w.Api.CreateSession(w.Driver.Args)
+	return Session{w.Api}, err
 }
 
 func NewWebDriver(webDriver *WebDriver) WebDriver {

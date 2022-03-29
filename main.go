@@ -1,6 +1,11 @@
 package main
 
 import (
+	"fmt"
+	"io/ioutil"
+	"log"
+
+	"github.com/kevinramage/venomWeb/common"
 	venomWeb "github.com/kevinramage/venomWeb/wrapper"
 )
 
@@ -43,10 +48,63 @@ func main() {
 func main() {
 	webDriver := venomWeb.ChromeDriver([]string{"headless"})
 	webDriver.Driver.LogLevel = "DEBUG"
-	webDriver.Start()
-	// page, _ := webDriver.NewPage()
-	//page.Navigate("https://github.com/")
-	// timeouts, _ := page.GetTimeouts()
+	//webDriver.Start()
+	err := webDriver.Start()
+	if err == nil {
+		//webDriver.NewPage()
+		//webDriver.Status()
+		page, _ := webDriver.NewSession()
+		page.Navigate("https://github.com/")
 
-	webDriver.Stop()
+		_, err := page.FindElement("input[name=q]", common.CSS_SELECTOR)
+		//fmt.Printf("err: %v\n", err)
+		//elts, _ := page.FindElements("inputbchzhf", common.CSS_SELECTOR)
+		//fmt.Printf("elts: %v\n", elts)
+
+		//elt, _ := page.FindElement("div .HeaderMenu.HeaderMenu", common.CSS_SELECTOR)
+		//subElt, err := page.Api.FindElementFromElement(elt, "input[name=qe]", common.CSS_SELECTOR)
+		//page.FindElement("div .HeaderMenu.HeaderMenu", common.CSS_SELECTOR)
+		//subElts, err := page.Api.FindElementsFromElement("", "input", common.CSS_SELECTOR)
+
+		//elt, _ := page.Api.GetActiveElement()
+		//check, err := page.Api.IsElementSelected(elt)
+		//check, err := page.Api.IsElementEnabled(elt)
+		//fmt.Printf("check: %v\n", check)
+
+		/*
+			att, _ := page.Api.GetElementAttribute(elt, "class")
+			fmt.Printf("att: %v\n", att)
+
+			lbl, _ := page.Api.GetComputedLabel(elt)
+			fmt.Printf("lbl: %v\n", lbl)
+
+			role, _ := page.Api.GetComputedRole(elt)
+			fmt.Printf("role: %v\n", role)
+
+			css, _ := page.Api.GetElementCSSValue(elt, "background-color")
+			fmt.Printf("css: %v\n", css)
+
+			tagName, _ := page.Api.GetElementTagName(elt)
+			fmt.Printf("tagName: %v\n", tagName)
+
+			txt, _ := page.Api.GetElementText(elt)
+			fmt.Printf("txt: %v\n", txt)
+		*/
+
+		//property, _ := page.Api.GetElementProperty(elt, "parentNode")
+		//property, _ := page.Api.GetElementProperty(elt, "ariaAutoComplete")
+		//fmt.Printf("property: %v\n", property)
+
+		//rect, err := page.Api.GetElementRect(elt)
+		// fmt.Printf("rect: %v\n", rect)
+
+		// fmt.Printf("subElt: %v\n", elt)
+		test, _ := page.Api.TakeScreenShot()
+		ioutil.WriteFile("test.png", test, 0666)
+		fmt.Printf("err: %v\n", err)
+
+		webDriver.Stop()
+	} else {
+		log.Fatal("Impossible to start web driver")
+	}
 }
