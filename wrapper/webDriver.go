@@ -172,7 +172,7 @@ func GeckoDriver(args []string) WebDriver {
 
 func EdgeChroniumDriver(args []string) WebDriver {
 	webDriver := WebDriver{}
-	webDriver.Driver.BrowserName = "edge"
+	webDriver.Driver.BrowserName = "msedge"
 	webDriver.Driver.Args = args
 	if runtime.GOOS == "windows" {
 		webDriver.Driver.WebDriverBinary = "msedgedriver.exe"

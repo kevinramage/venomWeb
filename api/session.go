@@ -8,61 +8,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// Firefox
-// Args   https://wiki.mozilla.org/Firefox/CommandLineOptions
-// Prefs  https://searchfox.org/mozilla-central/source/modules/libpref/init/all.js
-
-// Chrome
-// Args https://peter.sh/experiments/chromium-command-line-switches/
-
-type CreateSessionRequest struct {
-	Capabilities struct {
-		AlwaysMatch struct {
-			BrowserName         string `json:"browserName,omitempty"`
-			AcceptInsecureCerts bool   `json:"acceptInsecureCerts,omitempty"`
-			FirefoxOptions      struct {
-				Binary  string                 `json:"binary,omitempty"`
-				Profile string                 `json:"profile,omitempty"`
-				Args    []string               `json:"args,omitempty"`
-				Prefs   map[string]interface{} `json:"prefs,omitempty"`
-				Log     struct {
-					Level string `json:"level,omitempty"`
-				} `json:"log,omitempty"`
-				Env struct {
-					Log  string `json:"MOZ_LOG,omitempty"`
-					File string `json:"MOZ_LOG_FILE,omitempty"`
-				} `json:"env,omitempty"`
-				AndroidPackage         string   `json:"androidPackage,omitempty"`
-				AndroidActivity        string   `json:"androidActivity,omitempty"`
-				AndroidDeviceSerial    string   `json:"androidDeviceSerial,omitempty"`
-				AndroidIntentArguments []string `json:"androidIntentArguments,omitempty"`
-			} `json:"moz:firefoxOptions,omitempty"`
-
-			ChromeOptions struct {
-				Args             []string               `json:"args,omitempty"`
-				Binary           string                 `json:"binary,omitempty"`
-				Extensions       []string               `json:"extensions,omitempty"`
-				LocalState       map[string]interface{} `json:"localState,omitempty"`
-				Prefs            map[string]interface{} `json:"prefs,omitempty"`
-				Detach           bool                   `json:"detach,omitempty"`
-				DebuggerAddress  string                 `json:"debuggerAddress,omitempty"`
-				ExcludeSwitches  []string               `json:"excludeSwitches,omitempty"`
-				MinidumpPath     string                 `json:"minidumpPath,omitempty"`
-				MobileEmulation  map[string]interface{} `json:"mobileEmulation,omitempty"`
-				PerfLoggingPrefs map[string]interface{} `json:"perfLoggingPrefs,omitempty"`
-				WindowTypes      []string               `json:"windowTypes,omitempty"`
-			} `json:"goog:chromeOptions,omitempty"`
-		} `json:"alwaysMatch,omitempty"`
-	} `json:"capabilities,omitempty"`
-	//DesiredCapabilities common.ChromeCapability `json:"desiredCapabilities"`
-}
-type ChromeOptionsStruct struct {
-	Args  []string    `json:"args"`
-	Prefs PrefsStruct `json:"prefs"`
-}
-type PrefsStruct struct {
-}
-
 type CreateSessionResponse struct {
 	SessionId string `json:"sessionId"`
 	Status    int    `json:"status"`
@@ -115,26 +60,44 @@ type GetTimeoutResponse struct {
 // https://w3c.github.io/webdriver/#new-session
 func (api *WebDriverApi) CreateSession(browserName string, args []string, prefs map[string]interface{}, detach bool) (CreateSessionResponse, error) {
 
-	// Create request body
-	requestBody := CreateSessionRequest{}
-	requestBody.Capabilities.AlwaysMatch.AcceptInsecureCerts = true
-	requestBody.Capabilities.AlwaysMatch.BrowserName = browserName
+	var resp interface{}
+	var err error
 
-	if browserName == "firefox" {
-		requestBody.Capabilities.AlwaysMatch.FirefoxOptions.Args = args
-		requestBody.Capabilities.AlwaysMatch.FirefoxOptions.Prefs = prefs
+	// Chrome
+	if browserName == "chrome" {
 
-	} else {
-
+		requestBody := common.ChromeWebDriverSession{}
+		requestBody.Capabilities.AlwaysMatch.AcceptInsecureCerts = true
+		requestBody.Capabilities.AlwaysMatch.BrowserName = browserName
 		requestBody.Capabilities.AlwaysMatch.ChromeOptions.Args = args
 		requestBody.Capabilities.AlwaysMatch.ChromeOptions.Prefs = prefs
 		if detach {
 			requestBody.Capabilities.AlwaysMatch.ChromeOptions.Detach = detach
 		}
+		resp, err = ProceedPostRequest(*api, "session", requestBody)
+
+		// Firefox
+	} else if browserName == "firefox" {
+
+		requestBody := common.GeckoWebDriverSession{}
+		requestBody.Capabilities.AlwaysMatch.AcceptInsecureCerts = true
+		requestBody.Capabilities.AlwaysMatch.BrowserName = browserName
+		requestBody.Capabilities.AlwaysMatch.FirefoxOptions.Args = args
+		requestBody.Capabilities.AlwaysMatch.FirefoxOptions.Prefs = prefs
+		resp, err = ProceedPostRequest(*api, "session", requestBody)
+
+	} else if browserName == "msedge" {
+
+		requestBody := common.EdgeWebDriverSession{}
+		requestBody.Capabilities.AlwaysMatch.AcceptInsecureCerts = true
+		requestBody.Capabilities.AlwaysMatch.BrowserName = browserName
+		requestBody.Capabilities.AlwaysMatch.EdgeOptions.Args = args
+		requestBody.Capabilities.AlwaysMatch.EdgeOptions.Prefs = prefs
+		resp, err = ProceedPostRequest(*api, "session", requestBody)
 	}
 
 	// Send request
-	resp, err := ProceedPostRequest(*api, "session", requestBody)
+	//resp, err := ProceedPostRequest(*api, "session", requestBody)
 	if err != nil {
 		log.Error("An error during the session creation: ", err)
 		return CreateSessionResponse{}, err

@@ -112,3 +112,96 @@ type Cookie struct {
 	HttpOnlyFlag   string `json:"HttpOnlyFlag,omitempty"`
 	ExpireTimeFlag string `json:"ExpireTimeFlag,omitempty"`
 }
+
+// Firefox
+// Args   https://wiki.mozilla.org/Firefox/CommandLineOptions
+// Prefs  https://searchfox.org/mozilla-central/source/modules/libpref/init/all.js
+
+// Chrome
+// Args https://peter.sh/experiments/chromium-command-line-switches/
+
+// Edge
+// https://docs.microsoft.com/fr-fr/microsoft-edge/webdriver-chromium/capabilities-edge-options
+
+type ChromeWebDriverSession struct {
+	Capabilities struct {
+		AlwaysMatch struct {
+			BrowserName         string        `json:"browserName,omitempty"`
+			AcceptInsecureCerts bool          `json:"acceptInsecureCerts,omitempty"`
+			ChromeOptions       ChromeOptions `json:"goog:chromeOptions,omitempty"`
+		} `json:"alwaysMatch,omitempty"`
+	} `json:"capabilities,omitempty"`
+}
+
+type GeckoWebDriverSession struct {
+	Capabilities struct {
+		AlwaysMatch struct {
+			BrowserName         string         `json:"browserName,omitempty"`
+			AcceptInsecureCerts bool           `json:"acceptInsecureCerts,omitempty"`
+			FirefoxOptions      FirefoxOptions `json:"moz:firefoxOptions,omitempty"`
+		} `json:"alwaysMatch,omitempty"`
+	} `json:"capabilities,omitempty"`
+}
+
+type EdgeWebDriverSession struct {
+	Capabilities struct {
+		AlwaysMatch struct {
+			BrowserName         string      `json:"browserName,omitempty"`
+			AcceptInsecureCerts bool        `json:"acceptInsecureCerts,omitempty"`
+			EdgeOptions         EdgeOptions `json:"ms:edgeOptions,omitempty"`
+		} `json:"alwaysMatch,omitempty"`
+	} `json:"capabilities,omitempty"`
+}
+
+type ChromeOptions struct {
+	Args             []string               `json:"args,omitempty"`
+	Binary           string                 `json:"binary,omitempty"`
+	Extensions       []string               `json:"extensions,omitempty"`
+	LocalState       map[string]interface{} `json:"localState,omitempty"`
+	Prefs            map[string]interface{} `json:"prefs,omitempty"`
+	Detach           bool                   `json:"detach,omitempty"`
+	DebuggerAddress  string                 `json:"debuggerAddress,omitempty"`
+	ExcludeSwitches  []string               `json:"excludeSwitches,omitempty"`
+	MinidumpPath     string                 `json:"minidumpPath,omitempty"`
+	MobileEmulation  map[string]interface{} `json:"mobileEmulation,omitempty"`
+	PerfLoggingPrefs map[string]interface{} `json:"perfLoggingPrefs,omitempty"`
+	WindowTypes      []string               `json:"windowTypes,omitempty"`
+}
+
+type FirefoxOptions struct {
+	Binary  string                 `json:"binary,omitempty"`
+	Profile string                 `json:"profile,omitempty"`
+	Args    []string               `json:"args,omitempty"`
+	Prefs   map[string]interface{} `json:"prefs,omitempty"`
+	Log     struct {
+		Level string `json:"level,omitempty"`
+	} `json:"log,omitempty"`
+	Env struct {
+		Log  string `json:"MOZ_LOG,omitempty"`
+		File string `json:"MOZ_LOG_FILE,omitempty"`
+	} `json:"env,omitempty"`
+	AndroidPackage         string   `json:"androidPackage,omitempty"`
+	AndroidActivity        string   `json:"androidActivity,omitempty"`
+	AndroidDeviceSerial    string   `json:"androidDeviceSerial,omitempty"`
+	AndroidIntentArguments []string `json:"androidIntentArguments,omitempty"`
+}
+
+type EdgeOptions struct {
+	Args             []string               `json:"args,omitempty"`
+	Binary           string                 `json:"binary,omitempty"`
+	Extensions       []string               `json:"extensions,omitempty"`
+	LocalState       map[string]interface{} `json:"localState,omitempty"`
+	Prefs            map[string]interface{} `json:"prefs,omitempty"`
+	Detach           bool                   `json:"detach,omitempty"`
+	DebuggerAddress  string                 `json:"debuggerAddress,omitempty"`
+	ExcludeSwitches  []string               `json:"excludeSwitches,omitempty"`
+	MinidumpPath     string                 `json:"minidumpPath,omitempty"`
+	MobileEmulation  map[string]interface{} `json:"mobileEmulation,omitempty"`
+	PerfLoggingPrefs map[string]interface{} `json:"perfLoggingPrefs,omitempty"`
+	WindowTypes      []string               `json:"windowTypes,omitempty"`
+	WdpAddress       string                 `json:"wdpAddress,omitempty"`
+	WdpPassword      string                 `json:"wdpPassword,omitempty"`
+	WdpUsername      string                 `json:"wdpUsername,omitempty"`
+	WebviewOptions   map[string]interface{} `json:"webviewOptions,omitempty"`
+	WindowsApp       string                 `json:"windowsApp,omitempty"`
+}
