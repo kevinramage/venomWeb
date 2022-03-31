@@ -20,15 +20,19 @@ func New() WebDriverService {
 	return s
 }
 
-func (s *WebDriverService) Start(command string, logLevel string) error {
+func (s *WebDriverService) Start(command string, logLevel string, args []string) error {
 	log.Debug("WebDriverService.Start")
 	if os.Getenv("GO_TEST") != "true" {
 		s.Command = exec.Command(command)
+		s.Command.Args = args
 		if logLevel == "DEBUG" {
 			s.Command.Stdout = os.Stdout
 			s.Command.Stderr = os.Stderr
 		}
 		err := s.Command.Start()
+		if err != nil {
+			log.Error("An error occured during web driver starting: ", err)
+		}
 		return err
 	}
 	return nil

@@ -8,8 +8,53 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// Firefox
+// Args   https://wiki.mozilla.org/Firefox/CommandLineOptions
+// Prefs  https://searchfox.org/mozilla-central/source/modules/libpref/init/all.js
+
+// Chrome
+// Args https://peter.sh/experiments/chromium-command-line-switches/
+
 type CreateSessionRequest struct {
-	DesiredCapabilities common.ChromeCapability `json:"desiredCapabilities"`
+	Capabilities struct {
+		AlwaysMatch struct {
+			BrowserName         string `json:"browserName,omitempty"`
+			AcceptInsecureCerts bool   `json:"acceptInsecureCerts,omitempty"`
+			FirefoxOptions      struct {
+				Binary  string                 `json:"binary,omitempty"`
+				Profile string                 `json:"profile,omitempty"`
+				Args    []string               `json:"args,omitempty"`
+				Prefs   map[string]interface{} `json:"prefs,omitempty"`
+				Log     struct {
+					Level string `json:"level,omitempty"`
+				} `json:"log,omitempty"`
+				Env struct {
+					Log  string `json:"MOZ_LOG,omitempty"`
+					File string `json:"MOZ_LOG_FILE,omitempty"`
+				} `json:"env,omitempty"`
+				AndroidPackage         string   `json:"androidPackage,omitempty"`
+				AndroidActivity        string   `json:"androidActivity,omitempty"`
+				AndroidDeviceSerial    string   `json:"androidDeviceSerial,omitempty"`
+				AndroidIntentArguments []string `json:"androidIntentArguments,omitempty"`
+			} `json:"moz:firefoxOptions,omitempty"`
+
+			ChromeOptions struct {
+				Args             []string               `json:"args,omitempty"`
+				Binary           string                 `json:"binary,omitempty"`
+				Extensions       []string               `json:"extensions,omitempty"`
+				LocalState       map[string]interface{} `json:"localState,omitempty"`
+				Prefs            map[string]interface{} `json:"prefs,omitempty"`
+				Detach           bool                   `json:"detach,omitempty"`
+				DebuggerAddress  string                 `json:"debuggerAddress,omitempty"`
+				ExcludeSwitches  []string               `json:"excludeSwitches,omitempty"`
+				MinidumpPath     string                 `json:"minidumpPath,omitempty"`
+				MobileEmulation  map[string]interface{} `json:"mobileEmulation,omitempty"`
+				PerfLoggingPrefs map[string]interface{} `json:"perfLoggingPrefs,omitempty"`
+				WindowTypes      []string               `json:"windowTypes,omitempty"`
+			} `json:"goog:chromeOptions,omitempty"`
+		} `json:"alwaysMatch,omitempty"`
+	} `json:"capabilities,omitempty"`
+	//DesiredCapabilities common.ChromeCapability `json:"desiredCapabilities"`
 }
 type ChromeOptionsStruct struct {
 	Args  []string    `json:"args"`
@@ -22,6 +67,7 @@ type CreateSessionResponse struct {
 	SessionId string `json:"sessionId"`
 	Status    int    `json:"status"`
 	Value     struct {
+		SessionId                string `json:"sessionId"`
 		AcceptInsecureCerts      bool   `json:"acceptInsecureCerts,omitempty"`
 		AcceptSslCerts           bool   `json:"acceptSslCerts"`
 		BrowserConnectionEnabled bool   `json:"browserConnectionEnabled"`
@@ -57,7 +103,7 @@ type CreateSessionResponse struct {
 		CredBlob                  bool            `json:"webauthn:extension:credBlob"`
 		LargeBlob                 bool            `json:"webauthn:extension:largeBlob"`
 		VirtualAuthenticators     bool            `json:"webauthn:virtualAuthenticators"`
-	}
+	} `json:"value"`
 }
 
 type GetTimeoutResponse struct {
@@ -67,12 +113,25 @@ type GetTimeoutResponse struct {
 }
 
 // https://w3c.github.io/webdriver/#new-session
-func (api *WebDriverApi) CreateSession(args []string) (CreateSessionResponse, error) {
+func (api *WebDriverApi) CreateSession(browserName string, args []string, prefs map[string]interface{}, detach bool) (CreateSessionResponse, error) {
 
 	// Create request body
 	requestBody := CreateSessionRequest{}
-	//requestBody.DesiredCapabilities.AcceptInsecureCerts = true
-	requestBody.DesiredCapabilities.ChromeOptions.Args = args
+	requestBody.Capabilities.AlwaysMatch.AcceptInsecureCerts = true
+	requestBody.Capabilities.AlwaysMatch.BrowserName = browserName
+
+	if browserName == "firefox" {
+		requestBody.Capabilities.AlwaysMatch.FirefoxOptions.Args = args
+		requestBody.Capabilities.AlwaysMatch.FirefoxOptions.Prefs = prefs
+
+	} else {
+
+		requestBody.Capabilities.AlwaysMatch.ChromeOptions.Args = args
+		requestBody.Capabilities.AlwaysMatch.ChromeOptions.Prefs = prefs
+		if detach {
+			requestBody.Capabilities.AlwaysMatch.ChromeOptions.Detach = detach
+		}
+	}
 
 	// Send request
 	resp, err := ProceedPostRequest(*api, "session", requestBody)
@@ -89,6 +148,9 @@ func (api *WebDriverApi) CreateSession(args []string) (CreateSessionResponse, er
 		return CreateSessionResponse{}, err
 	}
 	api.SessionId = responseBody.SessionId
+	if api.SessionId == "" {
+		api.SessionId = responseBody.Value.SessionId
+	}
 
 	// Display debug informations
 	version := ""

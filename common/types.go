@@ -13,12 +13,14 @@ type Rect struct {
 
 type WebDriverOptions struct {
 	Timeout         time.Duration
-	LogLevel        string
 	Debug           bool
 	Command         string
+	CommandLineArgs []string
 	Args            []string
+	Prefs           map[string]interface{}
 	WebDriverBinary string
 	Url             string
+	BrowserName     string
 
 	//Internal WebDriverInternal
 }
@@ -89,25 +91,6 @@ type Capability struct {
 	Timeouts                  *Timeouts `json:"timeouts,omitempty"`
 	StrictFileInteractability bool      `json:"strictFileInteractability,omitempty"`
 	UnhandledPromptBehavior   string    `json:"unhandledPromptBehavior,omitempty"`
-}
-
-// https://chromedriver.chromium.org/capabilities
-type ChromeCapability struct {
-	Capability
-	ChromeOptions struct {
-		Args             []string  `json:"args,omitempty"`
-		Binary           string    `json:"binary,omitempty"`
-		Extensions       []string  `json:"extensions,omitempty"`
-		LocalState       *struct{} `json:"localState,omitempty"`
-		Prefs            *struct{} `json:"prefs,omitempty"`
-		Detach           bool      `json:"detach,omitempty"`
-		DebuggerAddress  string    `json:"debuggerAddress,omitempty"`
-		ExcludeSwitches  []string  `json:"excludeSwitches,omitempty"`
-		MinidumpPath     string    `json:"minidumpPath,omitempty"`
-		MobileEmulation  *struct{} `json:"mobileEmulation,omitempty"`
-		PerfLoggingPrefs *struct{} `json:"perfLoggingPrefs,omitempty"`
-		WindowTypes      []string  `json:"windowTypes,omitempty"`
-	} `json:"chromeOptions,omitempty"`
 }
 
 // https://w3c.github.io/webdriver/#dfn-table-of-location-strategies

@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 
 	"github.com/kevinramage/venomWeb/common"
@@ -46,8 +45,13 @@ func main() {
 */
 
 func main() {
-	webDriver := venomWeb.ChromeDriver([]string{"headless"})
-	webDriver.Driver.LogLevel = "DEBUG"
+	//	webDriver := venomWeb.ChromeDriver([]string{"headless", "ignore-certificate-errors", "ignore-ssl-errors", "proxy-server=localhost:8888"})
+	webDriver := venomWeb.GeckoDriver([]string{})
+	webDriver.Headless = true
+	//webDriver.Detach = true
+	//webDriver.Proxy = "localhost:8888"
+	webDriver.LogLevel = "DEBUG"
+
 	//webDriver.Start()
 	err := webDriver.Start()
 	if err == nil {
@@ -99,11 +103,11 @@ func main() {
 		// fmt.Printf("rect: %v\n", rect)
 
 		// fmt.Printf("subElt: %v\n", elt)
-		test, _ := page.Api.TakeScreenShot()
-		ioutil.WriteFile("test.png", test, 0666)
+		//test, _ := page.Api.TakeScreenShot()
+		//ioutil.WriteFile("test.png", test, 0666)
 		fmt.Printf("err: %v\n", err)
 
-		webDriver.Stop()
+		//webDriver.Stop()
 	} else {
 		log.Fatal("Impossible to start web driver")
 	}
