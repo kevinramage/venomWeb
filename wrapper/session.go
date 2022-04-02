@@ -88,7 +88,7 @@ func (s Session) GetWindows() ([]Window, error) {
 	windows := []Window{}
 	if err == nil {
 		for i := 0; i < len(handles); i++ {
-			windows = append(windows, Window{HandleId: handles[i]})
+			windows = append(windows, Window{HandleId: handles[i], Api: s.Api})
 		}
 		return windows, nil
 	} else {
@@ -99,7 +99,7 @@ func (s Session) GetWindows() ([]Window, error) {
 func (s Session) NewWindow(windowType string) (Window, error) {
 	handle, err := s.Api.NewWindows(windowType)
 	if err == nil {
-		return Window{HandleId: handle}, nil
+		return Window{HandleId: handle, Api: s.Api}, nil
 	} else {
 		return Window{}, err
 	}
@@ -142,7 +142,7 @@ func (s Session) Fullscreen() error {
 func (s Session) FindElement(selector string, locatorStrategy string) (Element, error) {
 	eltId, err := s.Api.FindElement(selector, locatorStrategy)
 	if err == nil {
-		return Element{ElementId: eltId}, nil
+		return Element{ElementId: eltId, Api: s.Api}, nil
 	} else {
 		return Element{}, nil
 	}
@@ -153,7 +153,7 @@ func (s Session) FindElements(selector string, locatorStrategy string) ([]Elemen
 	if err == nil {
 		elements := []Element{}
 		for i := 0; i < len(eltsId); i++ {
-			elements = append(elements, Element{ElementId: eltsId[i]})
+			elements = append(elements, Element{ElementId: eltsId[i], Api: s.Api})
 		}
 		return elements, nil
 	} else {
@@ -164,7 +164,7 @@ func (s Session) FindElements(selector string, locatorStrategy string) ([]Elemen
 func (s Session) GetActiveElement() (Element, error) {
 	eltId, err := s.Api.GetActiveElement()
 	if err == nil {
-		return Element{ElementId: eltId}, nil
+		return Element{ElementId: eltId, Api: s.Api}, nil
 	} else {
 		return Element{}, nil
 	}

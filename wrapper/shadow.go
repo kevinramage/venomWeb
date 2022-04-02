@@ -10,7 +10,7 @@ type Shadow struct {
 func (s Shadow) FindElementFromShadowId(selector string, locatorStrategy string) (Element, error) {
 	eltId, err := s.Api.FindElementFromShadow(s.ShadowId, selector, locatorStrategy)
 	if err == nil {
-		return Element{ElementId: eltId}, nil
+		return Element{ElementId: eltId, Api: s.Api}, nil
 	} else {
 		return Element{}, nil
 	}
@@ -21,7 +21,7 @@ func (s Shadow) FindElementsFromShadow(shadowId string, selector string, locator
 	if err == nil {
 		elements := []Element{}
 		for i := 0; i < len(eltsId); i++ {
-			elements = append(elements, Element{ElementId: eltsId[i]})
+			elements = append(elements, Element{ElementId: eltsId[i], Api: s.Api})
 		}
 		return elements, nil
 	} else {

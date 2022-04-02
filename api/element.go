@@ -2,7 +2,7 @@ package api
 
 import (
 	"fmt"
-	"strings"
+	"reflect"
 
 	"github.com/kevinramage/venomWeb/common"
 	"github.com/mitchellh/mapstructure"
@@ -16,11 +16,9 @@ type ElementRequest struct {
 }
 
 type ElementResponse struct {
-	SessionId string `json:"sessionId"`
-	Status    int    `json:"status"`
-	Value     struct {
-		Element string `json:"ELEMENT"`
-	} `json:"value"`
+	SessionId string            `json:"sessionId"`
+	Status    int               `json:"status"`
+	Value     map[string]string `json:"value"`
 }
 
 type ElementErrorResponse struct {
@@ -32,15 +30,13 @@ type ElementErrorResponse struct {
 }
 
 type ElementsResponse struct {
-	SessionId string `json:"sessionId"`
-	Status    int    `json:"status"`
-	Value     []struct {
-		Element string `json:"ELEMENT"`
-	} `json:"value"`
+	SessionId string              `json:"sessionId"`
+	Status    int                 `json:"status"`
+	Value     []map[string]string `json:"value"`
 }
 
 type SendKeysRequest struct {
-	Value []string `json:"value"`
+	Text string `json:"text"`
 }
 
 type StringResponse struct {
@@ -94,7 +90,11 @@ func (api WebDriverApi) FindElement(selector string, selectorType string) (strin
 		return "", err
 	}
 
-	return responseBody.Value.Element, nil
+	// Get element id
+	keys := reflect.ValueOf(responseBody.Value).MapKeys()
+	key := keys[0].String()
+
+	return responseBody.Value[key], nil
 }
 
 // https://w3c.github.io/webdriver/#find-elements
@@ -123,7 +123,9 @@ func (api WebDriverApi) FindElements(selector string, selectorType string) ([]st
 
 	ids := []string{}
 	for i := 0; i < len(responseBody.Value); i++ {
-		ids = append(ids, responseBody.Value[i].Element)
+		keys := reflect.ValueOf(responseBody.Value[i]).MapKeys()
+		key := keys[0].String()
+		ids = append(ids, responseBody.Value[i][key])
 	}
 
 	return ids, nil
@@ -162,7 +164,11 @@ func (api WebDriverApi) FindElementFromElement(elementId string, selector string
 		return "", err
 	}
 
-	return responseBody.Value.Element, nil
+	// Get element id
+	keys := reflect.ValueOf(responseBody.Value).MapKeys()
+	key := keys[0].String()
+
+	return responseBody.Value[key], nil
 }
 
 // https://w3c.github.io/webdriver/#find-elements-from-element
@@ -200,7 +206,9 @@ func (api WebDriverApi) FindElementsFromElement(elementId string, selector strin
 
 	ids := []string{}
 	for i := 0; i < len(responseBody.Value); i++ {
-		ids = append(ids, responseBody.Value[i].Element)
+		keys := reflect.ValueOf(responseBody.Value[i]).MapKeys()
+		key := keys[0].String()
+		ids = append(ids, responseBody.Value[i][key])
 	}
 
 	return ids, nil
@@ -230,7 +238,11 @@ func (api WebDriverApi) FindElementFromShadow(shadowId string, selector string, 
 		return "", err
 	}
 
-	return responseBody.Value.Element, nil
+	// Get element id
+	keys := reflect.ValueOf(responseBody.Value).MapKeys()
+	key := keys[0].String()
+
+	return responseBody.Value[key], nil
 }
 
 // https://w3c.github.io/webdriver/#find-elements-from-shadow-root
@@ -268,7 +280,9 @@ func (api WebDriverApi) FindElementsFromShadow(shadowId string, selector string,
 
 	ids := []string{}
 	for i := 0; i < len(responseBody.Value); i++ {
-		ids = append(ids, responseBody.Value[i].Element)
+		keys := reflect.ValueOf(responseBody.Value[i]).MapKeys()
+		key := keys[0].String()
+		ids = append(ids, responseBody.Value[i][key])
 	}
 
 	return ids, nil
@@ -300,7 +314,11 @@ func (api WebDriverApi) GetActiveElement() (string, error) {
 		return "", err
 	}
 
-	return responseBody.Value.Element, nil
+	// Get element id
+	keys := reflect.ValueOf(responseBody.Value).MapKeys()
+	key := keys[0].String()
+
+	return responseBody.Value[key], nil
 }
 
 // https://w3c.github.io/webdriver/#get-element-shadow-root
@@ -409,10 +427,10 @@ func (api WebDriverApi) GetElementProperty(elementId string, name string) (strin
 	}
 
 	// Manage element response
-	responseElement := ElementResponse{}
+	responseElement := StringResponse{}
 	err = mapstructure.Decode(resp, &responseElement)
-	if err == nil && responseElement.Value.Element != "" {
-		return responseElement.Value.Element, nil
+	if err == nil && responseElement.Value != "" {
+		return responseElement.Value, nil
 	}
 
 	// Manage response
@@ -676,7 +694,7 @@ func (api WebDriverApi) SendKeys(elementId string, text string) error {
 
 	// Create request body
 	request := SendKeysRequest{
-		Value: strings.Split(text, ""),
+		Text: text,
 	}
 
 	// Send request

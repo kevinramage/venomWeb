@@ -27,7 +27,7 @@ func (elt Element) Clear() error {
 func (elt Element) FindElement(selector string, selectorStrategy string) (Element, error) {
 	eltId, err := elt.Api.FindElementFromElement(elt.ElementId, selector, selectorStrategy)
 	if err == nil {
-		return Element{ElementId: eltId}, nil
+		return Element{ElementId: eltId, Api: elt.Api}, nil
 	} else {
 		return Element{}, nil
 	}
@@ -49,7 +49,7 @@ func (elt Element) FindElements(selector string, selectorStrategy string) ([]Ele
 func (elt Element) GetElementShadowRoot() (Element, error) {
 	eltId, err := elt.Api.GetElementShadowRoot(elt.ElementId)
 	if err == nil {
-		return Element{ElementId: eltId}, nil
+		return Element{ElementId: eltId, Api: elt.Api}, nil
 	} else {
 		return Element{}, nil
 	}

@@ -46,7 +46,7 @@ func main() {
 
 func main() {
 	//	webDriver := venomWeb.ChromeDriver([]string{"headless", "ignore-certificate-errors", "ignore-ssl-errors", "proxy-server=localhost:8888"})
-	webDriver := venomWeb.EdgeChroniumDriver([]string{})
+	webDriver := venomWeb.ChromeDriver([]string{})
 	//webDriver.Headless = true
 	//webDriver.Detach = true
 	//webDriver.Proxy = "localhost:8888"
@@ -60,7 +60,16 @@ func main() {
 		page, _ := webDriver.NewSession()
 		page.Navigate("https://github.com/")
 
-		_, err := page.FindElement("input[name=q]", common.CSS_SELECTOR)
+		_, err := page.FindElements("input", common.CSS_SELECTOR)
+
+		/*
+			elt, err := page.FindElement("input[name=q]", common.CSS_SELECTOR)
+			err = elt.SendKeys("venom")
+			time.Sleep(2 * time.Second)
+		*/
+
+		// #jump-to-suggestion-search-global > a
+
 		//fmt.Printf("err: %v\n", err)
 		//elts, _ := page.FindElements("inputbchzhf", common.CSS_SELECTOR)
 		//fmt.Printf("elts: %v\n", elts)

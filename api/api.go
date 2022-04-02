@@ -65,7 +65,8 @@ func ProceedPostRequest(api WebDriverApi, path string, requestBody interface{}) 
 		return nil, err
 	}
 	if resp.StatusCode != 200 {
-		log.Error("Error invalid response status: ", resp.StatusCode)
+		err = fmt.Errorf("error invalid response status: %d", resp.StatusCode)
+		log.Error("Error invalid response status: %d", resp.StatusCode)
 		return nil, err
 	}
 	var bodyJSON interface{}

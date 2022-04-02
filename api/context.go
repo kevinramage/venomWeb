@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"reflect"
 
 	"github.com/kevinramage/venomWeb/common"
 	"github.com/mitchellh/mapstructure"
@@ -98,7 +99,9 @@ func (api WebDriverApi) GetWindowHandles() ([]string, error) {
 
 	ids := []string{}
 	for i := 0; i < len(responseBody.Value); i++ {
-		ids = append(ids, responseBody.Value[i].Element)
+		keys := reflect.ValueOf(responseBody.Value[i]).MapKeys()
+		key := keys[0].String()
+		ids = append(ids, responseBody.Value[i][key])
 	}
 
 	return ids, nil
@@ -139,7 +142,7 @@ func (api WebDriverApi) SwitchToFrame(id string) error {
 	request := SwitchToFrameRequest{Id: id}
 
 	// Send request
-	_, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/window/frame", api.SessionId), request)
+	_, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/frame", api.SessionId), request)
 	if err != nil {
 		log.Error("An error occured during switch to frame request: ", err)
 		return err
@@ -152,7 +155,7 @@ func (api WebDriverApi) SwitchToFrame(id string) error {
 func (api WebDriverApi) SwitchToParentFrame() error {
 
 	// Send request
-	_, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/window/frame/parent", api.SessionId), nil)
+	_, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/frame/parent", api.SessionId), nil)
 	if err != nil {
 		log.Error("An error occured during switch to parent frame request: ", err)
 		return err
