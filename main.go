@@ -59,14 +59,14 @@ func main() {
 		//webDriver.Status()
 		page, _ := webDriver.NewSession()
 		page.Navigate("https://github.com/")
+		//webDriver.Stop()
 
-		_, err := page.FindElements("input", common.CSS_SELECTOR)
+		//elt, err := page.FindElements("input", common.CSS_SELECTOR)
 
-		/*
-			elt, err := page.FindElement("input[name=q]", common.CSS_SELECTOR)
-			err = elt.SendKeys("venom")
-			time.Sleep(2 * time.Second)
-		*/
+		elt, _ := page.FindElement("input[name=q]", common.CSS_SELECTOR)
+		err = elt.SendKeys("venom")
+
+		//time.Sleep(2 * time.Second)
 
 		// #jump-to-suggestion-search-global > a
 

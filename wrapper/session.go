@@ -1,6 +1,7 @@
 package venomWeb
 
 import (
+	"fmt"
 	"io/ioutil"
 
 	"github.com/kevinramage/venomWeb/api"
@@ -8,7 +9,7 @@ import (
 )
 
 type Session struct {
-	Api api.WebDriverApi
+	api api.WebDriverApi
 }
 
 /*
@@ -17,7 +18,7 @@ type Session struct {
 ----------------------------------------
 */
 func (s Session) DeleteSession() error {
-	return s.Api.DeleteSession()
+	return s.api.DeleteSession()
 }
 
 /*
@@ -26,11 +27,11 @@ func (s Session) DeleteSession() error {
 ----------------------------------------
 */
 func (s Session) GetTimeouts() (common.Timeouts, error) {
-	return s.Api.GetSessionTimeout()
+	return s.api.GetSessionTimeout()
 }
 
 func (s Session) SetTimeouts(timeouts common.Timeouts) error {
-	return s.Api.SetSessionTimeout(timeouts)
+	return s.api.SetSessionTimeout(timeouts)
 }
 
 /*
@@ -40,27 +41,27 @@ func (s Session) SetTimeouts(timeouts common.Timeouts) error {
 */
 
 func (s Session) Navigate(url string) error {
-	return s.Api.Navigate(url)
+	return s.api.Navigate(url)
 }
 
 func (s Session) GetURL() (string, error) {
-	return s.Api.GetCurrentUrl()
+	return s.api.GetCurrentUrl()
 }
 
 func (s Session) Forward() error {
-	return s.Api.Forward()
+	return s.api.Forward()
 }
 
 func (s Session) Back() error {
-	return s.Api.Back()
+	return s.api.Back()
 }
 
 func (s Session) Refresh() error {
-	return s.Api.Refresh()
+	return s.api.Refresh()
 }
 
 func (s Session) GetTitle() (string, error) {
-	return s.Api.GetTitle()
+	return s.api.GetTitle()
 }
 
 /*
@@ -70,9 +71,9 @@ func (s Session) GetTitle() (string, error) {
 */
 
 func (s Session) GetWindow() (Window, error) {
-	handle, err := s.Api.GetWindowHandle()
+	handle, err := s.api.GetWindowHandle()
 	if err == nil {
-		window := Window{HandleId: handle}
+		window := Window{handleId: handle}
 		return window, nil
 	} else {
 		return Window{}, err
@@ -80,15 +81,15 @@ func (s Session) GetWindow() (Window, error) {
 }
 
 func (s Session) CloseWindow() error {
-	return s.Api.CloseWindow()
+	return s.api.CloseWindow()
 }
 
 func (s Session) GetWindows() ([]Window, error) {
-	handles, err := s.Api.GetWindowHandles()
+	handles, err := s.api.GetWindowHandles()
 	windows := []Window{}
 	if err == nil {
 		for i := 0; i < len(handles); i++ {
-			windows = append(windows, Window{HandleId: handles[i], Api: s.Api})
+			windows = append(windows, Window{handleId: handles[i], api: s.api})
 		}
 		return windows, nil
 	} else {
@@ -97,40 +98,40 @@ func (s Session) GetWindows() ([]Window, error) {
 }
 
 func (s Session) NewWindow(windowType string) (Window, error) {
-	handle, err := s.Api.NewWindows(windowType)
+	handle, err := s.api.NewWindows(windowType)
 	if err == nil {
-		return Window{HandleId: handle, Api: s.Api}, nil
+		return Window{handleId: handle, api: s.api}, nil
 	} else {
 		return Window{}, err
 	}
 }
 
 func (s Session) SwitchToFrame(frameId string) error {
-	return s.Api.SwitchToFrame(frameId)
+	return s.api.SwitchToFrame(frameId)
 }
 
 func (s Session) SwitchToParentFrame() error {
-	return s.Api.SwitchToParentFrame()
+	return s.api.SwitchToParentFrame()
 }
 
 func (s Session) GetSize() (common.Rect, error) {
-	return s.Api.GetWindowRect()
+	return s.api.GetWindowRect()
 }
 
 func (s Session) Size(width int, height int) error {
-	return s.Api.SetWindowRect(width, height)
+	return s.api.SetWindowRect(width, height)
 }
 
 func (s Session) Maximize() error {
-	return s.Api.Maximize()
+	return s.api.Maximize()
 }
 
 func (s Session) Minimize() error {
-	return s.Api.Minimize()
+	return s.api.Minimize()
 }
 
 func (s Session) Fullscreen() error {
-	return s.Api.Fullscreen()
+	return s.api.Fullscreen()
 }
 
 /*
@@ -140,20 +141,21 @@ func (s Session) Fullscreen() error {
 */
 
 func (s Session) FindElement(selector string, locatorStrategy string) (Element, error) {
-	eltId, err := s.Api.FindElement(selector, locatorStrategy)
+	fmt.Printf("%s", s.api.SessionId)
+	eltId, err := s.api.FindElement(selector, locatorStrategy)
 	if err == nil {
-		return Element{ElementId: eltId, Api: s.Api}, nil
+		return Element{elementId: eltId, api: s.api}, nil
 	} else {
 		return Element{}, nil
 	}
 }
 
 func (s Session) FindElements(selector string, locatorStrategy string) ([]Element, error) {
-	eltsId, err := s.Api.FindElements(selector, locatorStrategy)
+	eltsId, err := s.api.FindElements(selector, locatorStrategy)
 	if err == nil {
 		elements := []Element{}
 		for i := 0; i < len(eltsId); i++ {
-			elements = append(elements, Element{ElementId: eltsId[i], Api: s.Api})
+			elements = append(elements, Element{elementId: eltsId[i], api: s.api})
 		}
 		return elements, nil
 	} else {
@@ -162,9 +164,9 @@ func (s Session) FindElements(selector string, locatorStrategy string) ([]Elemen
 }
 
 func (s Session) GetActiveElement() (Element, error) {
-	eltId, err := s.Api.GetActiveElement()
+	eltId, err := s.api.GetActiveElement()
 	if err == nil {
-		return Element{ElementId: eltId, Api: s.Api}, nil
+		return Element{elementId: eltId, api: s.api}, nil
 	} else {
 		return Element{}, nil
 	}
@@ -177,15 +179,15 @@ func (s Session) GetActiveElement() (Element, error) {
 */
 
 func (s Session) GetPageSource() (string, error) {
-	return s.Api.GetPageSource()
+	return s.api.GetPageSource()
 }
 
 func (s Session) ExecuteScript(script string, args []string) error {
-	return s.Api.ExecuteScript(script, args)
+	return s.api.ExecuteScript(script, args)
 }
 
 func (s Session) ExecuteAsyncScript(script string, args []string) error {
-	return s.Api.ExecuteAsyncScript(script, args)
+	return s.api.ExecuteAsyncScript(script, args)
 }
 
 /*
@@ -195,23 +197,23 @@ func (s Session) ExecuteAsyncScript(script string, args []string) error {
 */
 
 func (s Session) GetAllCookies() ([]string, error) {
-	return s.Api.GetAllCookies()
+	return s.api.GetAllCookies()
 }
 
 func (s Session) GetNamedCookie(cookieName string) (string, error) {
-	return s.Api.GetNamedCookie(cookieName)
+	return s.api.GetNamedCookie(cookieName)
 }
 
 func (s Session) AddCookie(cookie common.Cookie) error {
-	return s.Api.AddCookie(cookie)
+	return s.api.AddCookie(cookie)
 }
 
 func (s Session) DeleteCookie(cookieName string) error {
-	return s.Api.DeleteCookie(cookieName)
+	return s.api.DeleteCookie(cookieName)
 }
 
 func (s Session) DeleteAllCookies() error {
-	return s.Api.DeleteAllCookies()
+	return s.api.DeleteAllCookies()
 }
 
 /*
@@ -221,19 +223,19 @@ func (s Session) DeleteAllCookies() error {
 */
 
 func (s Session) DismissAlert() error {
-	return s.Api.DismissAlert()
+	return s.api.DismissAlert()
 }
 
 func (s Session) AcceptAlert() error {
-	return s.Api.AcceptAlert()
+	return s.api.AcceptAlert()
 }
 
 func (s Session) GetAlertText() (string, error) {
-	return s.Api.GetAlertText()
+	return s.api.GetAlertText()
 }
 
 func (s Session) SendAlertText(alertText string) error {
-	return s.Api.SendAlertText(alertText)
+	return s.api.SendAlertText(alertText)
 }
 
 /*
@@ -243,7 +245,7 @@ func (s Session) SendAlertText(alertText string) error {
 */
 
 func (s Session) TakeScreenshot(fileName string) error {
-	content, err := s.Api.TakeScreenShot()
+	content, err := s.api.TakeScreenShot()
 	if err == nil {
 		return ioutil.WriteFile(fileName, content, 0666)
 	} else {

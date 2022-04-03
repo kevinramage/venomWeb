@@ -1,6 +1,7 @@
 package venomWeb
 
 import (
+	"fmt"
 	"io/ioutil"
 
 	"github.com/kevinramage/venomWeb/api"
@@ -8,37 +9,41 @@ import (
 )
 
 type Element struct {
-	ElementId string
-	Api       api.WebDriverApi
+	elementId string
+	api       api.WebDriverApi
 }
 
+// Click method allow you to simulate click on element
+// Return nil if operation complete, return an error else
+// "invalid session id" error occured when session not found
+// "invalid element id" error occured when element not found
 func (elt Element) Click() error {
-	return elt.Api.Click(elt.ElementId)
+	return elt.api.Click(elt.elementId)
 }
 
 func (elt Element) SendKeys(text string) error {
-	return elt.Api.SendKeys(elt.ElementId, text)
+	return elt.api.SendKeys(elt.elementId, text)
 }
 
 func (elt Element) Clear() error {
-	return elt.Api.Clear(elt.ElementId)
+	return elt.api.Clear(elt.elementId)
 }
 
 func (elt Element) FindElement(selector string, selectorStrategy string) (Element, error) {
-	eltId, err := elt.Api.FindElementFromElement(elt.ElementId, selector, selectorStrategy)
+	eltId, err := elt.api.FindElementFromElement(elt.elementId, selector, selectorStrategy)
 	if err == nil {
-		return Element{ElementId: eltId, Api: elt.Api}, nil
+		return Element{elementId: eltId, api: elt.api}, nil
 	} else {
 		return Element{}, nil
 	}
 }
 
 func (elt Element) FindElements(selector string, selectorStrategy string) ([]Element, error) {
-	eltIds, err := elt.Api.FindElementsFromElement(elt.ElementId, selector, selectorStrategy)
+	eltIds, err := elt.api.FindElementsFromElement(elt.elementId, selector, selectorStrategy)
 	if err == nil {
 		elements := []Element{}
 		for i := 0; i < len(eltIds); i++ {
-			elements = append(elements, Element{ElementId: eltIds[i]})
+			elements = append(elements, Element{elementId: eltIds[i]})
 		}
 		return elements, nil
 	} else {
@@ -47,52 +52,52 @@ func (elt Element) FindElements(selector string, selectorStrategy string) ([]Ele
 }
 
 func (elt Element) GetElementShadowRoot() (Element, error) {
-	eltId, err := elt.Api.GetElementShadowRoot(elt.ElementId)
+	eltId, err := elt.api.GetElementShadowRoot(elt.elementId)
 	if err == nil {
-		return Element{ElementId: eltId, Api: elt.Api}, nil
+		return Element{elementId: eltId, api: elt.api}, nil
 	} else {
 		return Element{}, nil
 	}
 }
 
 func (elt Element) IsElementSelected() (bool, error) {
-	return elt.Api.IsElementSelected(elt.ElementId)
+	return elt.api.IsElementSelected(elt.elementId)
 }
 
 func (elt Element) GetElementProperty(propertyName string) (string, error) {
-	return elt.Api.GetElementProperty(elt.ElementId, propertyName)
+	return elt.api.GetElementProperty(elt.elementId, propertyName)
 }
 
 func (elt Element) GetElementCSSValue(propertyName string) (string, error) {
-	return elt.Api.GetElementCSSValue(elt.ElementId, propertyName)
+	return elt.api.GetElementCSSValue(elt.elementId, propertyName)
 }
 
 func (elt Element) GetElementText() (string, error) {
-	return elt.Api.GetElementText(elt.ElementId)
+	return elt.api.GetElementText(elt.elementId)
 }
 
 func (elt Element) GetElementTagName() (string, error) {
-	return elt.Api.GetElementTagName(elt.ElementId)
+	return elt.api.GetElementTagName(elt.elementId)
 }
 
 func (elt Element) GetElementRect() (common.Rect, error) {
-	return elt.Api.GetElementRect(elt.ElementId)
+	return elt.api.GetElementRect(elt.elementId)
 }
 
 func (elt Element) IsElementEnabled() (bool, error) {
-	return elt.Api.IsElementEnabled(elt.ElementId)
+	return elt.api.IsElementEnabled(elt.elementId)
 }
 
 func (elt Element) GetComputedRole() (string, error) {
-	return elt.Api.GetComputedRole(elt.ElementId)
+	return elt.api.GetComputedRole(elt.elementId)
 }
 
 func (elt Element) GetComputedLabel() (string, error) {
-	return elt.Api.GetComputedLabel(elt.ElementId)
+	return elt.api.GetComputedLabel(elt.elementId)
 }
 
 func (elt Element) TakeScreenshot(fileName string) error {
-	content, err := elt.Api.TakeElementScreenShot(elt.ElementId)
+	content, err := elt.api.TakeElementScreenShot(elt.elementId)
 	if err == nil {
 		return ioutil.WriteFile(fileName, content, 0666)
 	} else {
@@ -100,10 +105,26 @@ func (elt Element) TakeScreenshot(fileName string) error {
 	}
 }
 
-func (elt Element) Select(text string) {
-
+func (elt Element) Select(text string) (Element, error) {
+	expression := fmt.Sprintf(`./option[normalize-space()="%s"]`, text)
+	newElt, err := elt.FindElement(expression, common.XPATH_SELECTOR)
+	if err == nil {
+		return Element{elementId: newElt.elementId, api: elt.api}, err
+	} else {
+		return Element{}, nil
+	}
 }
 
-func (elt Element) UploadFile(file string) {
+func (elt Element) UploadFile(file string) error {
+	return elt.SendKeys(file)
+}
 
+func (elt Element) Check() error {
+	// GetAttribute("type") => checbox
+	//elt.api.GetElementAttribute("value")
+	return elt.Click()
+}
+
+func (elt Element) Uncheck() error {
+	return elt.Click()
 }

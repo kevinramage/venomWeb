@@ -650,6 +650,14 @@ func (api WebDriverApi) GetComputedLabel(elementId string) (string, error) {
 // https://w3c.github.io/webdriver/#element-click
 func (api WebDriverApi) Click(elementId string) error {
 
+	// Security
+	if api.SessionId == "" {
+		return fmt.Errorf("invalid session id")
+	}
+	if elementId == "" {
+		return fmt.Errorf("invalid element id")
+	}
+
 	// Send request
 	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/element/%s/click", api.SessionId, elementId), nil)
 	if err != nil {

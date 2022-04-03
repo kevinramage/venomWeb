@@ -14,9 +14,9 @@ import (
 )
 
 type WebDriver struct {
-	Driver    common.WebDriverOptions
-	Service   service.WebDriverService
-	Api       api.WebDriverApi
+	driver    common.WebDriverOptions
+	service   service.WebDriverService
+	api       api.WebDriverApi
 	isStarted bool
 	Headless  bool
 	Proxy     string
@@ -45,13 +45,13 @@ func (w *WebDriver) Start() error {
 	DefineLogLevel(w.LogLevel)
 	log.Info("WebDriver.Start")
 	if !w.isStarted {
-		w.Service = service.New()
-		err := w.Service.Start(w.Driver.Command, w.LogLevel, w.Driver.CommandLineArgs)
+		w.service = service.New()
+		err := w.service.Start(w.driver.Command, w.LogLevel, w.driver.CommandLineArgs)
 		if err != nil {
 			return err
 		}
 		w.isStarted = true
-		err = w.Service.Wait(w.Driver.Timeout, w.Driver.Url)
+		err = w.service.Wait(w.driver.Timeout, w.driver.Url)
 		return err
 
 	} else {
@@ -64,17 +64,17 @@ func (w *WebDriver) Start() error {
 ///TODO Manage error
 func (w *WebDriver) Stop() error {
 	log.Info("WewDriver.Stop")
-	err := w.Api.DeleteSession()
+	err := w.api.DeleteSession()
 	if err != nil {
 		return err
 	}
-	err = w.Service.Stop()
+	err = w.service.Stop()
 	return err
 }
 
 func (w *WebDriver) Status() (common.DriverStatus, error) {
 	log.Info("WewDriver.Status")
-	return w.Api.CheckStatus()
+	return w.api.CheckStatus()
 }
 
 ///TODO New page called before start
@@ -87,19 +87,19 @@ func (w *WebDriver) NewSession() (Session, error) {
 	w.defineProxy()
 
 	// Create session
-	_, err := w.Api.CreateSession(w.Driver.BrowserName, w.Driver.Args, w.Driver.Prefs, w.Detach)
-	return Session{w.Api}, err
+	_, err := w.api.CreateSession(w.driver.BrowserName, w.driver.Args, w.driver.Prefs, w.Detach)
+	return Session{w.api}, err
 }
 
 func (w *WebDriver) defineHeadless() {
 	if w.Headless {
-		if w.Driver.BrowserName == "firefox" {
-			if !common.SliceContains(w.Driver.Args, "-headless") {
-				w.Driver.Args = append(w.Driver.Args, "-headless")
+		if w.driver.BrowserName == "firefox" {
+			if !common.SliceContains(w.driver.Args, "-headless") {
+				w.driver.Args = append(w.driver.Args, "-headless")
 			}
 		} else {
-			if !common.SliceContains(w.Driver.Args, "headless") {
-				w.Driver.Args = append(w.Driver.Args, "headless")
+			if !common.SliceContains(w.driver.Args, "headless") {
+				w.driver.Args = append(w.driver.Args, "headless")
 			}
 		}
 	}
@@ -107,93 +107,93 @@ func (w *WebDriver) defineHeadless() {
 
 func (w *WebDriver) defineProxy() {
 	if w.Proxy != "" {
-		if w.Driver.BrowserName == "firefox" {
+		if w.driver.BrowserName == "firefox" {
 			proxy_values := strings.Split(w.Proxy, ":")
 			if len(proxy_values) == 2 {
 				port, err := strconv.Atoi(proxy_values[1])
 				if err == nil {
-					w.Driver.Prefs["network.proxy.type"] = 1
-					w.Driver.Prefs["network.websocket.allowInsecureFromHTTPS"] = true
-					w.Driver.Prefs["network.proxy.http"] = proxy_values[0]
-					w.Driver.Prefs["network.proxy.http_port"] = port
-					w.Driver.Prefs["network.proxy.ssl"] = proxy_values[0]
-					w.Driver.Prefs["network.proxy.ssl_port"] = port
+					w.driver.Prefs["network.proxy.type"] = 1
+					w.driver.Prefs["network.websocket.allowInsecureFromHTTPS"] = true
+					w.driver.Prefs["network.proxy.http"] = proxy_values[0]
+					w.driver.Prefs["network.proxy.http_port"] = port
+					w.driver.Prefs["network.proxy.ssl"] = proxy_values[0]
+					w.driver.Prefs["network.proxy.ssl_port"] = port
 				}
 			}
 		} else {
-			if !common.SliceContains(w.Driver.Args, "ignore-certificate-errors") {
-				w.Driver.Args = append(w.Driver.Args, "ignore-certificate-errors")
+			if !common.SliceContains(w.driver.Args, "ignore-certificate-errors") {
+				w.driver.Args = append(w.driver.Args, "ignore-certificate-errors")
 			}
-			if !common.SliceContains(w.Driver.Args, "ignore-ssl-errors") {
-				w.Driver.Args = append(w.Driver.Args, "ignore-ssl-errors")
+			if !common.SliceContains(w.driver.Args, "ignore-ssl-errors") {
+				w.driver.Args = append(w.driver.Args, "ignore-ssl-errors")
 			}
-			w.Driver.Args = append(w.Driver.Args, "-proxy-server="+w.Proxy)
+			w.driver.Args = append(w.driver.Args, "-proxy-server="+w.Proxy)
 		}
 	}
 }
 
 func NewWebDriver(webDriver *WebDriver) WebDriver {
 
-	webDriver.Driver.Prefs = make(map[string]interface{})
+	webDriver.driver.Prefs = make(map[string]interface{})
 	webDriver.LogLevel = "WARN"
-	webDriver.Driver.Timeout = time.Second * 60
-	webDriver.Driver.Command = webDriver.Driver.WebDriverBinary
-	webDriver.Api = api.New(webDriver.Driver.Url)
+	webDriver.driver.Timeout = time.Second * 60
+	webDriver.driver.Command = webDriver.driver.WebDriverBinary
+	webDriver.api = api.New(webDriver.driver.Url)
 	return *webDriver
 }
 
 func ChromeDriver(args []string) WebDriver {
 	webDriver := WebDriver{}
-	webDriver.Driver.BrowserName = "chrome"
-	webDriver.Driver.Args = args
+	webDriver.driver.BrowserName = "chrome"
+	webDriver.driver.Args = args
 	if runtime.GOOS == "windows" {
-		webDriver.Driver.WebDriverBinary = "chromedriver.exe"
+		webDriver.driver.WebDriverBinary = "chromedriver.exe"
 	} else {
-		webDriver.Driver.WebDriverBinary = "chromedriver"
+		webDriver.driver.WebDriverBinary = "chromedriver"
 	}
-	webDriver.Driver.CommandLineArgs = []string{"--log=WARN", "--port=9515"}
-	webDriver.Driver.Url = "http://localhost:9515"
+	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=9515"}
+	webDriver.driver.Url = "http://localhost:9515"
 	return NewWebDriver(&webDriver)
 }
 
 func GeckoDriver(args []string) WebDriver {
 	webDriver := WebDriver{}
-	webDriver.Driver.BrowserName = "firefox"
-	webDriver.Driver.Args = args
+	webDriver.driver.BrowserName = "firefox"
+	webDriver.driver.Args = args
 	if runtime.GOOS == "windows" {
-		webDriver.Driver.WebDriverBinary = "geckodriver.exe"
+		webDriver.driver.WebDriverBinary = "geckodriver.exe"
 	} else {
-		webDriver.Driver.WebDriverBinary = "geckodriver"
+		webDriver.driver.WebDriverBinary = "geckodriver"
 	}
-	webDriver.Driver.CommandLineArgs = []string{"--log=WARN", "--port=4444"}
-	webDriver.Driver.Url = "http://localhost:4444"
+	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=4444"}
+	webDriver.driver.Url = "http://localhost:4444"
 	return NewWebDriver(&webDriver)
 }
 
 func EdgeChroniumDriver(args []string) WebDriver {
 	webDriver := WebDriver{}
-	webDriver.Driver.BrowserName = "msedge"
-	webDriver.Driver.Args = args
+	webDriver.driver.BrowserName = "msedge"
+	webDriver.driver.Args = args
 	if runtime.GOOS == "windows" {
-		webDriver.Driver.WebDriverBinary = "msedgedriver.exe"
+		webDriver.driver.WebDriverBinary = "msedgedriver.exe"
 	} else {
-		webDriver.Driver.WebDriverBinary = "msedgedriver"
+		webDriver.driver.WebDriverBinary = "msedgedriver"
 	}
-	webDriver.Driver.CommandLineArgs = []string{"--log=WARN", "--port=9515"}
-	webDriver.Driver.Url = "http://localhost:9515"
+	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=9515"}
+	webDriver.driver.Url = "http://localhost:9515"
 	return NewWebDriver(&webDriver)
 }
 
 func OperaDriver(args []string) WebDriver {
 	webDriver := WebDriver{}
-	webDriver.Driver.BrowserName = "opera"
-	webDriver.Driver.Args = args
+	webDriver.driver.BrowserName = "opera"
+	webDriver.driver.Args = args
 	if runtime.GOOS == "windows" {
-		webDriver.Driver.WebDriverBinary = "operadriver.exe"
+		webDriver.driver.WebDriverBinary = "operadriver.exe"
 	} else {
-		webDriver.Driver.WebDriverBinary = "operadriver"
+		webDriver.driver.WebDriverBinary = "operadriver"
 	}
-	webDriver.Driver.CommandLineArgs = []string{"--log=WARN", "--port=9515"}
-	webDriver.Driver.Url = "http://localhost:9515"
+	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=9515"}
+	webDriver.driver.Url = "http://localhost:9515"
 	return NewWebDriver(&webDriver)
 }
