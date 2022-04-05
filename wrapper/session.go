@@ -106,8 +106,12 @@ func (s Session) NewWindow(windowType string) (Window, error) {
 	}
 }
 
-func (s Session) SwitchToFrame(frameId string) error {
-	return s.api.SwitchToFrame(frameId)
+func (s Session) SwitchToFrame(element Element) error {
+	return s.api.SwitchToFrame(element.elementId)
+}
+
+func (s Session) SwitchToIndexFrame(index int) error {
+	return s.api.SwitchToIndexFrame(index)
 }
 
 func (s Session) SwitchToParentFrame() error {

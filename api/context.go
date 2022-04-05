@@ -13,10 +13,6 @@ type SwitchWindowRequest struct {
 	Handle string `json:"handle"`
 }
 
-type SwitchToFrameRequest struct {
-	Id string `json:"id"`
-}
-
 type SetWindowRectRequest struct {
 	Width  int `json:"width"`
 	Height int `json:"height"`
@@ -136,10 +132,37 @@ func (api WebDriverApi) NewWindows(windowType string) (string, error) {
 }
 
 // https://w3c.github.io/webdriver/#switch-to-frame
+// https://source.chromium.org/chromium/chromium/src/+/master:chrome/test/chromedriver/element_util.cc;l=309;drc=7fb345a0da63049b102e1c0bcdc8d7831110e324
+// https://source.chromium.org/chromium/chromium/src/+/master:chrome/test/chromedriver/element_util.cc;drc=7fb345a0da63049b102e1c0bcdc8d7831110e324;l=31
 func (api WebDriverApi) SwitchToFrame(id string) error {
 
 	// Create request
-	request := SwitchToFrameRequest{Id: id}
+	type SwitchToFrameRequest struct {
+		Id struct {
+			Element string `json:"element-6066-11e4-a52e-4f735466cecf"`
+		} `json:"id"`
+	}
+	request := SwitchToFrameRequest{}
+	request.Id.Element = id
+
+	// Send request
+	_, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/frame", api.SessionId), request)
+	if err != nil {
+		log.Error("An error occured during switch to frame request: ", err)
+		return err
+	}
+
+	return nil
+}
+
+// https://w3c.github.io/webdriver/#switch-to-frame
+func (api WebDriverApi) SwitchToIndexFrame(index int) error {
+
+	// Create request
+	type SwitchToFrameRequest struct {
+		Id int `json:"id"`
+	}
+	request := SwitchToFrameRequest{Id: index}
 
 	// Send request
 	_, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/frame", api.SessionId), request)
