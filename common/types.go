@@ -205,3 +205,21 @@ type EdgeOptions struct {
 	WebviewOptions   map[string]interface{} `json:"webviewOptions,omitempty"`
 	WindowsApp       string                 `json:"windowsApp,omitempty"`
 }
+
+type Action struct {
+	Id         string `json:"id,omitempty"`
+	Type       string `json:"type,omitempty"` // "key", "pointer", "wheel", or "none"
+	Parameters struct {
+		PointerType string `json:"pointerType,omitempty"` // "mouse", "pen", or "touch"
+	} `json:"parameters,omitempty"`
+	Actions []SubAction `json:"actions,omitempty"`
+}
+
+type SubAction struct {
+	Type     string `json:"type,omitempty"` // pause, pointerDown, pointerUp, pointerMove, pointerCancel
+	Duration int    `json:"duration,omitempty"`
+	X        int    `json:"x,omitempty"`
+	Y        int    `json:"y,omitempty"`
+	Origin   string `json:"origin,omitempty"`
+	Button   int    `json:"button,omitempty"`
+}

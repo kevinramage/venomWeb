@@ -22,6 +22,60 @@ func (elt Element) Click() error {
 	return elt.api.Click(elt.elementId)
 }
 
+func (elt Element) DoubleClick() error {
+
+	rect, err := elt.api.GetElementRect(elt.elementId)
+	if err == nil {
+		x := rect.X + rect.Width/2
+		y := rect.Y + rect.Height/2
+		actions := createDoubleClickActions(x, y)
+		return elt.api.PerformActions(actions)
+
+	} else {
+		return err
+	}
+}
+
+func createDoubleClickActions(x int, y int) []common.Action {
+	var subActions = []common.SubAction{}
+	subActions = append(subActions, common.SubAction{
+		Type:     "pointerMove",
+		Duration: 0,
+		X:        x,
+		Y:        y,
+	})
+	subActions = append(subActions, common.SubAction{
+		Type:   "pointerDown",
+		Button: 0,
+	})
+	subActions = append(subActions, common.SubAction{
+		Type:   "pointerUp",
+		Button: 0,
+	})
+	subActions = append(subActions, common.SubAction{
+		Type:     "pause",
+		Duration: 250,
+	})
+	subActions = append(subActions, common.SubAction{
+		Type:   "pointerDown",
+		Button: 0,
+	})
+	subActions = append(subActions, common.SubAction{
+		Type:   "pointerUp",
+		Button: 0,
+	})
+	action := common.Action{
+		Id:      "test",
+		Type:    "pointer",
+		Actions: subActions,
+	}
+	action.Parameters.PointerType = "touch"
+
+	var actions = []common.Action{}
+	actions = append(actions, action)
+	return actions
+}
+
 // SendKeys method allow to send text value on web element
 // Return nil if operation proceed with success, return an error else
 func (elt Element) SendKeys(text string) error {

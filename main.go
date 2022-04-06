@@ -50,17 +50,23 @@ func main() {
 	webDriver.Detach = true
 	webDriver.Start()
 	page, _ := webDriver.NewSession()
-	//page.Navigate("https://github.com/")
-	page.Navigate("https://www.w3schools.com/html/tryit.asp?filename=tryhtml_id_css")
-
+	page.Navigate("https://doubleclicktest.com/")
+	elt, _ := page.FindElement("#textarea", common.CSS_SELECTOR)
+	elt.DoubleClick()
 	time.Sleep(1 * time.Second)
-	btn, _ := page.FindElement("#accept-choices", common.CSS_SELECTOR)
-	btn.Click()
+	/*
+		//page.Navigate("https://github.com/")
+		page.Navigate("https://www.w3schools.com/html/tryit.asp?filename=tryhtml_id_css")
 
-	elt, _ := page.FindElement("#iframeResult", common.CSS_SELECTOR)
-	page.SwitchToFrame(elt)
-	//page.SwitchToIndexFrame(0)
-	page.FindElement("#myHeader", common.CSS_SELECTOR)
+		time.Sleep(1 * time.Second)
+		btn, _ := page.FindElement("#accept-choices", common.CSS_SELECTOR)
+		btn.Click()
+
+		elt, _ := page.FindElement("#iframeResult", common.CSS_SELECTOR)
+		page.SwitchToFrame(elt)
+		//page.SwitchToIndexFrame(0)
+		page.FindElement("#myHeader", common.CSS_SELECTOR)
+	*/
 	webDriver.Stop()
 
 	//webDriver.Headless = true
