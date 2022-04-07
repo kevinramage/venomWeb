@@ -54,7 +54,7 @@ func createDoubleClickActions(x int, y int) []common.Action {
 	})
 	subActions = append(subActions, common.SubAction{
 		Type:     "pause",
-		Duration: 250,
+		Duration: 100,
 	})
 	subActions = append(subActions, common.SubAction{
 		Type:   "pointerDown",
@@ -69,7 +69,7 @@ func createDoubleClickActions(x int, y int) []common.Action {
 		Type:    "pointer",
 		Actions: subActions,
 	}
-	action.Parameters.PointerType = "touch"
+	action.Parameters.PointerType = "mouse"
 
 	var actions = []common.Action{}
 	actions = append(actions, action)
