@@ -88,3 +88,5 @@ https://www.guru99.com/chrome-options-desiredcapabilities.html
 https://www.selenium.dev/documentation/legacy/json_wire_protocol/#webelement
 
 https://source.chromium.org/chromium/chromium/src/+/master:chrome/test/chromedriver/window_commands.cc;l=865;drc=7fb345a0da63049b102e1c0bcdc8d7831110e324
+https://webdriver.io/docs/api/webdriver/#performactions
+https://github.com/jlipps/simple-wd-spec#perform-actions

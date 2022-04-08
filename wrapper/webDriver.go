@@ -22,6 +22,7 @@ type WebDriver struct {
 	Proxy     string
 	Detach    bool
 	LogLevel  string
+	Timeout   time.Duration
 }
 
 func DefineLogLevel(logLevel string) {
@@ -51,7 +52,7 @@ func (w *WebDriver) Start() error {
 			return err
 		}
 		w.isStarted = true
-		err = w.service.Wait(w.driver.Timeout, w.driver.Url)
+		err = w.service.Wait(w.Timeout, w.driver.Url)
 		return err
 
 	} else {
@@ -136,16 +137,17 @@ func NewWebDriver(webDriver *WebDriver) WebDriver {
 
 	webDriver.driver.Prefs = make(map[string]interface{})
 	webDriver.LogLevel = "WARN"
-	webDriver.driver.Timeout = time.Second * 60
+	webDriver.Timeout = time.Second * 60
 	webDriver.driver.Command = webDriver.driver.WebDriverBinary
 	webDriver.api = api.New(webDriver.driver.Url)
 	return *webDriver
 }
 
-func ChromeDriver(args []string) WebDriver {
+func ChromeDriver(args []string, prefs map[string]interface{}) WebDriver {
 	webDriver := WebDriver{}
 	webDriver.driver.BrowserName = "chrome"
 	webDriver.driver.Args = args
+	webDriver.driver.Prefs = prefs
 	if runtime.GOOS == "windows" {
 		webDriver.driver.WebDriverBinary = "chromedriver.exe"
 	} else {
@@ -156,10 +158,11 @@ func ChromeDriver(args []string) WebDriver {
 	return NewWebDriver(&webDriver)
 }
 
-func GeckoDriver(args []string) WebDriver {
+func GeckoDriver(args []string, prefs map[string]interface{}) WebDriver {
 	webDriver := WebDriver{}
 	webDriver.driver.BrowserName = "firefox"
 	webDriver.driver.Args = args
+	webDriver.driver.Prefs = prefs
 	if runtime.GOOS == "windows" {
 		webDriver.driver.WebDriverBinary = "geckodriver.exe"
 	} else {
@@ -170,10 +173,11 @@ func GeckoDriver(args []string) WebDriver {
 	return NewWebDriver(&webDriver)
 }
 
-func EdgeChroniumDriver(args []string) WebDriver {
+func EdgeChroniumDriver(args []string, prefs map[string]interface{}) WebDriver {
 	webDriver := WebDriver{}
 	webDriver.driver.BrowserName = "msedge"
 	webDriver.driver.Args = args
+	webDriver.driver.Prefs = prefs
 	if runtime.GOOS == "windows" {
 		webDriver.driver.WebDriverBinary = "msedgedriver.exe"
 	} else {

@@ -45,7 +45,8 @@ func main() {
 
 func main() {
 	//	webDriver := venomWeb.ChromeDriver([]string{"headless", "ignore-certificate-errors", "ignore-ssl-errors", "proxy-server=localhost:8888"})
-	webDriver := venomWeb.ChromeDriver([]string{})
+	prefs := make(map[string]interface{})
+	webDriver := venomWeb.ChromeDriver([]string{}, prefs)
 	webDriver.LogLevel = "DEBUG"
 	webDriver.Detach = true
 	webDriver.Start()

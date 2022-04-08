@@ -1,9 +1,5 @@
 package common
 
-import (
-	"time"
-)
-
 type Rect struct {
 	X      int `json:"x"`
 	Y      int `json:"y"`
@@ -12,7 +8,6 @@ type Rect struct {
 }
 
 type WebDriverOptions struct {
-	Timeout         time.Duration
 	Debug           bool
 	Command         string
 	CommandLineArgs []string
@@ -221,5 +216,5 @@ type SubAction struct {
 	X        int    `json:"x,omitempty"`
 	Y        int    `json:"y,omitempty"`
 	Origin   string `json:"origin,omitempty"`
-	Button   int    `json:"button,omitempty"`
+	Button   int    `json:"button"`
 }

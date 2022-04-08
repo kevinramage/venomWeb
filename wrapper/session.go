@@ -21,6 +21,24 @@ func (s Session) DeleteSession() error {
 	return s.api.DeleteSession()
 }
 
+func (s Session) Reset() error {
+
+	// Close alert
+	s.api.AcceptAlert()
+
+	// Delete cookies
+	if err := s.api.DeleteAllCookies(); err != nil {
+		return err
+	}
+
+	// Clean url
+	if err := s.api.Navigate("about:blank"); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 /*
 ----------------------------------------
   Timeouts
@@ -95,6 +113,28 @@ func (s Session) GetWindows() ([]Window, error) {
 	} else {
 		return []Window{}, err
 	}
+}
+
+func (s Session) NextWindow() error {
+	handles, err := s.api.GetWindowHandles()
+	if err == nil {
+		handle, err := s.api.GetWindowHandle()
+		if err == nil {
+			var index = -1
+			for i, val := range handles {
+				if val == handle {
+					index = i
+				}
+			}
+			if index != -1 {
+				newHandle := handles[index%len((handles))]
+				s.api.SwitchWindow(newHandle)
+			} else {
+				err = fmt.Errorf("invalid index")
+			}
+		}
+	}
+	return err
 }
 
 func (s Session) NewWindow(windowType string) (Window, error) {
