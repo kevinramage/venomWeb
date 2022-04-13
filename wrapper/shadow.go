@@ -12,7 +12,7 @@ func (s Shadow) FindElementFromShadowId(selector string, locatorStrategy string)
 	if err == nil {
 		return Element{elementId: eltId, api: s.api}, nil
 	} else {
-		return Element{}, nil
+		return Element{}, err
 	}
 }
 
@@ -25,6 +25,6 @@ func (s Shadow) FindElementsFromShadow(shadowId string, selector string, locator
 		}
 		return elements, nil
 	} else {
-		return []Element{}, nil
+		return []Element{}, err
 	}
 }

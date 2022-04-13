@@ -130,7 +130,7 @@ func (s Session) NextWindow() error {
 				newHandle := handles[index%len((handles))]
 				s.api.SwitchWindow(newHandle)
 			} else {
-				err = fmt.Errorf("invalid index")
+				return fmt.Errorf("invalid index")
 			}
 		}
 	}
@@ -190,7 +190,7 @@ func (s Session) FindElement(selector string, locatorStrategy string) (Element, 
 	if err == nil {
 		return Element{elementId: eltId, api: s.api}, nil
 	} else {
-		return Element{}, nil
+		return Element{}, err
 	}
 }
 
@@ -203,7 +203,7 @@ func (s Session) FindElements(selector string, locatorStrategy string) ([]Elemen
 		}
 		return elements, nil
 	} else {
-		return []Element{}, nil
+		return []Element{}, err
 	}
 }
 
@@ -212,7 +212,7 @@ func (s Session) GetActiveElement() (Element, error) {
 	if err == nil {
 		return Element{elementId: eltId, api: s.api}, nil
 	} else {
-		return Element{}, nil
+		return Element{}, err
 	}
 }
 

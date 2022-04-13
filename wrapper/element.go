@@ -95,7 +95,7 @@ func (elt Element) FindElement(selector string, selectorStrategy string) (Elemen
 	if err == nil {
 		return Element{elementId: eltId, api: elt.api}, nil
 	} else {
-		return Element{}, nil
+		return Element{}, err
 	}
 }
 
@@ -110,7 +110,7 @@ func (elt Element) FindElements(selector string, selectorStrategy string) ([]Ele
 		}
 		return elements, nil
 	} else {
-		return []Element{}, nil
+		return []Element{}, err
 	}
 }
 
@@ -121,7 +121,7 @@ func (elt Element) GetElementShadowRoot() (Element, error) {
 	if err == nil {
 		return Element{elementId: eltId, api: elt.api}, nil
 	} else {
-		return Element{}, nil
+		return Element{}, err
 	}
 }
 
@@ -196,9 +196,9 @@ func (elt Element) Select(text string) (Element, error) {
 	expression := fmt.Sprintf(`./option[normalize-space()="%s"]`, text)
 	newElt, err := elt.FindElement(expression, common.XPATH_SELECTOR)
 	if err == nil {
-		return Element{elementId: newElt.elementId, api: elt.api}, err
+		return Element{elementId: newElt.elementId, api: elt.api}, nil
 	} else {
-		return Element{}, nil
+		return Element{}, err
 	}
 }
 
