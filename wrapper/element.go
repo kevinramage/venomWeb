@@ -27,7 +27,7 @@ func (elt Element) DoubleClick() error {
 	rect, err := elt.api.GetElementRect(elt.elementId)
 	if err == nil {
 		x := rect.X + rect.Width/2
-		y := rect.Y + rect.Height/2
+		y := rect.Y + rect.Height/2 + 70
 		actions := createDoubleClickActions(x, y)
 		return elt.api.PerformActions(actions)
 
