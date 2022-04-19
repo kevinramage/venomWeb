@@ -1,7 +1,6 @@
 package venomWeb
 
 import (
-	"errors"
 	"runtime"
 	"strconv"
 	"strings"
@@ -10,6 +9,7 @@ import (
 	"github.com/kevinramage/venomWeb/api"
 	"github.com/kevinramage/venomWeb/common"
 	"github.com/kevinramage/venomWeb/service"
+	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -43,20 +43,29 @@ func DefineLogLevel(logLevel string) {
 ///TODO Manage error
 ///TODO SetTimeout
 func (w *WebDriver) Start() error {
-	DefineLogLevel(w.LogLevel)
 	log.Info("WebDriver.Start")
+	DefineLogLevel(w.LogLevel)
 	if !w.isStarted {
 		w.service = service.New()
 		err := w.service.Start(w.driver.Command, w.LogLevel, w.driver.CommandLineArgs)
 		if err != nil {
+			err = errors.Wrapf(err, "an error occured during session starting")
+			log.Error(err)
 			return err
 		}
 		w.isStarted = true
 		err = w.service.Wait(w.Timeout, w.driver.Url)
+		if err != nil {
+			err = errors.Wrapf(err, "an error occured during session starting")
+			log.Error(err)
+		}
 		return err
 
 	} else {
-		return errors.New("a web driver is already running")
+		err := errors.New("a web driver is already running")
+		err = errors.Wrapf(err, "an error occured during session starting")
+		log.Error(err)
+		return err
 	}
 }
 
@@ -64,24 +73,35 @@ func (w *WebDriver) Start() error {
 ///TODO Close session when NewPage not called
 ///TODO Manage error
 func (w *WebDriver) Stop() error {
-	log.Info("WewDriver.Stop")
+	log.Info("WebDriver.Stop")
 	err := w.api.DeleteSession()
 	if err != nil {
+		err = errors.Wrapf(err, "an error occured during delete session action")
+		log.Error(err)
 		return err
 	}
 	err = w.service.Stop()
+	if err != nil {
+		err = errors.Wrapf(err, "an error occured during service stopping")
+		log.Error(err)
+	}
 	return err
 }
 
 func (w *WebDriver) Status() (common.DriverStatus, error) {
-	log.Info("WewDriver.Status")
-	return w.api.CheckStatus()
+	log.Info("WebDriver.Status")
+	status, err := w.api.CheckStatus()
+	if err != nil {
+		err = errors.Wrapf(err, "an error occured during check status action")
+		log.Error(err)
+	}
+	return status, err
 }
 
 ///TODO New page called before start
 ///TODO Manage error
 func (w *WebDriver) NewSession() (Session, error) {
-	log.Info("WewDriver.NewSession")
+	log.Info("WebDriver.NewSession")
 
 	// Headless & detach & proxy
 	w.defineHeadless()
@@ -89,10 +109,16 @@ func (w *WebDriver) NewSession() (Session, error) {
 
 	// Create session
 	_, err := w.api.CreateSession(w.driver.BrowserName, w.driver.Args, w.driver.Prefs, w.Detach)
+	if err != nil {
+		err = errors.Wrapf(err, "an error occured during create session action")
+		log.Error(err)
+	}
+
 	return Session{w.api}, err
 }
 
 func (w *WebDriver) defineHeadless() {
+	log.Info("WebDriver.DefineHeadless")
 	if w.Headless {
 		if w.driver.BrowserName == "firefox" {
 			if !common.SliceContains(w.driver.Args, "-headless") {
@@ -107,6 +133,7 @@ func (w *WebDriver) defineHeadless() {
 }
 
 func (w *WebDriver) defineProxy() {
+	log.Info("WebDriver.DefineProxy")
 	if w.Proxy != "" {
 		if w.driver.BrowserName == "firefox" {
 			proxy_values := strings.Split(w.Proxy, ":")
@@ -144,6 +171,7 @@ func NewWebDriver(webDriver *WebDriver) WebDriver {
 }
 
 func ChromeDriver(args []string, prefs map[string]interface{}) WebDriver {
+	log.Info("ChromeDriver.New")
 	webDriver := WebDriver{}
 	webDriver.driver.BrowserName = "chrome"
 	webDriver.driver.Args = args
@@ -159,6 +187,7 @@ func ChromeDriver(args []string, prefs map[string]interface{}) WebDriver {
 }
 
 func GeckoDriver(args []string, prefs map[string]interface{}) WebDriver {
+	log.Info("GeckoDriver.New")
 	webDriver := WebDriver{}
 	webDriver.driver.BrowserName = "firefox"
 	webDriver.driver.Args = args
@@ -174,6 +203,7 @@ func GeckoDriver(args []string, prefs map[string]interface{}) WebDriver {
 }
 
 func EdgeChroniumDriver(args []string, prefs map[string]interface{}) WebDriver {
+	log.Info("EdgeChroniumDriver.New")
 	webDriver := WebDriver{}
 	webDriver.driver.BrowserName = "msedge"
 	webDriver.driver.Args = args
@@ -189,6 +219,7 @@ func EdgeChroniumDriver(args []string, prefs map[string]interface{}) WebDriver {
 }
 
 func OperaDriver(args []string) WebDriver {
+	log.Info("OperaDriver.New")
 	webDriver := WebDriver{}
 	webDriver.driver.BrowserName = "opera"
 	webDriver.driver.Args = args
