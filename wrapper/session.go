@@ -3,6 +3,7 @@ package venomWeb
 import (
 	"fmt"
 	"io/ioutil"
+	"time"
 
 	"github.com/kevinramage/venomWeb/api"
 	"github.com/kevinramage/venomWeb/common"
@@ -370,6 +371,40 @@ func (s Session) GetActiveElement() (Element, error) {
 		log.Error(err)
 		return Element{}, err
 	}
+}
+
+// SyncElement allow to wait the web element creation
+// Return nil if operation succeed, return an error else
+func (s Session) SyncElement(selector string, locatorStrategy string, timeout int) error {
+	log.Info("Session.SyncElement")
+	now := time.Now()
+	_, err := s.api.FindElement(selector, locatorStrategy)
+	for err != nil {
+		time.Sleep(250 * time.Millisecond)
+		_, err = s.api.FindElement(selector, locatorStrategy)
+		duration := time.Until(now).Milliseconds()
+		if duration >= int64(timeout) {
+			return fmt.Errorf("impossible to synchronize element due to a timeout")
+		}
+	}
+	return nil
+}
+
+// SyncElementAbsence allow to wait the web element deletion
+// Return nil if operation succeed, return an error else
+func (s Session) SyncElementAbsence(selector string, locatorStrategy string, timeout int) error {
+	log.Info("Session.SyncElementAbsence")
+	now := time.Now()
+	_, err := s.api.FindElement(selector, locatorStrategy)
+	for err == nil {
+		time.Sleep(250 * time.Millisecond)
+		_, err = s.api.FindElement(selector, locatorStrategy)
+		duration := time.Until(now).Milliseconds()
+		if duration >= int64(timeout) {
+			return fmt.Errorf("impossible to synchronize element absence due to a timeout")
+		}
+	}
+	return nil
 }
 
 /*

@@ -1,9 +1,6 @@
 package main
 
 import (
-	"time"
-
-	"github.com/kevinramage/venomWeb/common"
 	venomWeb "github.com/kevinramage/venomWeb/wrapper"
 )
 
@@ -51,10 +48,12 @@ func main() {
 	webDriver.Detach = true
 	webDriver.Start()
 	page, _ := webDriver.NewSession()
-	page.Navigate("https://doubleclicktest.com/")
-	elt, _ := page.FindElement("#textarea", common.CSS_SELECTOR)
-	elt.DoubleClick()
-	time.Sleep(1 * time.Second)
+	page.Navigate("https://web.dev/browser-level-image-lazy-loading/")
+
+	//page.Navigate("https://doubleclicktest.com/")
+	//elt, _ := page.FindElement("#textarea", common.CSS_SELECTOR)
+	//elt.DoubleClick()
+	//time.Sleep(1 * time.Second)
 	/*
 		//page.Navigate("https://github.com/")
 		page.Navigate("https://www.w3schools.com/html/tryit.asp?filename=tryhtml_id_css")
