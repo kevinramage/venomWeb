@@ -22,6 +22,7 @@ type Element struct {
 // "invalid element id" error occured when element not found
 func (elt Element) Click() error {
 	log.Info("Element.Click")
+
 	err := elt.api.Click(elt.elementId)
 	if err != nil {
 		err = errors.Wrapf(err, "an error occured during click action")
