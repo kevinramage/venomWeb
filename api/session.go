@@ -5,7 +5,6 @@ import (
 
 	"github.com/kevinramage/venomWeb/common"
 	"github.com/mitchellh/mapstructure"
-	log "github.com/sirupsen/logrus"
 )
 
 type CreateSessionResponse struct {
@@ -97,17 +96,21 @@ func (api *WebDriverApi) CreateSession(browserName string, args []string, prefs 
 	}
 
 	// Send request
-	//resp, err := ProceedPostRequest(*api, "session", requestBody)
 	if err != nil {
-		log.Error("An error during the session creation: ", err)
 		return CreateSessionResponse{}, err
+	}
+
+	// Manage error
+	responseError := ElementErrorResponse{}
+	err = mapstructure.Decode(resp, &responseError)
+	if err == nil && responseError.Value.Message != "" {
+		return CreateSessionResponse{}, fmt.Errorf(responseError.Value.Message)
 	}
 
 	// Manage response
 	responseBody := CreateSessionResponse{}
 	err = mapstructure.Decode(resp, &responseBody)
 	if err != nil {
-		log.Error("An error occured during the response decoding: ", err)
 		return CreateSessionResponse{}, err
 	}
 	api.SessionId = responseBody.SessionId
@@ -116,11 +119,13 @@ func (api *WebDriverApi) CreateSession(browserName string, args []string, prefs 
 	}
 
 	// Display debug informations
-	version := ""
-	if responseBody.Value.BrowserName == "chrome" {
-		version = responseBody.Value.Chrome.ChromeDriverVersion
-	}
-	log.Info(fmt.Sprintf("Session created %s version: %s - Load strategy: %s\n", responseBody.Value.BrowserName, version, responseBody.Value.PageLoadStrategy))
+	/*
+		version := ""
+		if responseBody.Value.BrowserName == "chrome" {
+			version = responseBody.Value.Chrome.ChromeDriverVersion
+		}
+		log.Info(fmt.Sprintf("Session created %s version: %s - Load strategy: %s\n", responseBody.Value.BrowserName, version, responseBody.Value.PageLoadStrategy))
+	*/
 
 	return responseBody, nil
 }
@@ -128,9 +133,21 @@ func (api *WebDriverApi) CreateSession(browserName string, args []string, prefs 
 // https://w3c.github.io/webdriver/#delete-session
 func (api WebDriverApi) DeleteSession() error {
 
+	// Security
+	if api.SessionId == "" {
+		return fmt.Errorf("invalid session id")
+	}
+
 	// Send request
 	path := fmt.Sprintf("session/%s", api.SessionId)
-	_, err := ProceedDeleteRequest(api, path)
+	resp, err := ProceedDeleteRequest(api, path)
+
+	// Manage error
+	responseError := ElementErrorResponse{}
+	err = mapstructure.Decode(resp, &responseError)
+	if err == nil && responseError.Value.Message != "" {
+		return fmt.Errorf(responseError.Value.Message)
+	}
 
 	return err
 }
@@ -141,14 +158,20 @@ func (api WebDriverApi) CheckStatus() (common.DriverStatus, error) {
 	// Send request
 	resp, err := ProceedGetRequest(api, "status")
 	if err != nil {
-		log.Error("An error during the session creation: ", err)
 		return common.DriverStatus{}, err
 	}
 
+	// Manage error
+	responseError := ElementErrorResponse{}
+	err = mapstructure.Decode(resp, &responseError)
+	if err == nil && responseError.Value.Message != "" {
+		return common.DriverStatus{}, fmt.Errorf(responseError.Value.Message)
+	}
+
+	// Manage response
 	responseBody := common.DriverStatus{}
 	err = mapstructure.Decode(resp, &responseBody)
 	if err != nil {
-		log.Error("An error occured during the response decoding: ", err)
 		return common.DriverStatus{}, err
 	}
 

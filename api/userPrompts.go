@@ -4,16 +4,19 @@ import (
 	"fmt"
 
 	"github.com/mitchellh/mapstructure"
-	log "github.com/sirupsen/logrus"
 )
 
 // https://w3c.github.io/webdriver/#dismiss-alert
 func (api WebDriverApi) DismissAlert() error {
 
+	// Security
+	if api.SessionId == "" {
+		return fmt.Errorf("invalid session id")
+	}
+
 	// Send request
 	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/alert/dismiss", api.SessionId), nil)
 	if err != nil {
-		log.Error("An error occured during dismiss alert request: ", err)
 		return err
 	}
 
@@ -21,8 +24,7 @@ func (api WebDriverApi) DismissAlert() error {
 	responseError := ElementErrorResponse{}
 	err = mapstructure.Decode(resp, &responseError)
 	if err == nil && responseError.Value.Message != "" {
-		log.Error("Impossible to dismiss alert: ", err)
-		return err
+		return fmt.Errorf(responseError.Value.Message)
 	}
 
 	return nil
@@ -31,10 +33,14 @@ func (api WebDriverApi) DismissAlert() error {
 // https://w3c.github.io/webdriver/#accept-alert
 func (api WebDriverApi) AcceptAlert() error {
 
+	// Security
+	if api.SessionId == "" {
+		return fmt.Errorf("invalid session id")
+	}
+
 	// Send request
 	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/alert/accept", api.SessionId), nil)
 	if err != nil {
-		log.Error("An error occured during accept alert request: ", err)
 		return err
 	}
 
@@ -42,8 +48,7 @@ func (api WebDriverApi) AcceptAlert() error {
 	responseError := ElementErrorResponse{}
 	err = mapstructure.Decode(resp, &responseError)
 	if err == nil && responseError.Value.Message != "" {
-		log.Error("Impossible to accept alert: ", err)
-		return err
+		return fmt.Errorf(responseError.Value.Message)
 	}
 
 	return nil
@@ -52,10 +57,14 @@ func (api WebDriverApi) AcceptAlert() error {
 // https://w3c.github.io/webdriver/#get-alert-text
 func (api WebDriverApi) GetAlertText() (string, error) {
 
+	// Security
+	if api.SessionId == "" {
+		return "", fmt.Errorf("invalid session id")
+	}
+
 	// Send request
 	resp, err := ProceedGetRequest(api, fmt.Sprintf("session/%s/alert/text", api.SessionId))
 	if err != nil {
-		log.Error("An error occured during get alert text request: ", err)
 		return "", err
 	}
 
@@ -63,15 +72,13 @@ func (api WebDriverApi) GetAlertText() (string, error) {
 	responseError := ElementErrorResponse{}
 	err = mapstructure.Decode(resp, &responseError)
 	if err == nil && responseError.Value.Message != "" {
-		log.Error("Impossible to get alert text: ", err)
-		return "", err
+		return "", fmt.Errorf(responseError.Value.Message)
 	}
 
 	// Manage response
 	responseBody := StringResponse{}
 	err = mapstructure.Decode(resp, &responseBody)
 	if err != nil {
-		log.Error("An error occured during the response decoding: ", err)
 		return "", err
 	}
 
@@ -80,6 +87,11 @@ func (api WebDriverApi) GetAlertText() (string, error) {
 
 // https://w3c.github.io/webdriver/#send-alert-text
 func (api WebDriverApi) SendAlertText(alertText string) error {
+
+	// Security
+	if api.SessionId == "" {
+		return fmt.Errorf("invalid session id")
+	}
 
 	// Create request body
 	type SendAlertTextBody struct {
@@ -92,7 +104,6 @@ func (api WebDriverApi) SendAlertText(alertText string) error {
 	// Send request
 	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/alert/text", api.SessionId), requestBody)
 	if err != nil {
-		log.Error("An error during url retrieve call: ", err)
 		return err
 	}
 
@@ -100,8 +111,7 @@ func (api WebDriverApi) SendAlertText(alertText string) error {
 	responseError := ElementErrorResponse{}
 	err = mapstructure.Decode(resp, &responseError)
 	if err == nil && responseError.Value.Message != "" {
-		log.Error("Impossible to get current url: ", err)
-		return fmt.Errorf("impossible to get current url")
+		return fmt.Errorf(responseError.Value.Message)
 	}
 
 	return nil

@@ -5,7 +5,6 @@ import (
 
 	"github.com/kevinramage/venomWeb/common"
 	"github.com/mitchellh/mapstructure"
-	log "github.com/sirupsen/logrus"
 )
 
 type PerformActionsRequest struct {
@@ -27,7 +26,6 @@ func (api WebDriverApi) PerformActions(actions []common.Action) error {
 	// Send request
 	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/actions", api.SessionId), request)
 	if err != nil {
-		log.Error("An error occured during perform actions request: ", err)
 		return err
 	}
 
@@ -35,8 +33,7 @@ func (api WebDriverApi) PerformActions(actions []common.Action) error {
 	responseError := ElementErrorResponse{}
 	err = mapstructure.Decode(resp, &responseError)
 	if err == nil && responseError.Value.Message != "" {
-		log.Error("Impossible to perform actions: ", responseError.Value.Message)
-		return fmt.Errorf("impossible to perform actions")
+		return fmt.Errorf(responseError.Value.Message)
 	}
 
 	return nil
@@ -53,7 +50,6 @@ func (api WebDriverApi) ReleaseActions() error {
 	// Send request
 	resp, err := ProceedDeleteRequest(api, fmt.Sprintf("session/%s/actions", api.SessionId))
 	if err != nil {
-		log.Error("An error occured during perform actions request: ", err)
 		return err
 	}
 
@@ -61,8 +57,7 @@ func (api WebDriverApi) ReleaseActions() error {
 	responseError := ElementErrorResponse{}
 	err = mapstructure.Decode(resp, &responseError)
 	if err == nil && responseError.Value.Message != "" {
-		log.Error("Impossible to release actions: ", responseError.Value.Message)
-		return fmt.Errorf("impossible to perform to release actions")
+		return fmt.Errorf(responseError.Value.Message)
 	}
 
 	return nil

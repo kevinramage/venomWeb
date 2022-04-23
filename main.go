@@ -1,8 +1,6 @@
 package main
 
 import (
-	"time"
-
 	"github.com/kevinramage/venomWeb/common"
 	venomWeb "github.com/kevinramage/venomWeb/wrapper"
 )
@@ -47,14 +45,26 @@ func main() {
 	//	webDriver := venomWeb.ChromeDriver([]string{"headless", "ignore-certificate-errors", "ignore-ssl-errors", "proxy-server=localhost:8888"})
 	prefs := make(map[string]interface{})
 	webDriver := venomWeb.ChromeDriver([]string{}, prefs)
-	webDriver.LogLevel = "DEBUG"
+	webDriver.LogLevel = "ERROR"
 	webDriver.Detach = true
 	webDriver.Start()
 	page, _ := webDriver.NewSession()
-	page.Navigate("https://doubleclicktest.com/")
-	elt, _ := page.FindElement("#textarea", common.CSS_SELECTOR)
-	elt.DoubleClick()
-	time.Sleep(1 * time.Second)
+	page.Navigate("https://www.w3schools.com/w3css/w3css_progressbar.asp")
+
+	eltCookie, _ := page.FindElement("#accept-choices", common.CSS_SELECTOR)
+	eltCookie.Click()
+
+	elt, _ := page.FindElement(".w3-button.w3-green", common.CSS_SELECTOR)
+	elt.Click()
+	page.SyncElementText("#demo", common.CSS_SELECTOR, 10000, "100%")
+	//page.SyncElementCSSValue("#myBar", common.CSS_SELECTOR, 20000, "width", "100%")
+
+	webDriver.Stop()
+
+	//page.Navigate("https://doubleclicktest.com/")
+	//elt, _ := page.FindElement("#textarea", common.CSS_SELECTOR)
+	//elt.DoubleClick()
+	//time.Sleep(1 * time.Second)
 	/*
 		//page.Navigate("https://github.com/")
 		page.Navigate("https://www.w3schools.com/html/tryit.asp?filename=tryhtml_id_css")
@@ -68,7 +78,7 @@ func main() {
 		//page.SwitchToIndexFrame(0)
 		page.FindElement("#myHeader", common.CSS_SELECTOR)
 	*/
-	webDriver.Stop()
+	//webDriver.Stop()
 
 	//webDriver.Headless = true
 	//webDriver.Detach = true

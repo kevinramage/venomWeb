@@ -4,17 +4,20 @@ import (
 	"fmt"
 
 	"github.com/mitchellh/mapstructure"
-	log "github.com/sirupsen/logrus"
 )
 
 // https://w3c.github.io/webdriver/#get-page-source
 func (api WebDriverApi) GetPageSource() (string, error) {
 
+	// Security
+	if api.SessionId == "" {
+		return "", fmt.Errorf("invalid session id")
+	}
+
 	// Send request
 	path := fmt.Sprintf("session/%s/source", api.SessionId)
 	resp, err := ProceedGetRequest(api, path)
 	if err != nil {
-		log.Error("An error occured during get page source request")
 		return "", err
 	}
 
@@ -22,15 +25,13 @@ func (api WebDriverApi) GetPageSource() (string, error) {
 	responseError := ElementErrorResponse{}
 	err = mapstructure.Decode(resp, &responseError)
 	if err == nil && responseError.Value.Message != "" {
-		log.Error("Impossible to get page source: ", err)
-		return "", fmt.Errorf("impossible to get page source")
+		return "", fmt.Errorf(responseError.Value.Message)
 	}
 
 	// Manage response
 	responseBody := StringResponse{}
 	err = mapstructure.Decode(resp, &responseBody)
 	if err != nil {
-		log.Error("An error occured during the response decoding: ", err)
 		return "", err
 	}
 
@@ -39,6 +40,11 @@ func (api WebDriverApi) GetPageSource() (string, error) {
 
 // https://w3c.github.io/webdriver/#executing-script
 func (api WebDriverApi) ExecuteScript(script string, args []string) error {
+
+	// Security
+	if api.SessionId == "" {
+		return fmt.Errorf("invalid session id")
+	}
 
 	// Create request
 	type executeScriptRequest struct {
@@ -51,7 +57,6 @@ func (api WebDriverApi) ExecuteScript(script string, args []string) error {
 	path := fmt.Sprintf("session/%s/execute/sync", api.SessionId)
 	resp, err := ProceedPostRequest(api, path, request)
 	if err != nil {
-		log.Error("An error occured during execute script request")
 		return err
 	}
 
@@ -59,8 +64,7 @@ func (api WebDriverApi) ExecuteScript(script string, args []string) error {
 	responseError := ElementErrorResponse{}
 	err = mapstructure.Decode(resp, &responseError)
 	if err == nil && responseError.Value.Message != "" {
-		log.Error("Impossible to execute script: ", err)
-		return fmt.Errorf("impossible to execute script: %s", script)
+		return fmt.Errorf(responseError.Value.Message)
 	}
 
 	return nil
@@ -68,6 +72,11 @@ func (api WebDriverApi) ExecuteScript(script string, args []string) error {
 
 // https://w3c.github.io/webdriver/#execute-async-script
 func (api WebDriverApi) ExecuteAsyncScript(script string, args []string) error {
+
+	// Security
+	if api.SessionId == "" {
+		return fmt.Errorf("invalid session id")
+	}
 
 	// Create request
 	type executeScriptRequest struct {
@@ -80,7 +89,6 @@ func (api WebDriverApi) ExecuteAsyncScript(script string, args []string) error {
 	path := fmt.Sprintf("session/%s/execute/async", api.SessionId)
 	resp, err := ProceedPostRequest(api, path, request)
 	if err != nil {
-		log.Error("An error occured during execute script request: ", err)
 		return err
 	}
 
@@ -88,8 +96,7 @@ func (api WebDriverApi) ExecuteAsyncScript(script string, args []string) error {
 	responseError := ElementErrorResponse{}
 	err = mapstructure.Decode(resp, &responseError)
 	if err == nil && responseError.Value.Message != "" {
-		log.Error("Impossible to execute script: ", err)
-		return fmt.Errorf("impossible to execute script: %s", script)
+		return fmt.Errorf(responseError.Value.Message)
 	}
 
 	return nil
