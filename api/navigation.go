@@ -37,9 +37,9 @@ func (api WebDriverApi) Navigate(url string) error {
 	}
 
 	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
+	responseError := ErrorResponse{}
+	errDecode := mapstructure.Decode(resp, &responseError)
+	if errDecode == nil && responseError.Value.Message != "" {
 		return fmt.Errorf(responseError.Value.Message)
 	}
 

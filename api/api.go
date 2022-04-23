@@ -79,13 +79,13 @@ func ProceedPostRequest(api WebDriverApi, path string, requestBody interface{}) 
 		return nil, errors.Wrapf(err, "an error occured during post request: %s", path)
 	}
 	if resp.StatusCode == 400 {
-		return nil, errors.Wrapf(err, "an error occured during post request: %s - Invalid request", path)
+		return nil, errors.Errorf("an error occured during post request: %s - Invalid request", path)
 	}
 	if resp.StatusCode == 404 {
-		return nil, errors.Wrapf(err, "an error occured during post request: %s - Resource not found", path)
+		return nil, errors.Errorf("an error occured during post request: %s - Resource not found", path)
 	}
 	if resp.StatusCode != 200 {
-		return nil, errors.Wrapf(err, "an error occured during post request: %s - Invalid status code %d", path, resp.StatusCode)
+		return nil, errors.Errorf("an error occured during post request: %s - Invalid status code %d", path, resp.StatusCode)
 	}
 	var bodyJSON interface{}
 	errJSON := json.Unmarshal(body, &bodyJSON)
@@ -128,10 +128,12 @@ func ProceedDeleteRequest(api WebDriverApi, path string) (interface{}, error) {
 	if resp.StatusCode != 200 {
 		return nil, errors.Wrapf(err, "an error occured during delete request: %s - Invalid status code %d", path, resp.StatusCode)
 	}
+
 	var bodyJSON interface{}
 	errJSON := json.Unmarshal(body, &bodyJSON)
 	if errJSON != nil {
 		return nil, errors.Wrapf(err, "an error occured during delete request: %s", path)
 	}
+
 	return bodyJSON, nil
 }

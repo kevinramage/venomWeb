@@ -28,6 +28,14 @@ type ElementErrorResponse struct {
 	} `json:"value"`
 }
 
+type ErrorResponse struct {
+	Value struct {
+		Error      string `json:"error"`
+		Message    string `json:"message"`
+		StackTrace string `json:"stacktrace"`
+	} `json:"value"`
+}
+
 type ElementsResponse struct {
 	SessionId string              `json:"sessionId"`
 	Status    int                 `json:"status"`

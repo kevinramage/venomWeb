@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	venomWeb "github.com/kevinramage/venomWeb/wrapper"
 )
 
@@ -44,11 +46,12 @@ func main() {
 	//	webDriver := venomWeb.ChromeDriver([]string{"headless", "ignore-certificate-errors", "ignore-ssl-errors", "proxy-server=localhost:8888"})
 	prefs := make(map[string]interface{})
 	webDriver := venomWeb.ChromeDriver([]string{}, prefs)
-	webDriver.LogLevel = "DEBUG"
+	webDriver.LogLevel = "ERROR"
 	webDriver.Detach = true
 	webDriver.Start()
 	page, _ := webDriver.NewSession()
-	page.Navigate("https://web.dev/browser-level-image-lazy-loading/")
+	err := page.Navigate("test")
+	fmt.Printf("err: %v\n", err)
 
 	//page.Navigate("https://doubleclicktest.com/")
 	//elt, _ := page.FindElement("#textarea", common.CSS_SELECTOR)
@@ -67,7 +70,7 @@ func main() {
 		//page.SwitchToIndexFrame(0)
 		page.FindElement("#myHeader", common.CSS_SELECTOR)
 	*/
-	webDriver.Stop()
+	//webDriver.Stop()
 
 	//webDriver.Headless = true
 	//webDriver.Detach = true
