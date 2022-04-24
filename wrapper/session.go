@@ -150,6 +150,7 @@ func (s Session) Refresh() error {
 
 func (s Session) GetTitle() (string, error) {
 	log.Info("Session.GetTitle")
+
 	title, err := s.api.GetTitle()
 	if err != nil {
 		err = errors.Wrapf(err, "an error occured during get title action")

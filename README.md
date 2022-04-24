@@ -93,5 +93,8 @@ https://github.com/jlipps/simple-wd-spec#perform-actions
 
 ## Tests
 
+Alert:
+https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_alert
+
 Sync:
 https://www.w3schools.com/w3css/w3css_progressbar.asp

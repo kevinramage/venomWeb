@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
 
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
@@ -13,7 +14,9 @@ import (
 
 func ProceedGetRequest(api WebDriverApi, path string) (interface{}, error) {
 	log.Debug(fmt.Sprintf("Api.GetResponse: %s", path))
-	resp, err := api.Client.Get(fmt.Sprintf("%s/%s", api.Url, path))
+	client := api.Client
+	client.Timeout = 60 * time.Second
+	resp, err := client.Get(fmt.Sprintf("%s/%s", api.Url, path))
 	if err != nil {
 		return nil, errors.Wrapf(err, "an error occured during get request: %s", path)
 	}
@@ -31,15 +34,17 @@ func ProceedGetRequest(api WebDriverApi, path string) (interface{}, error) {
 	if err != nil {
 		return nil, errors.Wrapf(err, "an error occured during get request: %s", path)
 	}
+
 	if resp.StatusCode == 400 {
-		return nil, errors.Wrapf(err, "an error occured during get request: %s - Invalid request", path)
+		return nil, fmt.Errorf("an error occured during get request: %s - Invalid request", path)
 	}
 	if resp.StatusCode == 404 {
-		return nil, errors.Wrapf(err, "an error occured during get request: %s - Resource not found", path)
+		return nil, fmt.Errorf("an error occured during get request: %s - Resource not found", path)
 	}
 	if resp.StatusCode != 200 {
-		return nil, errors.Wrapf(err, "an error occured during get request: %s - Invalid status code %d", path, resp.StatusCode)
+		return nil, fmt.Errorf("an error occured during get request: %s - Invalid status code %d", path, resp.StatusCode)
 	}
+
 	var bodyJSON interface{}
 	errJSON := json.Unmarshal(body, &bodyJSON)
 	if errJSON != nil {
@@ -60,7 +65,9 @@ func ProceedPostRequest(api WebDriverApi, path string, requestBody interface{}) 
 		reqBodyJSON = []byte("{}")
 	}
 	reader := bytes.NewReader(reqBodyJSON)
-	resp, err := api.Client.Post(fmt.Sprintf("%s/%s", api.Url, path), "application/json", reader)
+	client := api.Client
+	client.Timeout = 60 * time.Second
+	resp, err := client.Post(fmt.Sprintf("%s/%s", api.Url, path), "application/json", reader)
 	if err != nil {
 		return nil, errors.Wrapf(err, "an error occured during post request: %s", path)
 	}
@@ -79,13 +86,13 @@ func ProceedPostRequest(api WebDriverApi, path string, requestBody interface{}) 
 		return nil, errors.Wrapf(err, "an error occured during post request: %s", path)
 	}
 	if resp.StatusCode == 400 {
-		return nil, errors.Errorf("an error occured during post request: %s - Invalid request", path)
+		return nil, fmt.Errorf("an error occured during post request: %s - Invalid request", path)
 	}
 	if resp.StatusCode == 404 {
-		return nil, errors.Errorf("an error occured during post request: %s - Resource not found", path)
+		return nil, fmt.Errorf("an error occured during post request: %s - Resource not found", path)
 	}
 	if resp.StatusCode != 200 {
-		return nil, errors.Errorf("an error occured during post request: %s - Invalid status code %d", path, resp.StatusCode)
+		return nil, fmt.Errorf("an error occured during post request: %s - Invalid status code %d", path, resp.StatusCode)
 	}
 	var bodyJSON interface{}
 	errJSON := json.Unmarshal(body, &bodyJSON)
@@ -101,7 +108,9 @@ func ProceedDeleteRequest(api WebDriverApi, path string) (interface{}, error) {
 	if err != nil {
 		return nil, errors.Wrapf(err, "an error occured during delete request: %s", path)
 	}
-	resp, err := api.Client.Do(request)
+	client := api.Client
+	client.Timeout = 60 * time.Second
+	resp, err := client.Do(request)
 	if err != nil {
 		return nil, errors.Wrapf(err, "an error occured during delete request: %s", path)
 	}
@@ -120,13 +129,13 @@ func ProceedDeleteRequest(api WebDriverApi, path string) (interface{}, error) {
 		return nil, errors.Wrapf(err, "an error occured during delete request: %s", path)
 	}
 	if resp.StatusCode == 400 {
-		return nil, errors.Wrapf(err, "an error occured during delete request: %s - Invalid request", path)
+		return nil, fmt.Errorf("an error occured during delete request: %s - Invalid request", path)
 	}
 	if resp.StatusCode == 404 {
-		return nil, errors.Wrapf(err, "an error occured during delete request: %s - Resource not found", path)
+		return nil, fmt.Errorf("an error occured during delete request: %s - Resource not found", path)
 	}
 	if resp.StatusCode != 200 {
-		return nil, errors.Wrapf(err, "an error occured during delete request: %s - Invalid status code %d", path, resp.StatusCode)
+		return nil, fmt.Errorf("an error occured during delete request: %s - Invalid status code %d", path, resp.StatusCode)
 	}
 
 	var bodyJSON interface{}

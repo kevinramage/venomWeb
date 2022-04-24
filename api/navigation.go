@@ -9,9 +9,7 @@ import (
 type GetTitleResponse struct {
 	SessionId string `json:"sessionId"`
 	Status    int    `json:"status"`
-	Value     struct {
-		Title string `json:"title"`
-	} `json:"value"`
+	Value     string `json:"value"`
 }
 
 // https://w3c.github.io/webdriver/#navigate-to
@@ -164,7 +162,7 @@ func (api WebDriverApi) GetTitle() (string, error) {
 	}
 
 	// Manage error
-	responseError := ElementErrorResponse{}
+	responseError := ErrorResponse{}
 	err = mapstructure.Decode(resp, &responseError)
 	if err == nil && responseError.Value.Message != "" {
 		return "", fmt.Errorf(responseError.Value.Message)
@@ -177,5 +175,5 @@ func (api WebDriverApi) GetTitle() (string, error) {
 		return "", err
 	}
 
-	return responseBody.Value.Title, nil
+	return responseBody.Value, nil
 }
