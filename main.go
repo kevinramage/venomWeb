@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	venomWeb "github.com/kevinramage/venomWeb/wrapper"
 )
@@ -49,6 +50,8 @@ func main() {
 	webDriver.LogLevel = "DEBUG"
 	webDriver.Detach = true
 	err := webDriver.Start()
+	time.Sleep(10 * time.Second)
+	webDriver.Stop()
 	fmt.Printf("err: %v\n", err)
 	/*
 		page, _ := webDriver.NewSession()

@@ -74,13 +74,16 @@ func (w *WebDriver) Start() error {
 ///TODO Manage error
 func (w *WebDriver) Stop() error {
 	log.Info("WebDriver.Stop")
-	err := w.api.DeleteSession()
-	if err != nil {
-		err = errors.Wrapf(err, "an error occured during delete session action")
-		log.Error(err)
-		return err
+
+	if w.api.SessionId != "" {
+		err := w.api.DeleteSession()
+		if err != nil {
+			err = errors.Wrapf(err, "an error occured during delete session action")
+			log.Error(err)
+			return err
+		}
 	}
-	err = w.service.Stop()
+	err := w.service.Stop()
 	if err != nil {
 		err = errors.Wrapf(err, "an error occured during service stopping")
 		log.Error(err)

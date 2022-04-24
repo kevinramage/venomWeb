@@ -133,11 +133,6 @@ func (api *WebDriverApi) CreateSession(browserName string, args []string, prefs 
 // https://w3c.github.io/webdriver/#delete-session
 func (api WebDriverApi) DeleteSession() error {
 
-	// Security
-	if api.SessionId == "" {
-		return fmt.Errorf("invalid session id")
-	}
-
 	// Send request
 	path := fmt.Sprintf("session/%s", api.SessionId)
 	resp, err := ProceedDeleteRequest(api, path)

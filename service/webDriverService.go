@@ -86,8 +86,12 @@ func (s WebDriverService) Stop() error {
 	if os.Getenv("GO_TEST") != "true" {
 		log.Debug("WebDriverService.Stop")
 		if s.Command != nil {
-			err := s.Command.Process.Kill()
-			return err
+			if s.Command.ProcessState != nil {
+				if !s.Command.ProcessState.Exited() {
+					err := s.Command.Process.Kill()
+					return err
+				}
+			}
 		}
 	}
 	return nil
