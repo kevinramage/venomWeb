@@ -11,6 +11,7 @@ type WebDriverOptions struct {
 	Debug           bool
 	Command         string
 	CommandLineArgs []string
+	CommandPort     string
 	Args            []string
 	Prefs           map[string]interface{}
 	WebDriverBinary string

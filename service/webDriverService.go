@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 	"fmt"
+	"net"
 	"net/http"
 	"os"
 	"os/exec"
@@ -20,20 +21,34 @@ func New() WebDriverService {
 	return s
 }
 
-func (s *WebDriverService) Start(command string, logLevel string, args []string) error {
+func (s *WebDriverService) Start(command string, port string, logLevel string, args []string) error {
 	log.Debug("WebDriverService.Start")
 	if os.Getenv("GO_TEST") != "true" {
-		s.Command = exec.Command(command)
-		s.Command.Args = args
-		if logLevel == "DEBUG" {
-			s.Command.Stdout = os.Stdout
-			s.Command.Stderr = os.Stderr
+
+		// Check port avaibility
+		address := net.JoinHostPort("127.0.0.1", port)
+		l, err := net.DialTimeout("tcp", address, time.Second*1)
+		if err == nil {
+			l.Close()
+			return fmt.Errorf("port %s not available", port)
+
+		} else {
+
+			// Prepare command
+			s.Command = exec.Command(command)
+			s.Command.Args = args
+			if logLevel == "DEBUG" {
+				s.Command.Stdout = os.Stdout
+				s.Command.Stderr = os.Stderr
+			}
+
+			// Execute command
+			err = s.Command.Start()
+			if err != nil {
+				log.Error("An error occured during web driver starting: ", err)
+			}
+			return err
 		}
-		err := s.Command.Start()
-		if err != nil {
-			log.Error("An error occured during web driver starting: ", err)
-		}
-		return err
 	}
 	return nil
 }
