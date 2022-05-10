@@ -85,20 +85,23 @@ func ProceedPostRequest(api WebDriverApi, path string, requestBody interface{}) 
 	if err != nil {
 		return nil, errors.Wrapf(err, "an error occured during post request: %s", path)
 	}
-	if resp.StatusCode == 400 {
-		return nil, fmt.Errorf("an error occured during post request: %s - Invalid request", path)
-	}
-	if resp.StatusCode == 404 {
-		return nil, fmt.Errorf("an error occured during post request: %s - Resource not found", path)
-	}
-	if resp.StatusCode != 200 {
-		return nil, fmt.Errorf("an error occured during post request: %s - Invalid status code %d", path, resp.StatusCode)
-	}
+
 	var bodyJSON interface{}
 	errJSON := json.Unmarshal(body, &bodyJSON)
 	if errJSON != nil {
 		return nil, errors.Wrapf(err, "an error occured during post request: %s", path)
 	}
+
+	if resp.StatusCode == 400 {
+		return bodyJSON, fmt.Errorf("an error occured during post request: %s - Invalid request", path)
+	}
+	if resp.StatusCode == 404 {
+		return bodyJSON, fmt.Errorf("an error occured during post request: %s - Resource not found", path)
+	}
+	if resp.StatusCode != 200 {
+		return bodyJSON, fmt.Errorf("an error occured during post request: %s - Invalid status code %d", path, resp.StatusCode)
+	}
+
 	return bodyJSON, nil
 }
 

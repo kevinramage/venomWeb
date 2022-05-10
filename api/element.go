@@ -24,12 +24,6 @@ type ElementErrorResponse struct {
 	SessionId string `json:"sessionId"`
 	Status    int    `json:"status"`
 	Value     struct {
-		Message string `json:"message"`
-	} `json:"value"`
-}
-
-type ErrorResponse struct {
-	Value struct {
 		Error      string `json:"error"`
 		Message    string `json:"message"`
 		StackTrace string `json:"stacktrace"`
@@ -79,21 +73,25 @@ func (api WebDriverApi) FindElement(selector string, selectorType string) (strin
 	}
 
 	// Send request
-	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/element", api.SessionId), request)
-	if err != nil {
-		return "", err
+	resp, errResp := ProceedPostRequest(api, fmt.Sprintf("session/%s/element", api.SessionId), request)
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return "", fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return "", fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return "", errResp
 	}
 
 	// Manage response
 	responseBody := ElementResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return "", err
 	}
@@ -120,21 +118,25 @@ func (api WebDriverApi) FindElements(selector string, selectorType string) ([]st
 	}
 
 	// Send request
-	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/elements", api.SessionId), request)
-	if err != nil {
-		return []string{}, err
+	resp, errResp := ProceedPostRequest(api, fmt.Sprintf("session/%s/elements", api.SessionId), request)
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return []string{}, fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return []string{}, fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return []string{}, errResp
 	}
 
 	// Manage response
 	responseBody := ElementsResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return []string{}, err
 	}
@@ -164,21 +166,25 @@ func (api WebDriverApi) FindElementFromElement(elementId string, selector string
 	}
 
 	// Send request
-	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/element/%s/element", api.SessionId, elementId), request)
-	if err != nil {
-		return "", err
+	resp, errResp := ProceedPostRequest(api, fmt.Sprintf("session/%s/element/%s/element", api.SessionId, elementId), request)
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return "", fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return "", fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return "", errResp
 	}
 
 	// Manage response
 	responseBody := ElementResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return "", err
 	}
@@ -205,21 +211,25 @@ func (api WebDriverApi) FindElementsFromElement(elementId string, selector strin
 	}
 
 	// Send request
-	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/element/%s/elements", api.SessionId, elementId), request)
-	if err != nil {
-		return []string{}, err
+	resp, errResp := ProceedPostRequest(api, fmt.Sprintf("session/%s/element/%s/elements", api.SessionId, elementId), request)
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return []string{}, fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return []string{}, fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return []string{}, errResp
 	}
 
 	// Manage response
 	responseBody := ElementsResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return []string{}, err
 	}
@@ -249,21 +259,25 @@ func (api WebDriverApi) FindElementFromShadow(shadowId string, selector string, 
 	}
 
 	// Send request
-	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/shadow/%s/element", api.SessionId, shadowId), request)
-	if err != nil {
-		return "", err
+	resp, errResp := ProceedPostRequest(api, fmt.Sprintf("session/%s/shadow/%s/element", api.SessionId, shadowId), request)
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return "", fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return "", fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return "", errResp
 	}
 
 	// Manage response
 	responseBody := ElementResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return "", err
 	}
@@ -290,21 +304,25 @@ func (api WebDriverApi) FindElementsFromShadow(shadowId string, selector string,
 	}
 
 	// Send request
-	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/shadow/%s/elements", api.SessionId, shadowId), request)
-	if err != nil {
-		return []string{}, err
+	resp, errResp := ProceedPostRequest(api, fmt.Sprintf("session/%s/shadow/%s/elements", api.SessionId, shadowId), request)
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return []string{}, fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return []string{}, fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return []string{}, errResp
 	}
 
 	// Manage response
 	responseBody := ElementsResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return []string{}, err
 	}
@@ -328,21 +346,25 @@ func (api WebDriverApi) GetActiveElement() (string, error) {
 	}
 
 	// Send request
-	resp, err := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/active", api.SessionId))
-	if err != nil {
-		return "", err
+	resp, errResp := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/active", api.SessionId))
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return "", fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return "", fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return "", errResp
 	}
 
 	// Manage response
 	responseBody := ElementResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return "", err
 	}
@@ -363,21 +385,25 @@ func (api WebDriverApi) GetElementShadowRoot(elementId string) (string, error) {
 	}
 
 	// Send request
-	resp, err := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/%s/shadow", api.SessionId, elementId))
-	if err != nil {
-		return "", err
+	resp, errResp := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/%s/shadow", api.SessionId, elementId))
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return "", fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return "", fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return "", errResp
 	}
 
 	// Manage response
 	responseBody := StringResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return "", err
 	}
@@ -394,21 +420,25 @@ func (api WebDriverApi) IsElementSelected(elementId string) (bool, error) {
 	}
 
 	// Send request
-	resp, err := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/%s/selected", api.SessionId, elementId))
-	if err != nil {
-		return false, err
+	resp, errResp := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/%s/selected", api.SessionId, elementId))
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return false, fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return false, fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return false, errResp
 	}
 
 	// Manage response
 	responseBody := BooleanResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return false, err
 	}
@@ -425,21 +455,25 @@ func (api WebDriverApi) GetElementAttribute(elementId string, name string) (stri
 	}
 
 	// Send request
-	resp, err := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/%s/attribute/%s", api.SessionId, elementId, name))
-	if err != nil {
-		return "", err
+	resp, errResp := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/%s/attribute/%s", api.SessionId, elementId, name))
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return "", fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return "", fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return "", errResp
 	}
 
 	// Manage response
 	responseBody := StringResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return "", err
 	}
@@ -456,28 +490,25 @@ func (api WebDriverApi) GetElementProperty(elementId string, name string) (strin
 	}
 
 	// Send request
-	resp, err := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/%s/property/%s", api.SessionId, elementId, name))
-	if err != nil {
-		return "", err
-	}
+	resp, errResp := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/%s/property/%s", api.SessionId, elementId, name))
 
-	// Manage error
+	// Manage functionnal error
 	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return "", fmt.Errorf(responseError.Value.Message)
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return "", fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage element response
-	responseElement := StringResponse{}
-	err = mapstructure.Decode(resp, &responseElement)
-	if err == nil && responseElement.Value != "" {
-		return responseElement.Value, nil
+	// Manage technical error
+	if errResp != nil {
+		return "", errResp
 	}
 
 	// Manage response
 	responseBody := StringResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return "", err
 	}
@@ -494,21 +525,25 @@ func (api WebDriverApi) GetElementCSSValue(elementId string, name string) (strin
 	}
 
 	// Send request
-	resp, err := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/%s/css/%s", api.SessionId, elementId, name))
-	if err != nil {
-		return "", err
+	resp, errResp := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/%s/css/%s", api.SessionId, elementId, name))
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return "", fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return "", fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return "", errResp
 	}
 
 	// Manage response
 	responseBody := StringResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return "", err
 	}
@@ -525,21 +560,25 @@ func (api WebDriverApi) GetElementText(elementId string) (string, error) {
 	}
 
 	// Send request
-	resp, err := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/%s/text", api.SessionId, elementId))
-	if err != nil {
-		return "", err
+	resp, errResp := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/%s/text", api.SessionId, elementId))
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return "", fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return "", fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return "", errResp
 	}
 
 	// Manage response
 	responseBody := StringResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return "", err
 	}
@@ -556,21 +595,25 @@ func (api WebDriverApi) GetElementTagName(elementId string) (string, error) {
 	}
 
 	// Send request
-	resp, err := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/%s/name", api.SessionId, elementId))
-	if err != nil {
-		return "", err
+	resp, errResp := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/%s/name", api.SessionId, elementId))
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return "", fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return "", fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return "", errResp
 	}
 
 	// Manage response
 	responseBody := StringResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return "", err
 	}
@@ -587,21 +630,25 @@ func (api WebDriverApi) GetElementRect(elementId string) (common.Rect, error) {
 	}
 
 	// Send request
-	resp, err := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/%s/rect", api.SessionId, elementId))
-	if err != nil {
-		return common.Rect{}, err
+	resp, errResp := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/%s/rect", api.SessionId, elementId))
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return common.Rect{}, fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return common.Rect{}, fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return common.Rect{}, errResp
 	}
 
 	// Manage response
 	responseBody := RectResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return common.Rect{}, err
 	}
@@ -618,21 +665,25 @@ func (api WebDriverApi) IsElementEnabled(elementId string) (bool, error) {
 	}
 
 	// Send request
-	resp, err := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/%s/enabled", api.SessionId, elementId))
-	if err != nil {
-		return false, err
+	resp, errResp := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/%s/enabled", api.SessionId, elementId))
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return false, fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return false, fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return false, errResp
 	}
 
 	// Manage response
 	responseBody := BooleanResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return false, err
 	}
@@ -649,21 +700,25 @@ func (api WebDriverApi) GetComputedRole(elementId string) (string, error) {
 	}
 
 	// Send request
-	resp, err := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/%s/computedrole", api.SessionId, elementId))
-	if err != nil {
-		return "", err
+	resp, errResp := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/%s/computedrole", api.SessionId, elementId))
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return "", fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return "", fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return "", errResp
 	}
 
 	// Manage response
 	responseBody := StringResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return "", err
 	}
@@ -680,21 +735,25 @@ func (api WebDriverApi) GetComputedLabel(elementId string) (string, error) {
 	}
 
 	// Send request
-	resp, err := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/%s/computedlabel", api.SessionId, elementId))
-	if err != nil {
-		return "", err
+	resp, errResp := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/%s/computedlabel", api.SessionId, elementId))
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return "", fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return "", fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return "", errResp
 	}
 
 	// Manage response
 	responseBody := StringResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return "", err
 	}
@@ -714,19 +773,19 @@ func (api WebDriverApi) Click(elementId string) error {
 	}
 
 	// Send request
-	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/element/%s/click", api.SessionId, elementId), nil)
-	if err != nil {
-		return err
-	}
+	resp, errResp := ProceedPostRequest(api, fmt.Sprintf("session/%s/element/%s/click", api.SessionId, elementId), nil)
 
-	// Manage error
+	// Manage functionnal error
 	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return fmt.Errorf(responseError.Value.Message)
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	return nil
+	// Manage technical error
+	return errResp
 }
 
 // https://w3c.github.io/webdriver/#element-clear
@@ -738,19 +797,19 @@ func (api WebDriverApi) Clear(elementId string) error {
 	}
 
 	// Send request
-	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/element/%s/clear", api.SessionId, elementId), nil)
-	if err != nil {
-		return err
-	}
+	resp, errResp := ProceedPostRequest(api, fmt.Sprintf("session/%s/element/%s/clear", api.SessionId, elementId), nil)
 
-	// Manage error
+	// Manage functionnal error
 	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return fmt.Errorf(responseError.Value.Message)
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	return nil
+	// Manage technical error
+	return errResp
 }
 
 // https://w3c.github.io/webdriver/#element-send-keys
@@ -767,17 +826,17 @@ func (api WebDriverApi) SendKeys(elementId string, text string) error {
 	}
 
 	// Send request
-	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/element/%s/value", api.SessionId, elementId), request)
-	if err != nil {
-		return err
-	}
+	resp, errResp := ProceedPostRequest(api, fmt.Sprintf("session/%s/element/%s/value", api.SessionId, elementId), request)
 
-	// Manage error
+	// Manage functionnal error
 	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return fmt.Errorf(responseError.Value.Message)
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	return nil
+	// Manage technical error
+	return errResp
 }

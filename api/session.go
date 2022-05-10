@@ -135,16 +135,19 @@ func (api WebDriverApi) DeleteSession() error {
 
 	// Send request
 	path := fmt.Sprintf("session/%s", api.SessionId)
-	resp, err := ProceedDeleteRequest(api, path)
+	resp, errResp := ProceedDeleteRequest(api, path)
 
-	// Manage error
+	// Manage functionnal error
 	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return fmt.Errorf(responseError.Value.Message)
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	return err
+	// Manage technical error
+	return errResp
 }
 
 // https://w3c.github.io/webdriver/#status

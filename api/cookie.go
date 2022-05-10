@@ -23,21 +23,25 @@ func (api WebDriverApi) GetAllCookies() ([]string, error) {
 
 	// Send request
 	path := fmt.Sprintf("session/%s/cookie", api.SessionId)
-	resp, err := ProceedGetRequest(api, path)
-	if err != nil {
-		return []string{}, err
+	resp, errResp := ProceedGetRequest(api, path)
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return []string{}, fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return []string{}, fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return []string{}, errResp
 	}
 
 	// Manage response
 	responseBody := GetAllCookiesResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return []string{}, err
 	}
@@ -55,21 +59,25 @@ func (api WebDriverApi) GetNamedCookie(cookieName string) (string, error) {
 
 	// Send request
 	path := fmt.Sprintf("session/%s/cookie/%s", api.SessionId, cookieName)
-	resp, err := ProceedGetRequest(api, path)
-	if err != nil {
-		return "", err
+	resp, errResp := ProceedGetRequest(api, path)
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return "", fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return "", fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return "", errResp
 	}
 
 	// Manage response
 	responseBody := StringResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return "", err
 	}
@@ -93,19 +101,19 @@ func (api WebDriverApi) AddCookie(cookie common.Cookie) error {
 
 	// Send request
 	path := fmt.Sprintf("session/%s/cookie", api.SessionId)
-	resp, err := ProceedPostRequest(api, path, addCookieRequest)
-	if err != nil {
-		return err
-	}
+	resp, errResp := ProceedPostRequest(api, path, addCookieRequest)
 
-	// Manage error
+	// Manage functionnal error
 	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return fmt.Errorf(responseError.Value.Message)
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	return nil
+	// Manage technical error
+	return errResp
 }
 
 // https://w3c.github.io/webdriver/#delete-cookie
@@ -118,19 +126,19 @@ func (api WebDriverApi) DeleteCookie(cookieName string) error {
 
 	// Send request
 	path := fmt.Sprintf("session/%s/cookie/%s", api.SessionId, cookieName)
-	resp, err := ProceedDeleteRequest(api, path)
-	if err != nil {
-		return err
-	}
+	resp, errResp := ProceedDeleteRequest(api, path)
 
-	// Manage error
+	// Manage functionnal error
 	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return fmt.Errorf(responseError.Value.Message)
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	return nil
+	// Manage technical error
+	return errResp
 }
 
 // https://w3c.github.io/webdriver/#delete-all-cookies
@@ -143,17 +151,17 @@ func (api WebDriverApi) DeleteAllCookies() error {
 
 	// Send request
 	path := fmt.Sprintf("session/%s/cookie", api.SessionId)
-	resp, err := ProceedDeleteRequest(api, path)
-	if err != nil {
-		return err
-	}
+	resp, errResp := ProceedDeleteRequest(api, path)
 
-	// Manage error
+	// Manage functionnal error
 	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return fmt.Errorf(responseError.Value.Message)
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	return nil
+	// Manage technical error
+	return errResp
 }

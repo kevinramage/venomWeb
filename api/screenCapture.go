@@ -17,21 +17,25 @@ func (api WebDriverApi) TakeScreenShot() ([]byte, error) {
 	}
 
 	// Send request
-	resp, err := ProceedGetRequest(api, fmt.Sprintf("session/%s/screenshot", api.SessionId))
-	if err != nil {
-		return []byte{}, err
+	resp, errResp := ProceedGetRequest(api, fmt.Sprintf("session/%s/screenshot", api.SessionId))
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return []byte{}, fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return []byte{}, fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return []byte{}, errResp
 	}
 
 	// Manage response
 	responseBody := StringResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return []byte{}, err
 	}
@@ -53,21 +57,25 @@ func (api WebDriverApi) TakeElementScreenShot(elementId string) ([]byte, error) 
 	}
 
 	// Send request
-	resp, err := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/%s/screenshot", api.SessionId, elementId))
-	if err != nil {
-		return []byte{}, err
+	resp, errResp := ProceedGetRequest(api, fmt.Sprintf("session/%s/element/%s/screenshot", api.SessionId, elementId))
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return []byte{}, fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return []byte{}, fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return []byte{}, errResp
 	}
 
 	// Manage response
 	responseBody := StringResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return []byte{}, err
 	}
