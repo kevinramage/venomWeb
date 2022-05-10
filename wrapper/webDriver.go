@@ -84,6 +84,7 @@ func (w *WebDriver) Stop() error {
 		}
 	}
 	err := w.service.Stop()
+	w.isStarted = false
 	if err != nil {
 		err = errors.Wrapf(err, "an error occured during service stopping")
 		log.Error(err)

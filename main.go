@@ -1,10 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"time"
 
-	"github.com/kevinramage/venomWeb/common"
 	venomWeb "github.com/kevinramage/venomWeb/wrapper"
 )
 
@@ -50,23 +48,31 @@ func main() {
 	webDriver := venomWeb.ChromeDriver([]string{}, prefs)
 	webDriver.LogLevel = "DEBUG"
 	webDriver.Detach = true
-	webDriver.Start()
-	page, _ := webDriver.NewSession()
-	page.Navigate("https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_alert")
 
-	page.SyncElement("#accept-choices", common.CSS_SELECTOR, 1000)
-	btnAcceptCookie, _ := page.FindElement("#accept-choices", common.CSS_SELECTOR)
-	btnAcceptCookie.Click()
-	frame, _ := page.FindElement("#iframeResult", common.CSS_SELECTOR)
-	page.SwitchToFrame(frame)
-	btn, _ := page.FindElement("//button", common.XPATH_SELECTOR)
-	btn.Click()
-	time.Sleep(2000)
-	title, err := page.GetTitle()
-	time.Sleep(2000)
+	webDriver.Start()
+	time.Sleep(20 * time.Second)
 	webDriver.Stop()
-	fmt.Printf("title: %v\n", title)
-	fmt.Printf("err: %v\n", err)
+	//webDriver.Start()
+	//webDriver.Stop()
+
+	/*
+		page, _ := webDriver.NewSession()
+		page.Navigate("https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_alert")
+
+		page.SyncElement("#accept-choices", common.CSS_SELECTOR, 1000)
+		btnAcceptCookie, _ := page.FindElement("#accept-choices", common.CSS_SELECTOR)
+		btnAcceptCookie.Click()
+		frame, _ := page.FindElement("#iframeResult", common.CSS_SELECTOR)
+		page.SwitchToFrame(frame)
+		btn, _ := page.FindElement("//button", common.XPATH_SELECTOR)
+		btn.Click()
+		time.Sleep(2000)
+		title, err := page.GetTitle()
+		time.Sleep(2000)
+		webDriver.Stop()
+		fmt.Printf("title: %v\n", title)
+		fmt.Printf("err: %v\n", err)
+	*/
 	/*
 		page, _ := webDriver.NewSession()
 		page.Navigate("https://www.w3schools.com/w3css/w3css_progressbar.asp")
