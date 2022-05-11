@@ -28,13 +28,13 @@ type WebDriver struct {
 func DefineLogLevel(logLevel string) {
 	logLevelUpperCase := strings.ToUpper(logLevel)
 
-	if logLevelUpperCase == "DEBUG" {
+	if logLevelUpperCase == common.DEBUG {
 		log.SetLevel(log.DebugLevel)
-	} else if logLevelUpperCase == "INFO" {
+	} else if logLevelUpperCase == common.INFO {
 		log.SetLevel(log.InfoLevel)
-	} else if logLevelUpperCase == "WARN" {
+	} else if logLevelUpperCase == common.WARN {
 		log.SetLevel(log.WarnLevel)
-	} else if logLevelUpperCase == "ERROR" {
+	} else if logLevelUpperCase == common.ERROR {
 		log.SetLevel(log.ErrorLevel)
 	}
 }

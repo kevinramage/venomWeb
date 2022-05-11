@@ -9,6 +9,7 @@ import (
 	"os/exec"
 	"time"
 
+	"github.com/kevinramage/venomWeb/common"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -37,7 +38,7 @@ func (s *WebDriverService) Start(command string, port string, logLevel string, a
 			// Prepare command
 			s.Command = exec.Command(command)
 			s.Command.Args = args
-			if logLevel == "DEBUG" {
+			if logLevel == common.DEBUG {
 				s.Command.Stdout = os.Stdout
 				s.Command.Stderr = os.Stderr
 			}
