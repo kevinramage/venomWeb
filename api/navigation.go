@@ -9,9 +9,7 @@ import (
 type GetTitleResponse struct {
 	SessionId string `json:"sessionId"`
 	Status    int    `json:"status"`
-	Value     struct {
-		Title string `json:"title"`
-	} `json:"value"`
+	Value     string `json:"value"`
 }
 
 // https://w3c.github.io/webdriver/#navigate-to
@@ -31,19 +29,19 @@ func (api WebDriverApi) Navigate(url string) error {
 	}
 
 	// Send request
-	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/url", api.SessionId), request)
-	if err != nil {
-		return err
+	resp, errResp := ProceedPostRequest(api, fmt.Sprintf("session/%s/url", api.SessionId), request)
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ErrorResponse{}
-	errDecode := mapstructure.Decode(resp, &responseError)
-	if errDecode == nil && responseError.Value.Message != "" {
-		return fmt.Errorf(responseError.Value.Message)
-	}
-
-	return nil
+	// Manage technical error
+	return errResp
 }
 
 // https://w3c.github.io/webdriver/#get-current-url
@@ -55,21 +53,25 @@ func (api WebDriverApi) GetCurrentUrl() (string, error) {
 	}
 
 	// Send request
-	resp, err := ProceedGetRequest(api, fmt.Sprintf("session/%s/url", api.SessionId))
-	if err != nil {
-		return "", err
+	resp, errResp := ProceedGetRequest(api, fmt.Sprintf("session/%s/url", api.SessionId))
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return "", fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return "", fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return "", errResp
 	}
 
 	// Manage response
 	responseBody := StringResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return "", err
 	}
@@ -86,19 +88,19 @@ func (api WebDriverApi) Back() error {
 	}
 
 	// Send request
-	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/back", api.SessionId), nil)
-	if err != nil {
-		return err
-	}
+	resp, errResp := ProceedPostRequest(api, fmt.Sprintf("session/%s/back", api.SessionId), nil)
 
-	// Manage error
+	// Manage functionnal error
 	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return fmt.Errorf(responseError.Value.Message)
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	return nil
+	// Manage technical error
+	return errResp
 }
 
 // https://w3c.github.io/webdriver/#forward
@@ -110,19 +112,19 @@ func (api WebDriverApi) Forward() error {
 	}
 
 	// Send request
-	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/forward", api.SessionId), nil)
-	if err != nil {
-		return err
-	}
+	resp, errResp := ProceedPostRequest(api, fmt.Sprintf("session/%s/forward", api.SessionId), nil)
 
-	// Manage error
+	// Manage functionnal error
 	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return fmt.Errorf(responseError.Value.Message)
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	return nil
+	// Manage technical error
+	return errResp
 }
 
 // https://w3c.github.io/webdriver/#refresh
@@ -134,19 +136,19 @@ func (api WebDriverApi) Refresh() error {
 	}
 
 	// Send request
-	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/refresh", api.SessionId), nil)
-	if err != nil {
-		return err
-	}
+	resp, errResp := ProceedPostRequest(api, fmt.Sprintf("session/%s/refresh", api.SessionId), nil)
 
-	// Manage error
+	// Manage functionnal error
 	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return fmt.Errorf(responseError.Value.Message)
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	return nil
+	// Manage technical error
+	return errResp
 }
 
 // https://w3c.github.io/webdriver/#get-title
@@ -158,24 +160,28 @@ func (api WebDriverApi) GetTitle() (string, error) {
 	}
 
 	// Send request
-	resp, err := ProceedGetRequest(api, fmt.Sprintf("session/%s/title", api.SessionId))
-	if err != nil {
-		return "", err
+	resp, errResp := ProceedGetRequest(api, fmt.Sprintf("session/%s/title", api.SessionId))
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return "", fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return "", fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return "", errResp
 	}
 
 	// Manage response
 	responseBody := GetTitleResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return "", err
 	}
 
-	return responseBody.Value.Title, nil
+	return responseBody.Value, nil
 }

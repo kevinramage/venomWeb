@@ -17,21 +17,25 @@ func (api WebDriverApi) GetSessionTimeout() (common.Timeouts, error) {
 
 	// Send request
 	path := fmt.Sprintf("session/%s/timeouts", api.SessionId)
-	resp, err := ProceedGetRequest(api, path)
-	if err != nil {
-		return common.Timeouts{}, err
+	resp, errResp := ProceedGetRequest(api, path)
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return common.Timeouts{}, fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return common.Timeouts{}, fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return common.Timeouts{}, errResp
 	}
 
 	// Manage response
 	responseBody := GetTimeoutResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return common.Timeouts{}, err
 	}
@@ -49,17 +53,17 @@ func (api WebDriverApi) SetSessionTimeout(timeouts common.Timeouts) error {
 
 	// Send request
 	path := fmt.Sprintf("session/%s/timeouts", api.SessionId)
-	resp, err := ProceedPostRequest(api, path, timeouts)
-	if err != nil {
-		return err
-	}
+	resp, errResp := ProceedPostRequest(api, path, timeouts)
 
-	// Manage error
+	// Manage functionnal error
 	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return fmt.Errorf(responseError.Value.Message)
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	return nil
+	// Manage technical error
+	return errResp
 }

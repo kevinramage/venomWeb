@@ -31,21 +31,25 @@ func (api WebDriverApi) GetWindowHandle() (string, error) {
 	}
 
 	// Send request
-	resp, err := ProceedGetRequest(api, fmt.Sprintf("session/%s/window", api.SessionId))
-	if err != nil {
-		return "", err
+	resp, errResp := ProceedGetRequest(api, fmt.Sprintf("session/%s/window", api.SessionId))
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return "", fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return "", fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return "", errResp
 	}
 
 	// Manage response
 	responseBody := StringResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return "", err
 	}
@@ -62,19 +66,18 @@ func (api WebDriverApi) CloseWindow() error {
 	}
 
 	// Send request
-	resp, err := ProceedGetRequest(api, fmt.Sprintf("session/%s/window", api.SessionId))
-	if err != nil {
-		return err
-	}
+	resp, errResp := ProceedGetRequest(api, fmt.Sprintf("session/%s/window", api.SessionId))
 
-	// Manage error
+	// Manage functionnal error
 	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return fmt.Errorf(responseError.Value.Message)
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	return nil
+	return errResp
 }
 
 // https://w3c.github.io/webdriver/#switch-to-window
@@ -91,19 +94,19 @@ func (api WebDriverApi) SwitchWindow(handle string) error {
 	}
 
 	// Send request
-	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/window", api.SessionId), request)
-	if err != nil {
-		return err
-	}
+	resp, errResp := ProceedPostRequest(api, fmt.Sprintf("session/%s/window", api.SessionId), request)
 
-	// Manage error
+	// Manage functionnal error
 	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return fmt.Errorf(responseError.Value.Message)
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	return nil
+	// Manage technical error
+	return errResp
 }
 
 // https://w3c.github.io/webdriver/#get-window-handles
@@ -115,21 +118,25 @@ func (api WebDriverApi) GetWindowHandles() ([]string, error) {
 	}
 
 	// Send request
-	resp, err := ProceedGetRequest(api, fmt.Sprintf("session/%s/window/handles", api.SessionId))
-	if err != nil {
-		return []string{}, err
+	resp, errResp := ProceedGetRequest(api, fmt.Sprintf("session/%s/window/handles", api.SessionId))
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return []string{}, fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return []string{}, fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return []string{}, errResp
 	}
 
 	// Manage response
 	responseBody := ElementsResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return []string{}, err
 	}
@@ -160,21 +167,25 @@ func (api WebDriverApi) NewWindows(windowType string) (string, error) {
 	request := ReqStruct{Type: windowType}
 
 	// Send request
-	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/window/new", api.SessionId), request)
-	if err != nil {
-		return "", err
+	resp, errResp := ProceedPostRequest(api, fmt.Sprintf("session/%s/window/new", api.SessionId), request)
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return "", fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return "", fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return "", errResp
 	}
 
 	// Manage response
 	responseBody := StringResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return "", err
 	}
@@ -202,19 +213,19 @@ func (api WebDriverApi) SwitchToFrame(id string) error {
 	request.Id.Element = id
 
 	// Send request
-	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/frame", api.SessionId), request)
-	if err != nil {
-		return err
-	}
+	resp, errResp := ProceedPostRequest(api, fmt.Sprintf("session/%s/frame", api.SessionId), request)
 
-	// Manage error
+	// Manage functionnal error
 	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return fmt.Errorf(responseError.Value.Message)
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	return nil
+	// Manage technical error
+	return errResp
 }
 
 // https://w3c.github.io/webdriver/#switch-to-frame
@@ -232,19 +243,19 @@ func (api WebDriverApi) SwitchToIndexFrame(index int) error {
 	request := SwitchToFrameRequest{Id: index}
 
 	// Send request
-	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/frame", api.SessionId), request)
-	if err != nil {
-		return err
-	}
+	resp, errResp := ProceedPostRequest(api, fmt.Sprintf("session/%s/frame", api.SessionId), request)
 
-	// Manage error
+	// Manage functionnal error
 	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return fmt.Errorf(responseError.Value.Message)
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	return nil
+	// Manage technical error
+	return errResp
 }
 
 // https://w3c.github.io/webdriver/#switch-to-parent-frame
@@ -256,19 +267,19 @@ func (api WebDriverApi) SwitchToParentFrame() error {
 	}
 
 	// Send request
-	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/frame/parent", api.SessionId), nil)
-	if err != nil {
-		return err
-	}
+	resp, errResp := ProceedPostRequest(api, fmt.Sprintf("session/%s/frame/parent", api.SessionId), nil)
 
-	// Manage error
+	// Manage functionnal error
 	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return fmt.Errorf(responseError.Value.Message)
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	return nil
+	// Manage technical error
+	return errResp
 }
 
 // https://w3c.github.io/webdriver/#get-window-rect
@@ -280,21 +291,25 @@ func (api WebDriverApi) GetWindowRect() (common.Rect, error) {
 	}
 
 	// Send request
-	resp, err := ProceedGetRequest(api, fmt.Sprintf("session/%s/window/rect", api.SessionId))
-	if err != nil {
-		return common.Rect{}, err
+	resp, errResp := ProceedGetRequest(api, fmt.Sprintf("session/%s/window/rect", api.SessionId))
+
+	// Manage functionnal error
+	responseError := ElementErrorResponse{}
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return common.Rect{}, fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	// Manage error
-	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return common.Rect{}, fmt.Errorf(responseError.Value.Message)
+	// Manage technical error
+	if errResp != nil {
+		return common.Rect{}, errResp
 	}
 
 	// Manage response
 	responseBody := RectResponse{}
-	err = mapstructure.Decode(resp, &responseBody)
+	err := mapstructure.Decode(resp, &responseBody)
 	if err != nil {
 		return common.Rect{}, err
 	}
@@ -324,19 +339,19 @@ func (api WebDriverApi) SetWindowRect(width int, height int) error {
 	}
 
 	// Send request
-	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/window/rect", api.SessionId), request)
-	if err != nil {
-		return err
-	}
+	resp, errResp := ProceedPostRequest(api, fmt.Sprintf("session/%s/window/rect", api.SessionId), request)
 
-	// Manage error
+	// Manage functionnal error
 	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return fmt.Errorf(responseError.Value.Message)
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	return nil
+	// Manage technical error
+	return errResp
 }
 
 // https://w3c.github.io/webdriver/#maximize-window
@@ -348,19 +363,19 @@ func (api WebDriverApi) Maximize() error {
 	}
 
 	// Send request
-	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/window/maximize", api.SessionId), nil)
-	if err != nil {
-		return err
-	}
+	resp, errResp := ProceedPostRequest(api, fmt.Sprintf("session/%s/window/maximize", api.SessionId), nil)
 
-	// Manage error
+	// Manage functionnal error
 	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return fmt.Errorf(responseError.Value.Message)
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	return nil
+	// Manage technical error
+	return errResp
 }
 
 // https://w3c.github.io/webdriver/#minimize-window
@@ -372,19 +387,19 @@ func (api WebDriverApi) Minimize() error {
 	}
 
 	// Send request
-	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/window/minimize", api.SessionId), nil)
-	if err != nil {
-		return err
-	}
+	resp, errResp := ProceedPostRequest(api, fmt.Sprintf("session/%s/window/minimize", api.SessionId), nil)
 
-	// Manage error
+	// Manage functionnal error
 	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return fmt.Errorf(responseError.Value.Message)
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	return nil
+	// Manage technical error
+	return errResp
 }
 
 // https://w3c.github.io/webdriver/#fullscreen-window
@@ -396,17 +411,17 @@ func (api WebDriverApi) Fullscreen() error {
 	}
 
 	// Send request
-	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/window/fullscreen", api.SessionId), nil)
-	if err != nil {
-		return err
-	}
+	resp, errResp := ProceedPostRequest(api, fmt.Sprintf("session/%s/window/fullscreen", api.SessionId), nil)
 
-	// Manage error
+	// Manage functionnal error
 	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return fmt.Errorf(responseError.Value.Message)
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	return err
+	// Manage technical error
+	return errResp
 }

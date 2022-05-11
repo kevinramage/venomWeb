@@ -1,5 +1,12 @@
 package common
 
+const (
+	DEBUG string = "DEBUG"
+	INFO  string = "INFO"
+	WARN  string = "WARN"
+	ERROR string = "ERROR"
+)
+
 type Rect struct {
 	X      int `json:"x"`
 	Y      int `json:"y"`
@@ -11,6 +18,7 @@ type WebDriverOptions struct {
 	Debug           bool
 	Command         string
 	CommandLineArgs []string
+	CommandPort     string
 	Args            []string
 	Prefs           map[string]interface{}
 	WebDriverBinary string

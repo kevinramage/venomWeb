@@ -1,7 +1,8 @@
 package main
 
 import (
-	"github.com/kevinramage/venomWeb/common"
+	"time"
+
 	venomWeb "github.com/kevinramage/venomWeb/wrapper"
 )
 
@@ -45,21 +46,46 @@ func main() {
 	//	webDriver := venomWeb.ChromeDriver([]string{"headless", "ignore-certificate-errors", "ignore-ssl-errors", "proxy-server=localhost:8888"})
 	prefs := make(map[string]interface{})
 	webDriver := venomWeb.ChromeDriver([]string{}, prefs)
-	webDriver.LogLevel = "ERROR"
+	webDriver.LogLevel = "DEBUG"
 	webDriver.Detach = true
+
 	webDriver.Start()
-	page, _ := webDriver.NewSession()
-	page.Navigate("https://www.w3schools.com/w3css/w3css_progressbar.asp")
-
-	eltCookie, _ := page.FindElement("#accept-choices", common.CSS_SELECTOR)
-	eltCookie.Click()
-
-	elt, _ := page.FindElement(".w3-button.w3-green", common.CSS_SELECTOR)
-	elt.Click()
-	page.SyncElementText("#demo", common.CSS_SELECTOR, 10000, "100%")
-	//page.SyncElementCSSValue("#myBar", common.CSS_SELECTOR, 20000, "width", "100%")
-
+	time.Sleep(20 * time.Second)
 	webDriver.Stop()
+	//webDriver.Start()
+	//webDriver.Stop()
+
+	/*
+		page, _ := webDriver.NewSession()
+		page.Navigate("https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_alert")
+
+		page.SyncElement("#accept-choices", common.CSS_SELECTOR, 1000)
+		btnAcceptCookie, _ := page.FindElement("#accept-choices", common.CSS_SELECTOR)
+		btnAcceptCookie.Click()
+		frame, _ := page.FindElement("#iframeResult", common.CSS_SELECTOR)
+		page.SwitchToFrame(frame)
+		btn, _ := page.FindElement("//button", common.XPATH_SELECTOR)
+		btn.Click()
+		time.Sleep(2000)
+		title, err := page.GetTitle()
+		time.Sleep(2000)
+		webDriver.Stop()
+		fmt.Printf("title: %v\n", title)
+		fmt.Printf("err: %v\n", err)
+	*/
+	/*
+		page, _ := webDriver.NewSession()
+		page.Navigate("https://www.w3schools.com/w3css/w3css_progressbar.asp")
+
+		eltCookie, _ := page.FindElement("#accept-choices", common.CSS_SELECTOR)
+		eltCookie.Click()
+
+		elt, _ := page.FindElement(".w3-button.w3-green", common.CSS_SELECTOR)
+		elt.Click()
+		page.SyncElementText("#demo", common.CSS_SELECTOR, 10000, "100%")
+		//page.SyncElementCSSValue("#myBar", common.CSS_SELECTOR, 20000, "width", "100%")
+	*/
+	//webDriver.Stop()
 
 	//page.Navigate("https://doubleclicktest.com/")
 	//elt, _ := page.FindElement("#textarea", common.CSS_SELECTOR)

@@ -24,19 +24,19 @@ func (api WebDriverApi) PerformActions(actions []common.Action) error {
 	}
 
 	// Send request
-	resp, err := ProceedPostRequest(api, fmt.Sprintf("session/%s/actions", api.SessionId), request)
-	if err != nil {
-		return err
-	}
+	resp, errResp := ProceedPostRequest(api, fmt.Sprintf("session/%s/actions", api.SessionId), request)
 
-	// Manage error
+	// Manage functionnal error
 	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return fmt.Errorf(responseError.Value.Message)
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	return nil
+	// Manage technical error
+	return errResp
 }
 
 // https://w3c.github.io/webdriver/#release-actions
@@ -48,17 +48,17 @@ func (api WebDriverApi) ReleaseActions() error {
 	}
 
 	// Send request
-	resp, err := ProceedDeleteRequest(api, fmt.Sprintf("session/%s/actions", api.SessionId))
-	if err != nil {
-		return err
-	}
+	resp, errResp := ProceedDeleteRequest(api, fmt.Sprintf("session/%s/actions", api.SessionId))
 
-	// Manage error
+	// Manage functionnal error
 	responseError := ElementErrorResponse{}
-	err = mapstructure.Decode(resp, &responseError)
-	if err == nil && responseError.Value.Message != "" {
-		return fmt.Errorf(responseError.Value.Message)
+	if resp != nil {
+		err := mapstructure.Decode(resp, &responseError)
+		if err == nil && responseError.Value.Error != "" {
+			return fmt.Errorf(responseError.Value.Error)
+		}
 	}
 
-	return nil
+	// Manage technical error
+	return errResp
 }

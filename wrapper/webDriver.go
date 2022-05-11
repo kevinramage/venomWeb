@@ -28,13 +28,13 @@ type WebDriver struct {
 func DefineLogLevel(logLevel string) {
 	logLevelUpperCase := strings.ToUpper(logLevel)
 
-	if logLevelUpperCase == "DEBUG" {
+	if logLevelUpperCase == common.DEBUG {
 		log.SetLevel(log.DebugLevel)
-	} else if logLevelUpperCase == "INFO" {
+	} else if logLevelUpperCase == common.INFO {
 		log.SetLevel(log.InfoLevel)
-	} else if logLevelUpperCase == "WARN" {
+	} else if logLevelUpperCase == common.WARN {
 		log.SetLevel(log.WarnLevel)
-	} else if logLevelUpperCase == "ERROR" {
+	} else if logLevelUpperCase == common.ERROR {
 		log.SetLevel(log.ErrorLevel)
 	}
 }
@@ -47,7 +47,7 @@ func (w *WebDriver) Start() error {
 	DefineLogLevel(w.LogLevel)
 	if !w.isStarted {
 		w.service = service.New()
-		err := w.service.Start(w.driver.Command, w.LogLevel, w.driver.CommandLineArgs)
+		err := w.service.Start(w.driver.Command, w.driver.CommandPort, w.LogLevel, w.driver.CommandLineArgs)
 		if err != nil {
 			err = errors.Wrapf(err, "an error occured during session starting")
 			log.Error(err)
@@ -74,13 +74,17 @@ func (w *WebDriver) Start() error {
 ///TODO Manage error
 func (w *WebDriver) Stop() error {
 	log.Info("WebDriver.Stop")
-	err := w.api.DeleteSession()
-	if err != nil {
-		err = errors.Wrapf(err, "an error occured during delete session action")
-		log.Error(err)
-		return err
+
+	if w.api.SessionId != "" {
+		err := w.api.DeleteSession()
+		if err != nil {
+			err = errors.Wrapf(err, "an error occured during delete session action")
+			log.Error(err)
+			return err
+		}
 	}
-	err = w.service.Stop()
+	err := w.service.Stop()
+	w.isStarted = false
 	if err != nil {
 		err = errors.Wrapf(err, "an error occured during service stopping")
 		log.Error(err)
@@ -181,6 +185,7 @@ func ChromeDriver(args []string, prefs map[string]interface{}) WebDriver {
 	} else {
 		webDriver.driver.WebDriverBinary = "chromedriver"
 	}
+	webDriver.driver.CommandPort = "9515"
 	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=9515"}
 	webDriver.driver.Url = "http://localhost:9515"
 	return NewWebDriver(&webDriver)
@@ -197,6 +202,7 @@ func GeckoDriver(args []string, prefs map[string]interface{}) WebDriver {
 	} else {
 		webDriver.driver.WebDriverBinary = "geckodriver"
 	}
+	webDriver.driver.CommandPort = "4444"
 	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=4444"}
 	webDriver.driver.Url = "http://localhost:4444"
 	return NewWebDriver(&webDriver)
@@ -213,6 +219,7 @@ func EdgeChroniumDriver(args []string, prefs map[string]interface{}) WebDriver {
 	} else {
 		webDriver.driver.WebDriverBinary = "msedgedriver"
 	}
+	webDriver.driver.CommandPort = "9515"
 	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=9515"}
 	webDriver.driver.Url = "http://localhost:9515"
 	return NewWebDriver(&webDriver)
@@ -228,6 +235,7 @@ func OperaDriver(args []string) WebDriver {
 	} else {
 		webDriver.driver.WebDriverBinary = "operadriver"
 	}
+	webDriver.driver.CommandPort = "9515"
 	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=9515"}
 	webDriver.driver.Url = "http://localhost:9515"
 	return NewWebDriver(&webDriver)

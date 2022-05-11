@@ -150,6 +150,7 @@ func (s Session) Refresh() error {
 
 func (s Session) GetTitle() (string, error) {
 	log.Info("Session.GetTitle")
+
 	title, err := s.api.GetTitle()
 	if err != nil {
 		err = errors.Wrapf(err, "an error occured during get title action")
@@ -375,15 +376,15 @@ func (s Session) GetActiveElement() (Element, error) {
 
 // SyncElement allow to wait the web element creation
 // Return nil if operation succeed, return an error else
-func (s Session) SyncElement(selector string, locatorStrategy string, timeout int) error {
+func (s Session) SyncElement(selector string, locatorStrategy string, timeout int64) error {
 	log.Info("Session.SyncElement")
 	now := time.Now()
 	_, err := s.api.FindElement(selector, locatorStrategy)
 	for err != nil {
-		time.Sleep(250 * time.Millisecond)
+		time.Sleep(100 * time.Millisecond)
 		_, err = s.api.FindElement(selector, locatorStrategy)
 		duration := time.Until(now).Milliseconds() * -1
-		if duration >= int64(timeout) {
+		if err != nil && duration >= timeout {
 			return fmt.Errorf("impossible to synchronize element due to a timeout")
 		}
 	}
@@ -392,7 +393,7 @@ func (s Session) SyncElement(selector string, locatorStrategy string, timeout in
 
 // SyncElementAbsence allow to wait the web element deletion
 // Return nil if operation succeed, return an error else
-func (s Session) SyncElementAbsence(selector string, locatorStrategy string, timeout int) error {
+func (s Session) SyncElementAbsence(selector string, locatorStrategy string, timeout int64) error {
 	log.Info("Session.SyncElementAbsence")
 	now := time.Now()
 	_, err := s.api.FindElement(selector, locatorStrategy)
@@ -400,7 +401,7 @@ func (s Session) SyncElementAbsence(selector string, locatorStrategy string, tim
 		time.Sleep(250 * time.Millisecond)
 		_, err = s.api.FindElement(selector, locatorStrategy)
 		duration := time.Until(now).Milliseconds() * -1
-		if duration >= int64(timeout) {
+		if duration >= timeout {
 			return fmt.Errorf("impossible to synchronize element absence due to a timeout")
 		}
 	}
@@ -410,7 +411,7 @@ func (s Session) SyncElementAbsence(selector string, locatorStrategy string, tim
 // SyncElementText allow to wait text value of an element
 // Return nil if operation succeed, return an error else
 // WebSite to test this feature: https://www.w3schools.com/w3css/w3css_progressbar.asp
-func (s Session) SyncElementText(selector string, locatorStrategy string, timeout int, expectedText string) error {
+func (s Session) SyncElementText(selector string, locatorStrategy string, timeout int64, expectedText string) error {
 	log.Info("Session.SyncElementText")
 	now := time.Now()
 	text := ""
@@ -435,7 +436,7 @@ func (s Session) SyncElementText(selector string, locatorStrategy string, timeou
 
 // SyncElementCSSValue allow to wait a specific CSS value of an element
 // Return nil if operation succeed, return an error else
-func (s Session) SyncElementCSSValue(selector string, locatorStrategy string, timeout int, CSSPropertyName string, expectedValue string) error {
+func (s Session) SyncElementCSSValue(selector string, locatorStrategy string, timeout int64, CSSPropertyName string, expectedValue string) error {
 	log.Info("Session.SyncElementCSSValue")
 	now := time.Now()
 	propertyValue := ""
@@ -451,7 +452,7 @@ func (s Session) SyncElementCSSValue(selector string, locatorStrategy string, ti
 		time.Sleep(250 * time.Millisecond)
 		propertyValue, err = s.api.GetElementCSSValue(eltId, CSSPropertyName)
 		duration := time.Until(now).Milliseconds() * -1
-		if duration >= int64(timeout) {
+		if duration >= timeout {
 			return fmt.Errorf("impossible to synchronize element due to a timeout")
 		}
 	}
@@ -460,7 +461,7 @@ func (s Session) SyncElementCSSValue(selector string, locatorStrategy string, ti
 
 // SyncElementPropertyValue allow to wait a specific property value of an element
 // Return nil if operation succeed, return an error else
-func (s Session) SyncElementProperyValue(selector string, locatorStrategy string, timeout int, CSSPropertyName string, expectedValue string) error {
+func (s Session) SyncElementProperyValue(selector string, locatorStrategy string, timeout int64, CSSPropertyName string, expectedValue string) error {
 	log.Info("Session.SyncElementProperyValue")
 	now := time.Now()
 	propertyValue := ""
@@ -476,7 +477,7 @@ func (s Session) SyncElementProperyValue(selector string, locatorStrategy string
 		time.Sleep(250 * time.Millisecond)
 		propertyValue, err = s.api.GetElementProperty(eltId, CSSPropertyName)
 		duration := time.Until(now).Milliseconds() * -1
-		if duration >= int64(timeout) {
+		if duration >= timeout {
 			return fmt.Errorf("impossible to synchronize element due to a timeout")
 		}
 	}
