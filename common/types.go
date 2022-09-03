@@ -22,6 +22,7 @@ type WebDriverOptions struct {
 	Args            []string
 	Prefs           map[string]interface{}
 	WebDriverBinary string
+	Binary          string
 	Url             string
 	BrowserName     string
 

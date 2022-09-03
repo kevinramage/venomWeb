@@ -1,8 +1,7 @@
 package main
 
 import (
-	"time"
-
+	"github.com/kevinramage/venomWeb/common"
 	venomWeb "github.com/kevinramage/venomWeb/wrapper"
 )
 
@@ -44,14 +43,44 @@ func main() {
 
 func main() {
 	//	webDriver := venomWeb.ChromeDriver([]string{"headless", "ignore-certificate-errors", "ignore-ssl-errors", "proxy-server=localhost:8888"})
+	braveBinary := "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe"
 	prefs := make(map[string]interface{})
-	webDriver := venomWeb.ChromeDriver([]string{}, prefs)
-	webDriver.LogLevel = "DEBUG"
+	webDriver := venomWeb.BraveDriver(braveBinary, []string{}, prefs)
+	webDriver.LogLevel = common.INFO
 	webDriver.Detach = true
 
 	webDriver.Start()
-	time.Sleep(20 * time.Second)
+	page, _ := webDriver.NewSession()
+	page.Navigate("https://github.com/")
 	webDriver.Stop()
+
+	/*
+		page, _ := webDriver.NewSession()
+		page.Navigate("https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_textarea")
+		btn, _ := page.FindElement("#accept-choices", common.CSS_SELECTOR)
+		btn.Click()
+
+		//textField, _ := page.FindElement("#textareaCode", common.CSS_SELECTOR)
+		//err := textField.SendKeys("coucou")
+		script := "window.editor.setValue(\"<!DOCTYPE html> <html> <body>  <h2>JavaScript Timing</h2>  <p>Click \\\"Try it\\\". Wait 3 seconds, and the page will alert \\\"Hello\\\".</p>  <button id='btnFunc' onclick=\\\"setTimeout(myFunction, 3000);\\\">Try it</button> <div id=\\\"test\\\">test</div>  <script> function myFunction() {   document.getElementById(\\\"test\\\").innerHTML = \\\"<button id='btnTest'>Coucou</button>\\\" } </script>  </body> </html>\"); window.editor.save();"
+		page.ExecuteScript(script, []string{})
+
+		btnRun, _ := page.FindElement("#runbtn", common.CSS_SELECTOR)
+		btnRun.Click()
+
+		frame, _ := page.FindElement("#iframeResult", common.CSS_SELECTOR)
+		page.SwitchToFrame(frame)
+
+		btnFunc, _ := page.FindElement("#btnFunc", common.CSS_SELECTOR)
+		btnFunc.Click()
+
+		err := page.SyncElement("#btnTest", common.CSS_SELECTOR, 4000)
+		fmt.Printf("err: %v\n", err)
+
+		time.Sleep(5 * time.Second)
+	*/
+
+	//webDriver.Stop()
 	//webDriver.Start()
 	//webDriver.Stop()
 

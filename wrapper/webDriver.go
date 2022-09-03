@@ -112,7 +112,7 @@ func (w *WebDriver) NewSession() (Session, error) {
 	w.defineProxy()
 
 	// Create session
-	_, err := w.api.CreateSession(w.driver.BrowserName, w.driver.Args, w.driver.Prefs, w.Detach)
+	_, err := w.api.CreateSession(w.driver.BrowserName, w.driver.Binary, w.driver.Args, w.driver.Prefs, w.Detach)
 	if err != nil {
 		err = errors.Wrapf(err, "an error occured during create session action")
 		log.Error(err)
@@ -238,5 +238,23 @@ func OperaDriver(args []string) WebDriver {
 	webDriver.driver.CommandPort = "9515"
 	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=9515"}
 	webDriver.driver.Url = "http://localhost:9515"
+	return NewWebDriver(&webDriver)
+}
+
+func BraveDriver(browserDirectory string, args []string, prefs map[string]interface{}) WebDriver {
+	log.Info("Brave.New")
+	webDriver := WebDriver{}
+	webDriver.driver.BrowserName = "brave"
+	webDriver.driver.Args = args
+	webDriver.driver.Prefs = prefs
+	if runtime.GOOS == "windows" {
+		webDriver.driver.WebDriverBinary = "chromedriver.exe"
+	} else {
+		webDriver.driver.WebDriverBinary = "chromedriver"
+	}
+	webDriver.driver.CommandPort = "9515"
+	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=9515"}
+	webDriver.driver.Url = "http://localhost:9515"
+	webDriver.driver.Binary = browserDirectory
 	return NewWebDriver(&webDriver)
 }
