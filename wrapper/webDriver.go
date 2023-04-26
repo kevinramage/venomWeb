@@ -174,7 +174,7 @@ func NewWebDriver(webDriver *WebDriver) WebDriver {
 	return *webDriver
 }
 
-func ChromeDriver(args []string, prefs map[string]interface{}) WebDriver {
+func ChromeDriver(args []string, prefs map[string]interface{}, port string) WebDriver {
 	log.Info("ChromeDriver.New")
 	webDriver := WebDriver{}
 	webDriver.driver.BrowserName = "chrome"
@@ -185,13 +185,16 @@ func ChromeDriver(args []string, prefs map[string]interface{}) WebDriver {
 	} else {
 		webDriver.driver.WebDriverBinary = "./chromedriver"
 	}
-	webDriver.driver.CommandPort = "9515"
-	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=9515"}
-	webDriver.driver.Url = "http://localhost:9515"
+	if port == "" {
+		port = "9515"
+	}
+	webDriver.driver.CommandPort = port
+	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=" + port}
+	webDriver.driver.Url = "http://localhost:" + port
 	return NewWebDriver(&webDriver)
 }
 
-func GeckoDriver(args []string, prefs map[string]interface{}) WebDriver {
+func GeckoDriver(args []string, prefs map[string]interface{}, port string) WebDriver {
 	log.Info("GeckoDriver.New")
 	webDriver := WebDriver{}
 	webDriver.driver.BrowserName = "firefox"
@@ -202,13 +205,16 @@ func GeckoDriver(args []string, prefs map[string]interface{}) WebDriver {
 	} else {
 		webDriver.driver.WebDriverBinary = "./geckodriver"
 	}
-	webDriver.driver.CommandPort = "4444"
-	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=4444"}
-	webDriver.driver.Url = "http://localhost:4444"
+	if port == "" {
+		port = "4444"
+	}
+	webDriver.driver.CommandPort = port
+	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=" + port}
+	webDriver.driver.Url = "http://localhost:" + port
 	return NewWebDriver(&webDriver)
 }
 
-func EdgeChroniumDriver(args []string, prefs map[string]interface{}) WebDriver {
+func EdgeChroniumDriver(args []string, prefs map[string]interface{}, port string) WebDriver {
 	log.Info("EdgeChroniumDriver.New")
 	webDriver := WebDriver{}
 	webDriver.driver.BrowserName = "msedge"
@@ -219,13 +225,16 @@ func EdgeChroniumDriver(args []string, prefs map[string]interface{}) WebDriver {
 	} else {
 		webDriver.driver.WebDriverBinary = "./msedgedriver"
 	}
-	webDriver.driver.CommandPort = "9515"
-	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=9515"}
-	webDriver.driver.Url = "http://localhost:9515"
+	if port == "" {
+		port = "9515"
+	}
+	webDriver.driver.CommandPort = port
+	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=" + port}
+	webDriver.driver.Url = "http://localhost:" + port
 	return NewWebDriver(&webDriver)
 }
 
-func OperaDriver(args []string) WebDriver {
+func OperaDriver(args []string, port string) WebDriver {
 	log.Info("OperaDriver.New")
 	webDriver := WebDriver{}
 	webDriver.driver.BrowserName = "opera"
@@ -235,13 +244,16 @@ func OperaDriver(args []string) WebDriver {
 	} else {
 		webDriver.driver.WebDriverBinary = "./operadriver"
 	}
-	webDriver.driver.CommandPort = "9515"
-	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=9515"}
-	webDriver.driver.Url = "http://localhost:9515"
+	if port == "" {
+		port = "9515"
+	}
+	webDriver.driver.CommandPort = port
+	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=" + port}
+	webDriver.driver.Url = "http://localhost:" + port
 	return NewWebDriver(&webDriver)
 }
 
-func BraveDriver(browserDirectory string, args []string, prefs map[string]interface{}) WebDriver {
+func BraveDriver(browserDirectory string, args []string, prefs map[string]interface{}, port string) WebDriver {
 	log.Info("Brave.New")
 	webDriver := WebDriver{}
 	webDriver.driver.BrowserName = "brave"
@@ -252,9 +264,12 @@ func BraveDriver(browserDirectory string, args []string, prefs map[string]interf
 	} else {
 		webDriver.driver.WebDriverBinary = "./chromedriver"
 	}
-	webDriver.driver.CommandPort = "9515"
-	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=9515"}
-	webDriver.driver.Url = "http://localhost:9515"
+	if port == "" {
+		port = "9515"
+	}
+	webDriver.driver.CommandPort = port
+	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=" + port}
+	webDriver.driver.Url = "http://localhost:" + port
 	webDriver.driver.WebDriverBinary = browserDirectory
 	return NewWebDriver(&webDriver)
 }

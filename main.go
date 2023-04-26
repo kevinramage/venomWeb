@@ -45,7 +45,7 @@ func main() {
 	//	webDriver := venomWeb.ChromeDriver([]string{"headless", "ignore-certificate-errors", "ignore-ssl-errors", "proxy-server=localhost:8888"})
 	braveBinary := "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe"
 	prefs := make(map[string]interface{})
-	webDriver := venomWeb.BraveDriver(braveBinary, []string{}, prefs)
+	webDriver := venomWeb.BraveDriver(braveBinary, []string{}, prefs, "")
 	webDriver.LogLevel = common.INFO
 	webDriver.Detach = true
 
