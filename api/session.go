@@ -70,6 +70,9 @@ func (api *WebDriverApi) CreateSession(browserName string, binary string, args [
 		requestBody.Capabilities.AlwaysMatch.BrowserName = browserName
 		requestBody.Capabilities.AlwaysMatch.ChromeOptions.Args = args
 		requestBody.Capabilities.AlwaysMatch.ChromeOptions.Prefs = prefs
+		if binary != "" {
+			requestBody.Capabilities.AlwaysMatch.ChromeOptions.Binary = binary
+		}
 		if detach {
 			requestBody.Capabilities.AlwaysMatch.ChromeOptions.Detach = detach
 		}
@@ -83,6 +86,9 @@ func (api *WebDriverApi) CreateSession(browserName string, binary string, args [
 		requestBody.Capabilities.AlwaysMatch.BrowserName = browserName
 		requestBody.Capabilities.AlwaysMatch.FirefoxOptions.Args = args
 		requestBody.Capabilities.AlwaysMatch.FirefoxOptions.Prefs = prefs
+		if binary != "" {
+			requestBody.Capabilities.AlwaysMatch.FirefoxOptions.Binary = binary
+		}
 		resp, err = ProceedPostRequest(*api, "session", requestBody)
 
 		// Brave
@@ -93,7 +99,9 @@ func (api *WebDriverApi) CreateSession(browserName string, binary string, args [
 		requestBody.Capabilities.AlwaysMatch.BrowserName = "chrome"
 		requestBody.Capabilities.AlwaysMatch.ChromeOptions.Args = args
 		requestBody.Capabilities.AlwaysMatch.ChromeOptions.Prefs = prefs
-		requestBody.Capabilities.AlwaysMatch.ChromeOptions.Binary = binary
+		if binary != "" {
+			requestBody.Capabilities.AlwaysMatch.ChromeOptions.Binary = binary
+		}
 		if detach {
 			requestBody.Capabilities.AlwaysMatch.ChromeOptions.Detach = detach
 		}
@@ -106,6 +114,9 @@ func (api *WebDriverApi) CreateSession(browserName string, binary string, args [
 		requestBody.Capabilities.AlwaysMatch.BrowserName = browserName
 		requestBody.Capabilities.AlwaysMatch.EdgeOptions.Args = args
 		requestBody.Capabilities.AlwaysMatch.EdgeOptions.Prefs = prefs
+		if binary != "" {
+			requestBody.Capabilities.AlwaysMatch.EdgeOptions.Binary = binary
+		}
 		resp, err = ProceedPostRequest(*api, "session", requestBody)
 	}
 
