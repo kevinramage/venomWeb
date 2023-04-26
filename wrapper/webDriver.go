@@ -39,9 +39,9 @@ func DefineLogLevel(logLevel string) {
 	}
 }
 
-///TODO What happen if the web driver start two times
-///TODO Manage error
-///TODO SetTimeout
+// /TODO What happen if the web driver start two times
+// /TODO Manage error
+// /TODO SetTimeout
 func (w *WebDriver) Start() error {
 	log.Info("WebDriver.Start")
 	DefineLogLevel(w.LogLevel)
@@ -69,9 +69,9 @@ func (w *WebDriver) Start() error {
 	}
 }
 
-///TODO Stop when start not called
-///TODO Close session when NewPage not called
-///TODO Manage error
+// /TODO Stop when start not called
+// /TODO Close session when NewPage not called
+// /TODO Manage error
 func (w *WebDriver) Stop() error {
 	log.Info("WebDriver.Stop")
 
@@ -102,8 +102,8 @@ func (w *WebDriver) Status() (common.DriverStatus, error) {
 	return status, err
 }
 
-///TODO New page called before start
-///TODO Manage error
+// /TODO New page called before start
+// /TODO Manage error
 func (w *WebDriver) NewSession() (Session, error) {
 	log.Info("WebDriver.NewSession")
 
@@ -112,7 +112,7 @@ func (w *WebDriver) NewSession() (Session, error) {
 	w.defineProxy()
 
 	// Create session
-	_, err := w.api.CreateSession(w.driver.BrowserName, w.driver.Binary, w.driver.Args, w.driver.Prefs, w.Detach)
+	_, err := w.api.CreateSession(w.driver.BrowserName, w.driver.WebDriverBinary, w.driver.Args, w.driver.Prefs, w.Detach)
 	if err != nil {
 		err = errors.Wrapf(err, "an error occured during create session action")
 		log.Error(err)
@@ -181,9 +181,9 @@ func ChromeDriver(args []string, prefs map[string]interface{}) WebDriver {
 	webDriver.driver.Args = args
 	webDriver.driver.Prefs = prefs
 	if runtime.GOOS == "windows" {
-		webDriver.driver.WebDriverBinary = "chromedriver.exe"
+		webDriver.driver.WebDriverBinary = ".\\chromedriver.exe"
 	} else {
-		webDriver.driver.WebDriverBinary = "chromedriver"
+		webDriver.driver.WebDriverBinary = "./chromedriver"
 	}
 	webDriver.driver.CommandPort = "9515"
 	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=9515"}
@@ -198,9 +198,9 @@ func GeckoDriver(args []string, prefs map[string]interface{}) WebDriver {
 	webDriver.driver.Args = args
 	webDriver.driver.Prefs = prefs
 	if runtime.GOOS == "windows" {
-		webDriver.driver.WebDriverBinary = "geckodriver.exe"
+		webDriver.driver.WebDriverBinary = ".\\geckodriver.exe"
 	} else {
-		webDriver.driver.WebDriverBinary = "geckodriver"
+		webDriver.driver.WebDriverBinary = "./geckodriver"
 	}
 	webDriver.driver.CommandPort = "4444"
 	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=4444"}
@@ -215,9 +215,9 @@ func EdgeChroniumDriver(args []string, prefs map[string]interface{}) WebDriver {
 	webDriver.driver.Args = args
 	webDriver.driver.Prefs = prefs
 	if runtime.GOOS == "windows" {
-		webDriver.driver.WebDriverBinary = "msedgedriver.exe"
+		webDriver.driver.WebDriverBinary = ".\\msedgedriver.exe"
 	} else {
-		webDriver.driver.WebDriverBinary = "msedgedriver"
+		webDriver.driver.WebDriverBinary = "./msedgedriver"
 	}
 	webDriver.driver.CommandPort = "9515"
 	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=9515"}
@@ -231,9 +231,9 @@ func OperaDriver(args []string) WebDriver {
 	webDriver.driver.BrowserName = "opera"
 	webDriver.driver.Args = args
 	if runtime.GOOS == "windows" {
-		webDriver.driver.WebDriverBinary = "operadriver.exe"
+		webDriver.driver.WebDriverBinary = ".\\operadriver.exe"
 	} else {
-		webDriver.driver.WebDriverBinary = "operadriver"
+		webDriver.driver.WebDriverBinary = "./operadriver"
 	}
 	webDriver.driver.CommandPort = "9515"
 	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=9515"}
@@ -248,13 +248,13 @@ func BraveDriver(browserDirectory string, args []string, prefs map[string]interf
 	webDriver.driver.Args = args
 	webDriver.driver.Prefs = prefs
 	if runtime.GOOS == "windows" {
-		webDriver.driver.WebDriverBinary = "chromedriver.exe"
+		webDriver.driver.WebDriverBinary = ".\\chromedriver.exe"
 	} else {
-		webDriver.driver.WebDriverBinary = "chromedriver"
+		webDriver.driver.WebDriverBinary = "./chromedriver"
 	}
 	webDriver.driver.CommandPort = "9515"
 	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=9515"}
 	webDriver.driver.Url = "http://localhost:9515"
-	webDriver.driver.Binary = browserDirectory
+	webDriver.driver.WebDriverBinary = browserDirectory
 	return NewWebDriver(&webDriver)
 }
