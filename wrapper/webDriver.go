@@ -39,9 +39,7 @@ func DefineLogLevel(logLevel string) {
 	}
 }
 
-// /TODO What happen if the web driver start two times
-// /TODO Manage error
-// /TODO SetTimeout
+// Start web driver
 func (w *WebDriver) Start() error {
 	log.Info("WebDriver.Start")
 	DefineLogLevel(w.LogLevel)
@@ -69,9 +67,7 @@ func (w *WebDriver) Start() error {
 	}
 }
 
-// /TODO Stop when start not called
-// /TODO Close session when NewPage not called
-// /TODO Manage error
+// Stop service and delete session
 func (w *WebDriver) Stop() error {
 	log.Info("WebDriver.Stop")
 
@@ -102,8 +98,7 @@ func (w *WebDriver) Status() (common.DriverStatus, error) {
 	return status, err
 }
 
-// /TODO New page called before start
-// /TODO Manage error
+// Instanciate a new session to browser server
 func (w *WebDriver) NewSession() (Session, error) {
 	log.Info("WebDriver.NewSession")
 
