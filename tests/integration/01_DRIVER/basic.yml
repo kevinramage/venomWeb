@@ -1,0 +1,11 @@
+name: Navigation
+vars:
+  web:
+    driver: "{{browser}}"
+testcases:
+- name: Basic navigation
+  steps:
+  - type: web
+    action:
+      navigate:
+        url: https://www.google.fr

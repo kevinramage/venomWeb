@@ -1,0 +1,38 @@
+name: TestSuite Web
+vars:
+  web:
+    driver: "chrome"
+testcases:
+- name: Basic navigation
+  steps:
+  - type: web
+    action:
+      navigate:
+        url: https://github.com/
+  - type: web
+    action:
+      find: ".js-site-search-form input[name='q']"
+    assertions:
+    - result.find ShouldEqual 1
+  - type: web
+    action:
+      fill:
+      - find:
+          selector: ".js-site-search-form input"
+          locator: CSS
+        text: venom
+  - type: web
+    action:
+      wait: 2
+  - type: web
+    action:
+      click:
+        find:
+          selector: "#jump-to-suggestion-search-global"
+          locator: CSS
+  - type: web
+    action:
+      click:
+        find:
+          selector: "a[href='/ovh/venom']"
+          locator: CSS
