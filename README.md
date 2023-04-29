@@ -53,6 +53,30 @@ page.Navigate("https://github.com/")
 webDriver.Stop()
 ```
 
+## Compatibility
+
+Test
+
+| Driver    |  Version | OS       | Compatibility |
+| --------  | -------- | -------- | ------------- |
+| Chrome    | 112      | Windows  | :heavy_check_mark: |
+| Chrome    | 112      | Unix     | :x: Not tested |
+| Chrome    | 112      | Max OC   | :x: Not tested |
+| Gecko     | 0.33.0   | Windows  | :heavy_check_mark: |
+| Gecko     | 0.33.0   | Unix     | :x: Not tested |
+| Gecko     | 0.33.0   | Max OC   | :x: Not tested |
+| Edge      | 112      | Windows  | :heavy_check_mark: |
+| Edge      | 112      | Unix     | :x: Not tested |
+| Edge      | 112      | Max OC   | :x: Not tested |
+| Opera     | 112      | Windows  | :x: Not ready  |
+| Opera     | 112      | Unix     | :x: Not ready  |
+| Opera     | 112      | Max OC   | :x: Not ready  |
+| Brave     | 112      | Windows  | :x: Not ready  |
+| Brave     | 112      | Unix     | :x: Not ready  |
+| Brave     | 112      | Max OC   | :x: Not ready  |
+
+
+
 ## Chrome
 
 ### Installation
