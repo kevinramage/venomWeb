@@ -176,6 +176,8 @@ func ChromeDriver(browserBinary string, driverBinary string, args []string, pref
 	webDriver.driver.Binary = browserBinary
 	webDriver.driver.Args = args
 	webDriver.driver.Prefs = prefs
+
+	// Define driver binary
 	if driverBinary == "" {
 		if runtime.GOOS == "windows" {
 			webDriver.driver.WebDriverBinary = ".\\chromedriver.exe"
@@ -198,9 +200,21 @@ func GeckoDriver(browserBinary string, driverBinary string, args []string, prefs
 	log.Info("GeckoDriver.New")
 	webDriver := WebDriver{}
 	webDriver.driver.BrowserName = "firefox"
-	webDriver.driver.Binary = browserBinary
 	webDriver.driver.Args = args
 	webDriver.driver.Prefs = prefs
+
+	// Define browser binary
+	webDriver.driver.Binary = browserBinary
+	if webDriver.driver.Binary == "" {
+		log.Warn("Binary is not defned, binary must be defined for gecko browser. Execution will continue with default browser location")
+		if runtime.GOOS == "windows" {
+			webDriver.driver.Binary = "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
+		} else {
+			webDriver.driver.Binary = "/usr/bin/firefox"
+		}
+	}
+
+	// Define driver binary
 	if driverBinary == "" {
 		if runtime.GOOS == "windows" {
 			webDriver.driver.WebDriverBinary = ".\\geckodriver.exe"
@@ -226,6 +240,8 @@ func EdgeChroniumDriver(browserBinary string, driverBinary string, args []string
 	webDriver.driver.Binary = browserBinary
 	webDriver.driver.Args = args
 	webDriver.driver.Prefs = prefs
+
+	// Identify driver binary
 	if driverBinary == "" {
 		if runtime.GOOS == "windows" {
 			webDriver.driver.WebDriverBinary = ".\\msedgedriver.exe"
@@ -244,12 +260,15 @@ func EdgeChroniumDriver(browserBinary string, driverBinary string, args []string
 	return NewWebDriver(&webDriver)
 }
 
-func OperaDriver(browserBinary string, driverBinary string, args []string, port string) WebDriver {
+func OperaDriver(browserBinary string, driverBinary string, args []string, prefs map[string]interface{}, port string) WebDriver {
 	log.Info("OperaDriver.New")
 	webDriver := WebDriver{}
 	webDriver.driver.BrowserName = "opera"
 	webDriver.driver.Binary = browserBinary
 	webDriver.driver.Args = args
+	webDriver.driver.Prefs = prefs
+
+	// Identify driver binary
 	if driverBinary == "" {
 		if runtime.GOOS == "windows" {
 			webDriver.driver.WebDriverBinary = ".\\operadriver.exe"
@@ -275,6 +294,8 @@ func BraveDriver(browserBinary string, driverBinary string, args []string, prefs
 	webDriver.driver.Binary = browserBinary
 	webDriver.driver.Args = args
 	webDriver.driver.Prefs = prefs
+
+	// Identify driver binary
 	if driverBinary == "" {
 		if runtime.GOOS == "windows" {
 			webDriver.driver.WebDriverBinary = ".\\chromedriver.exe"
