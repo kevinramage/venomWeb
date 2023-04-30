@@ -166,6 +166,16 @@ func NewWebDriver(webDriver *WebDriver) WebDriver {
 	webDriver.Timeout = time.Second * 60
 	webDriver.driver.Command = webDriver.driver.WebDriverBinary
 	webDriver.api = api.New(webDriver.driver.Url)
+
+	// Avoid to avoid arguments starting and ending by "
+	if webDriver.driver.Args != nil {
+		for i, elt := range webDriver.driver.Args {
+			if len(elt) > 2 && elt[0] == '"' && elt[len(elt)-1] == '"' {
+				webDriver.driver.Args[i] = elt[1 : len(elt)-1]
+			}
+		}
+	}
+
 	return *webDriver
 }
 
