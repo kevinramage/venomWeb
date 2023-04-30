@@ -216,7 +216,7 @@ func GeckoDriver(browserBinary string, driverBinary string, args []string, prefs
 	// Define browser binary
 	webDriver.driver.Binary = browserBinary
 	if webDriver.driver.Binary == "" {
-		log.Warn("Binary is not defned, binary must be defined for gecko browser. Execution will continue with default browser location")
+		log.Warn("Binary is not defined, binary must be defined for gecko browser. Execution will continue with default browser location")
 		if runtime.GOOS == "windows" {
 			webDriver.driver.Binary = "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
 		} else {
