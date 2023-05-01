@@ -57,7 +57,7 @@ type GetTimeoutResponse struct {
 }
 
 // https://w3c.github.io/webdriver/#new-session
-func (api *WebDriverApi) CreateSession(browserName string, args []string, prefs map[string]interface{}, detach bool) (CreateSessionResponse, error) {
+func (api *WebDriverApi) CreateSession(browserName string, binary string, args []string, prefs map[string]interface{}, detach bool) (CreateSessionResponse, error) {
 
 	var resp interface{}
 	var err error
@@ -70,6 +70,9 @@ func (api *WebDriverApi) CreateSession(browserName string, args []string, prefs 
 		requestBody.Capabilities.AlwaysMatch.BrowserName = browserName
 		requestBody.Capabilities.AlwaysMatch.ChromeOptions.Args = args
 		requestBody.Capabilities.AlwaysMatch.ChromeOptions.Prefs = prefs
+		if binary != "" {
+			requestBody.Capabilities.AlwaysMatch.ChromeOptions.Binary = binary
+		}
 		if detach {
 			requestBody.Capabilities.AlwaysMatch.ChromeOptions.Detach = detach
 		}
@@ -83,6 +86,25 @@ func (api *WebDriverApi) CreateSession(browserName string, args []string, prefs 
 		requestBody.Capabilities.AlwaysMatch.BrowserName = browserName
 		requestBody.Capabilities.AlwaysMatch.FirefoxOptions.Args = args
 		requestBody.Capabilities.AlwaysMatch.FirefoxOptions.Prefs = prefs
+		if binary != "" {
+			requestBody.Capabilities.AlwaysMatch.FirefoxOptions.Binary = binary
+		}
+		resp, err = ProceedPostRequest(*api, "session", requestBody)
+
+		// Brave
+	} else if browserName == "brave" {
+
+		requestBody := common.ChromeWebDriverSession{}
+		requestBody.Capabilities.AlwaysMatch.AcceptInsecureCerts = true
+		requestBody.Capabilities.AlwaysMatch.BrowserName = "chrome"
+		requestBody.Capabilities.AlwaysMatch.ChromeOptions.Args = args
+		requestBody.Capabilities.AlwaysMatch.ChromeOptions.Prefs = prefs
+		if binary != "" {
+			requestBody.Capabilities.AlwaysMatch.ChromeOptions.Binary = binary
+		}
+		if detach {
+			requestBody.Capabilities.AlwaysMatch.ChromeOptions.Detach = detach
+		}
 		resp, err = ProceedPostRequest(*api, "session", requestBody)
 
 	} else if browserName == "msedge" {
@@ -92,6 +114,9 @@ func (api *WebDriverApi) CreateSession(browserName string, args []string, prefs 
 		requestBody.Capabilities.AlwaysMatch.BrowserName = browserName
 		requestBody.Capabilities.AlwaysMatch.EdgeOptions.Args = args
 		requestBody.Capabilities.AlwaysMatch.EdgeOptions.Prefs = prefs
+		if binary != "" {
+			requestBody.Capabilities.AlwaysMatch.EdgeOptions.Binary = binary
+		}
 		resp, err = ProceedPostRequest(*api, "session", requestBody)
 	}
 

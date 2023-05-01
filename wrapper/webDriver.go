@@ -39,9 +39,7 @@ func DefineLogLevel(logLevel string) {
 	}
 }
 
-///TODO What happen if the web driver start two times
-///TODO Manage error
-///TODO SetTimeout
+// Start web driver
 func (w *WebDriver) Start() error {
 	log.Info("WebDriver.Start")
 	DefineLogLevel(w.LogLevel)
@@ -69,9 +67,7 @@ func (w *WebDriver) Start() error {
 	}
 }
 
-///TODO Stop when start not called
-///TODO Close session when NewPage not called
-///TODO Manage error
+// Stop service and delete session
 func (w *WebDriver) Stop() error {
 	log.Info("WebDriver.Stop")
 
@@ -102,8 +98,7 @@ func (w *WebDriver) Status() (common.DriverStatus, error) {
 	return status, err
 }
 
-///TODO New page called before start
-///TODO Manage error
+// Instanciate a new session to browser server
 func (w *WebDriver) NewSession() (Session, error) {
 	log.Info("WebDriver.NewSession")
 
@@ -112,7 +107,7 @@ func (w *WebDriver) NewSession() (Session, error) {
 	w.defineProxy()
 
 	// Create session
-	_, err := w.api.CreateSession(w.driver.BrowserName, w.driver.Args, w.driver.Prefs, w.Detach)
+	_, err := w.api.CreateSession(w.driver.BrowserName, w.driver.Binary, w.driver.Args, w.driver.Prefs, w.Detach)
 	if err != nil {
 		err = errors.Wrapf(err, "an error occured during create session action")
 		log.Error(err)
@@ -171,72 +166,160 @@ func NewWebDriver(webDriver *WebDriver) WebDriver {
 	webDriver.Timeout = time.Second * 60
 	webDriver.driver.Command = webDriver.driver.WebDriverBinary
 	webDriver.api = api.New(webDriver.driver.Url)
+
+	// Avoid to avoid arguments starting and ending by "
+	if webDriver.driver.Args != nil {
+		for i, elt := range webDriver.driver.Args {
+			if len(elt) > 2 && elt[0] == '"' && elt[len(elt)-1] == '"' {
+				webDriver.driver.Args[i] = elt[1 : len(elt)-1]
+			}
+		}
+	}
+
 	return *webDriver
 }
 
-func ChromeDriver(args []string, prefs map[string]interface{}) WebDriver {
+func ChromeDriver(browserBinary string, driverBinary string, args []string, prefs map[string]interface{}, port string) WebDriver {
 	log.Info("ChromeDriver.New")
 	webDriver := WebDriver{}
 	webDriver.driver.BrowserName = "chrome"
+	webDriver.driver.Binary = browserBinary
 	webDriver.driver.Args = args
 	webDriver.driver.Prefs = prefs
-	if runtime.GOOS == "windows" {
-		webDriver.driver.WebDriverBinary = "chromedriver.exe"
+
+	// Define driver binary
+	if driverBinary == "" {
+		if runtime.GOOS == "windows" {
+			webDriver.driver.WebDriverBinary = ".\\chromedriver.exe"
+		} else {
+			webDriver.driver.WebDriverBinary = "./chromedriver"
+		}
 	} else {
-		webDriver.driver.WebDriverBinary = "chromedriver"
+		webDriver.driver.WebDriverBinary = driverBinary
 	}
-	webDriver.driver.CommandPort = "9515"
-	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=9515"}
-	webDriver.driver.Url = "http://localhost:9515"
+	if port == "" {
+		port = "9515"
+	}
+	webDriver.driver.CommandPort = port
+	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=" + port}
+	webDriver.driver.Url = "http://localhost:" + port
 	return NewWebDriver(&webDriver)
 }
 
-func GeckoDriver(args []string, prefs map[string]interface{}) WebDriver {
+func GeckoDriver(browserBinary string, driverBinary string, args []string, prefs map[string]interface{}, port string) WebDriver {
 	log.Info("GeckoDriver.New")
 	webDriver := WebDriver{}
 	webDriver.driver.BrowserName = "firefox"
 	webDriver.driver.Args = args
 	webDriver.driver.Prefs = prefs
-	if runtime.GOOS == "windows" {
-		webDriver.driver.WebDriverBinary = "geckodriver.exe"
-	} else {
-		webDriver.driver.WebDriverBinary = "geckodriver"
+
+	// Define browser binary
+	webDriver.driver.Binary = browserBinary
+	if webDriver.driver.Binary == "" {
+		log.Warn("Binary is not defined, binary must be defined for gecko browser. Execution will continue with default browser location")
+		if runtime.GOOS == "windows" {
+			webDriver.driver.Binary = "C:\\Program Files\\Mozilla Firefox\\firefox.exe"
+		} else {
+			webDriver.driver.Binary = "/usr/bin/firefox"
+		}
 	}
-	webDriver.driver.CommandPort = "4444"
-	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=4444"}
-	webDriver.driver.Url = "http://localhost:4444"
+
+	// Define driver binary
+	if driverBinary == "" {
+		if runtime.GOOS == "windows" {
+			webDriver.driver.WebDriverBinary = ".\\geckodriver.exe"
+		} else {
+			webDriver.driver.WebDriverBinary = "./geckodriver"
+		}
+	} else {
+		webDriver.driver.WebDriverBinary = driverBinary
+	}
+	if port == "" {
+		port = "4444"
+	}
+	webDriver.driver.CommandPort = port
+	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=" + port}
+	webDriver.driver.Url = "http://localhost:" + port
 	return NewWebDriver(&webDriver)
 }
 
-func EdgeChroniumDriver(args []string, prefs map[string]interface{}) WebDriver {
+func EdgeChroniumDriver(browserBinary string, driverBinary string, args []string, prefs map[string]interface{}, port string) WebDriver {
 	log.Info("EdgeChroniumDriver.New")
 	webDriver := WebDriver{}
 	webDriver.driver.BrowserName = "msedge"
+	webDriver.driver.Binary = browserBinary
 	webDriver.driver.Args = args
 	webDriver.driver.Prefs = prefs
-	if runtime.GOOS == "windows" {
-		webDriver.driver.WebDriverBinary = "msedgedriver.exe"
+
+	// Identify driver binary
+	if driverBinary == "" {
+		if runtime.GOOS == "windows" {
+			webDriver.driver.WebDriverBinary = ".\\msedgedriver.exe"
+		} else {
+			webDriver.driver.WebDriverBinary = "./msedgedriver"
+		}
 	} else {
-		webDriver.driver.WebDriverBinary = "msedgedriver"
+		webDriver.driver.WebDriverBinary = driverBinary
 	}
-	webDriver.driver.CommandPort = "9515"
-	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=9515"}
-	webDriver.driver.Url = "http://localhost:9515"
+	if port == "" {
+		port = "9515"
+	}
+	webDriver.driver.CommandPort = port
+	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=" + port}
+	webDriver.driver.Url = "http://localhost:" + port
 	return NewWebDriver(&webDriver)
 }
 
-func OperaDriver(args []string) WebDriver {
+func OperaDriver(browserBinary string, driverBinary string, args []string, prefs map[string]interface{}, port string) WebDriver {
 	log.Info("OperaDriver.New")
 	webDriver := WebDriver{}
 	webDriver.driver.BrowserName = "opera"
+	webDriver.driver.Binary = browserBinary
 	webDriver.driver.Args = args
-	if runtime.GOOS == "windows" {
-		webDriver.driver.WebDriverBinary = "operadriver.exe"
+	webDriver.driver.Prefs = prefs
+
+	// Identify driver binary
+	if driverBinary == "" {
+		if runtime.GOOS == "windows" {
+			webDriver.driver.WebDriverBinary = ".\\operadriver.exe"
+		} else {
+			webDriver.driver.WebDriverBinary = "./operadriver"
+		}
 	} else {
-		webDriver.driver.WebDriverBinary = "operadriver"
+		webDriver.driver.WebDriverBinary = driverBinary
 	}
-	webDriver.driver.CommandPort = "9515"
-	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=9515"}
-	webDriver.driver.Url = "http://localhost:9515"
+	if port == "" {
+		port = "9515"
+	}
+	webDriver.driver.CommandPort = port
+	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=" + port}
+	webDriver.driver.Url = "http://localhost:" + port
+	return NewWebDriver(&webDriver)
+}
+
+func BraveDriver(browserBinary string, driverBinary string, args []string, prefs map[string]interface{}, port string) WebDriver {
+	log.Info("Brave.New")
+	webDriver := WebDriver{}
+	webDriver.driver.BrowserName = "brave"
+	webDriver.driver.Binary = browserBinary
+	webDriver.driver.Args = args
+	webDriver.driver.Prefs = prefs
+
+	// Identify driver binary
+	if driverBinary == "" {
+		if runtime.GOOS == "windows" {
+			webDriver.driver.WebDriverBinary = ".\\chromedriver.exe"
+		} else {
+			webDriver.driver.WebDriverBinary = "./chromedriver"
+		}
+	} else {
+		webDriver.driver.WebDriverBinary = driverBinary
+	}
+	if port == "" {
+		port = "9515"
+	}
+	webDriver.driver.CommandPort = port
+	webDriver.driver.CommandLineArgs = []string{"--log=WARN", "--port=" + port}
+	webDriver.driver.Url = "http://localhost:" + port
 	return NewWebDriver(&webDriver)
 }

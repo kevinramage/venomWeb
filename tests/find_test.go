@@ -10,7 +10,7 @@ import (
 func TestFindCSSSelector(t *testing.T) {
 	os.Setenv("GO_TEST", "true")
 	prefs := make(map[string]interface{})
-	webDriver := venomWeb.ChromeDriver([]string{"headless"}, prefs)
+	webDriver := venomWeb.ChromeDriver("", "", []string{"headless"}, prefs, "")
 	err := webDriver.Start()
 	if err != nil {
 		t.Fatalf("Impossible to start chrome driver: %s", err)
