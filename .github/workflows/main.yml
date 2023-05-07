@@ -4,6 +4,12 @@ jobs:
   runIntegrationTests:
     runs-on: ubuntu-latest
     steps:
-      - uses: logikal-io/install-chrome@v1
+      - uses: actions/checkout@v3
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.15'
+      - name: Set up Chrome
+        uses: logikal-io/install-chrome@v1
         with:
           version: 113.0.5672.63-1
