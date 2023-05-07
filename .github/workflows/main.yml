@@ -31,5 +31,5 @@ jobs:
           mv dist/venom.linux-amd64 ../../../venomWeb/venom
           cd ../../../venomWeb
           ls -la
-          venom --format=xml run venomWeb/tests/chrome/core.yml
+          ./venom --format=xml run venomWeb/tests/chrome/core.yml
           ls -la $GOROOT
