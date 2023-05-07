@@ -4,4 +4,6 @@ jobs:
   runIntegrationTests:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Test"
+      - uses: logikal-io/install-chrome@v1
+        with:
+          version: 112
