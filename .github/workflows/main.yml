@@ -2,7 +2,10 @@ name: Integration tests
 on: [push]
 jobs:
   runIntegrationTests:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Set up Go
         uses: actions/setup-go@v4
@@ -24,14 +27,13 @@ jobs:
           path: venom
       - name: Build venom
         run: |
-          echo $GOROOT
+          echo ${{ matrix.version }}
           cd venom/cmd/venom
           go version
           make build OS=linux ARCH=amd64
           mv dist/venom.linux-amd64 ../../../venomWeb/venom
           cd ../../../venomWeb
           cp /opt/chromedriver/chromedriver .
-          ls -la
           ./venom --format=xml run tests/chrome/core.yml
           echo $?
           ls -la $GOROOT

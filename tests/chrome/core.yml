@@ -15,7 +15,7 @@ testcases:
         url: https://github.com/
   - type: web
     action:
-      find: ".js-site-search-form input[name='qa']"
+      find: ".js-site-search-form input[name='q']"
     assertions:
     - result.find ShouldEqual 1
   - type: web
