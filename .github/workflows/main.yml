@@ -28,8 +28,8 @@ jobs:
           cd venom/cmd/venom
           go version
           make build
-          mv dist/venom.linux-amd64 ../../../venom
-          cd ../../..
+          mv dist/venom.linux-amd64 ../../../venomWeb/venom
+          cd ../../../venomWeb
           ls -la
           venom --format=xml run venomWeb/tests/chrome/core.yml
           ls -la $GOROOT
