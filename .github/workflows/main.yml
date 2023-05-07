@@ -6,4 +6,4 @@ jobs:
     steps:
       - uses: logikal-io/install-chrome@v1
         with:
-          version: 112
+          version: 113.0.5672.63-1
