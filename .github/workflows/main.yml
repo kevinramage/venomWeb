@@ -1,0 +1,7 @@
+name: Integration tests
+on: [push]
+jobs:
+  runIntegrationTests:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Test"
