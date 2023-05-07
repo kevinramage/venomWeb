@@ -14,11 +14,13 @@ jobs:
           version: 113.0.5672.63-1
       - name: Set up venom web
         uses: actions/checkout@v3
-        path: venomWeb
+        with:
+          path: venomWeb
       - name: Set up venom
         uses: actions/checkout@v3
-        repository: ovh/venom
-        path: venom
+        with:
+          repository: ovh/venom
+          path: venom
       - run: |
           ls -la
           echo $GOROOT
