@@ -27,7 +27,7 @@ jobs:
           echo $GOROOT
           cd venom/cmd/venom
           go version
-          make build
+          make build OS=linux ARCH=amd64
           mv dist/venom.linux-amd64 ../../../venomWeb/venom
           cd ../../../venomWeb
           ls -la
