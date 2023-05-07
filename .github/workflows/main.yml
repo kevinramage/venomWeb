@@ -27,7 +27,7 @@ jobs:
           echo $GOROOT
           cd venom/cmd/venom
           go version
-          go build
+          make build
           mv venom ../../..
       - name: Run test
         run: |
