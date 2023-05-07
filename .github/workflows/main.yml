@@ -7,7 +7,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.20'
+          go-version: '1.20.3'
       - name: Set up Chrome
         uses: logikal-io/install-chrome@v1
         with:
@@ -22,10 +22,14 @@ jobs:
           repository: ovh/venom
           ref: v1.2.0-beta.1
           path: venom
-      - run: |
+      - name: Build venom
+        run: |
           echo $GOROOT
           cd venom/cmd/venom
+          go version
           go build
           mv venom ../../..
+      - name: Run test
+        run: |
           venom --format=xml run venomWeb/tests/chrome/core.yml
           ls -la $GOROOT
