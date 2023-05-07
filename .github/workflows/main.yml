@@ -22,8 +22,8 @@ jobs:
           repository: ovh/venom
           path: venom
       - run: |
-          ls -la
           echo $GOROOT
           cd venom/cmd/venom
           go build
-          ls -la
+          mv venom ../../..
+          venom --format=xml run venomWeb/tests/core.yml
