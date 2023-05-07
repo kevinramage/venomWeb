@@ -28,7 +28,7 @@ jobs:
           cd venom/cmd/venom
           go version
           make build
-          mv venom ../../..
+          mv dist/venom.linux-amd64 ../../../venom
       - name: Run test
         run: |
           venom --format=xml run venomWeb/tests/chrome/core.yml
