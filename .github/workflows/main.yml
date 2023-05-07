@@ -30,7 +30,6 @@ jobs:
           make build
           mv dist/venom.linux-amd64 ../../../venom
           cd ../../..
-      - name: Run test
-        run: |
+          ls -la
           venom --format=xml run venomWeb/tests/chrome/core.yml
           ls -la $GOROOT
