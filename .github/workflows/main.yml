@@ -12,7 +12,7 @@ jobs:
         with:
           go-version: '1.20.3'
       - name: Set up Chrome
-        uses: kevinramage/browsersActions@develop/setup-chrome
+        uses: kevinramage/browsersActions/setup-chrome@develop
         with:
           version: 112
       - name: Set up venom web
