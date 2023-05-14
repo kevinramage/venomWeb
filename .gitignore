@@ -13,3 +13,5 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+/.github/actions/setup-chrome/node_modules
+/.github/actions/setup-chromedriver/node_modules

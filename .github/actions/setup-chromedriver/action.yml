@@ -1,0 +1,13 @@
+name: 'Setup Chrome Driver'
+description: 'Install Google Chrome driver'
+author: "Kevin RAMAGE"
+inputs:
+  version:
+    description: Chromedriver version to install
+    required: true
+outputs:
+  path:
+    description: 'The browser location'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
