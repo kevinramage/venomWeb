@@ -7290,7 +7290,7 @@ class Install {
             core.info(`Install to unix system: ${archivePath}`);
             try {
                 // Unarchive
-                yield exec.exec("unzip", ["-d", "/opt/chromedriver", archivePath]);
+                yield exec.exec("unzip", ["-d", "/opt/chromedriver", "-j", archivePath]);
                 // Remove archive
                 yield fs_1.default.promises.unlink(archivePath);
                 // Rename folder

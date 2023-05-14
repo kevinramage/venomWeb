@@ -50,7 +50,7 @@ export class Install {
 
             try {
                 // Unarchive
-                await exec.exec("unzip", ["-d", "/opt/chromedriver", archivePath])
+                await exec.exec("unzip", ["-d", "/opt/chromedriver", "-j", archivePath])
 
                 // Remove archive
                 await fs.promises.unlink(archivePath);
