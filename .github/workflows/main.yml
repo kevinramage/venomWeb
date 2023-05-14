@@ -11,6 +11,11 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: develop-tests
+      - name:
+        run: |
+          ls -la /home/runner/work/venomWeb/venomWeb
+          ls -la /home/runner/work/venomWeb/venomWeb/.github/actions/setup-chrome
+          ls -la /home/runner/work/venomWeb/venomWeb/.github/actions/setup-chrome/lib 
       - name: Setup Go
         uses: actions/setup-go@v4
         with:
