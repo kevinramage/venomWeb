@@ -39,8 +39,7 @@ jobs:
           mv dist/venom.linux-amd64 ../../../venomWeb/venom
           cd ../../../venomWeb
           netstat -ltnup
-          ls -la /home
-          ls -la /usr
+          ls -la /home/runner
           cp /opt/chromedriver/chromedriver ./chromedriver
           ./venom --format=xml run tests/chrome/core.yml
           echo $?
