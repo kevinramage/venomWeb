@@ -7293,10 +7293,12 @@ class Install {
                 yield exec.exec("unzip", ["-d", "/opt/chrome", archivePath]);
                 // Remove archive
                 yield fs_1.default.promises.unlink(archivePath);
+                // Rename folder
+                yield fs_1.default.promises.rename("/opt/chrome/chrome-linux", "/opt/chrome/chrome");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
                 //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
-                core.addPath("/opt/chrome/chrome-linux");
+                core.addPath("/opt/chrome/chrome");
                 resolve();
             }
             catch (err) {
@@ -7313,10 +7315,12 @@ class Install {
                 yield exec.exec("unzip", ["-d", "/opt/chrome", archivePath]);
                 // Remove archive
                 yield fs_1.default.promises.unlink(archivePath);
+                // Rename folder
+                yield fs_1.default.promises.rename("/opt/chrome/chrome-mac", "/opt/chrome/chrome");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
                 //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
-                core.addPath("/opt/chrome/chrome-mac");
+                core.addPath("/opt/chrome/chrome");
                 resolve();
             }
             catch (err) {
@@ -7334,10 +7338,12 @@ class Install {
                 yield exec.exec("7z", ["x", archivePath, `-o${destination}`]);
                 // Remove archive
                 yield fs_1.default.promises.unlink(archivePath);
+                // Rename folder
+                yield fs_1.default.promises.rename("/opt/chrome/chrome-win", "/opt/chrome/chrome");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
                 //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
-                core.addPath(`{destination}\\chrome-win`);
+                core.addPath(`{destination}\\chrome`);
                 resolve();
             }
             catch (err) {

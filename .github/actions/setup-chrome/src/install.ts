@@ -55,10 +55,13 @@ export class Install {
                 // Remove archive
                 await fs.promises.unlink(archivePath);
 
+                // Rename folder
+                await fs.promises.rename("/opt/chrome/chrome-linux", "/opt/chrome/chrome");
+
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
                 //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
-                core.addPath("/opt/chrome/chrome-linux")
+                core.addPath("/opt/chrome/chrome")
                 resolve();
 
             } catch (err) {
@@ -79,10 +82,13 @@ export class Install {
                 // Remove archive
                 await fs.promises.unlink(archivePath);
 
+                // Rename folder
+                await fs.promises.rename("/opt/chrome/chrome-mac", "/opt/chrome/chrome");
+
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
                 //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
-                core.addPath("/opt/chrome/chrome-mac")
+                core.addPath("/opt/chrome/chrome")
                 resolve();
 
             } catch (err) {
@@ -104,10 +110,13 @@ export class Install {
                 // Remove archive
                 await fs.promises.unlink(archivePath);
 
+                // Rename folder
+                await fs.promises.rename("/opt/chrome/chrome-win", "/opt/chrome/chrome");
+
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
                 //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
-                core.addPath(`{destination}\\chrome-win`)
+                core.addPath(`{destination}\\chrome`)
                 resolve();
 
             } catch (err) {
