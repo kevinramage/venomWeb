@@ -38,7 +38,9 @@ jobs:
           make build OS=linux ARCH=amd64
           mv dist/venom.linux-amd64 ../../../venomWeb/venom
           cd ../../../venomWeb
-          ps -ef
+          netstat -ltnup
+          ls -la /home
+          ls -la /usr
           cp /opt/chromedriver/chromedriver ./chromedriver
           ./venom --format=xml run tests/chrome/core.yml
           echo $?
