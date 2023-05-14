@@ -7290,7 +7290,7 @@ class Install {
             core.info(`Install to unix system: ${archivePath}`);
             try {
                 // Unarchive
-                yield exec.exec("tar", ["-xvf", archivePath, "-C", "/opt/chrome"]);
+                yield exec.exec("unzip", ["-d", "/opt/chrome", archivePath]);
                 // Remove archive
                 yield fs_1.default.promises.unlink(archivePath);
                 // Add chrome to path

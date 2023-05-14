@@ -50,7 +50,7 @@ export class Install {
 
             try {
                 // Unarchive
-                await exec.exec("tar", ["-xvf", archivePath, "-C", "/opt/chrome"])
+                await exec.exec("unzip", ["-d", "/opt/chrome", archivePath])
 
                 // Remove archive
                 await fs.promises.unlink(archivePath);
