@@ -32,17 +32,13 @@ jobs:
           path: venom
       - name: Build venom
         run: |
-          echo ${{ matrix.version }}
+          venomDir=$(ls -d /home/runner/go/pkg/mod/github.com/kevinramage/*)
+          cp venomWeb/* $venomDir
           cd venom/cmd/venom
-          go version
           make build OS=linux ARCH=amd64
           mv dist/venom.linux-amd64 ../../../venomWeb/venom
+
           cd ../../../venomWeb
-          netstat -ltnup
-          ls -la /home/runner/go/pkg/mod/github.com/kevinramage
-          venomDir=$(ls -d /home/runner/go/pkg/mod/github.com/kevinramage/*)
-          echo $venomDir
           cp /opt/chromedriver/chromedriver ./chromedriver
-          ./venom --format=xml run tests/chrome/core.yml
+          ./venom -vvv --format=xml run tests/chrome/core.yml
           echo $?
-          ls -la $GOROOT
