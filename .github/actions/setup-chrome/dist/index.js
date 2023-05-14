@@ -7296,7 +7296,48 @@ class Install {
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
                 //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
-                core.addPath("/opt/chrome/chrome-linux/chrome");
+                core.addPath("/opt/chrome/chrome-linux");
+                resolve();
+            }
+            catch (err) {
+                core.error(`An error occured during installation: ${err}`);
+                reject(err);
+            }
+        }));
+    }
+    installDarwin(archivePath) {
+        return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+            core.info(`Install to darwin system: ${archivePath}`);
+            try {
+                // Unarchive
+                yield exec.exec("unzip", ["-d", "/opt/chrome", archivePath]);
+                // Remove archive
+                yield fs_1.default.promises.unlink(archivePath);
+                // Add chrome to path
+                core.info(`Add chrome binary to path`);
+                //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
+                core.addPath("/opt/chrome/chrome-mac");
+                resolve();
+            }
+            catch (err) {
+                core.error(`An error occured during installation: ${err}`);
+                reject(err);
+            }
+        }));
+    }
+    installWindows(archivePath, plateform) {
+        return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+            core.info(`Install to windows system: ${archivePath}`);
+            try {
+                // Unarchive
+                const destination = plateform.getArchitecture() == plateform_1.ARCHITECTURE_TYPE.AMD64 ? "C:\\Program Files" : "C:\\Program Files (x86)";
+                yield exec.exec("7z", ["x", archivePath, `-o${destination}`]);
+                // Remove archive
+                yield fs_1.default.promises.unlink(archivePath);
+                // Add chrome to path
+                core.info(`Add chrome binary to path`);
+                //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
+                core.addPath(`{destination}\\chrome-win`);
                 resolve();
             }
             catch (err) {
@@ -7311,9 +7352,17 @@ class Install {
             try {
                 // Download version
                 const archivePath = yield this.downloadSetup(version, plateform);
-                // Install binary
+                // Install binary (Unix)
                 if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.LINUX) {
                     yield this.installUnix(archivePath);
+                    // Install binary (Mac)
+                }
+                else if (plateform.getArchitecture() == plateform_1.SYSTEM_TYPE.DARWIN) {
+                    yield this.installDarwin(archivePath);
+                    // Install binary (Windows)
+                }
+                else if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.WINDOWS) {
+                    yield this.installWindows(archivePath, plateform);
                 }
                 resolve();
             }

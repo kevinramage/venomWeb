@@ -58,7 +58,56 @@ export class Install {
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
                 //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
-                core.addPath("/opt/chrome/chrome-linux/chrome")
+                core.addPath("/opt/chrome/chrome-linux")
+                resolve();
+
+            } catch (err) {
+                core.error(`An error occured during installation: ${err}`);
+                reject(err);
+            }
+        });
+    }
+
+    private installDarwin(archivePath: string) {
+        return new Promise<void>(async (resolve, reject) => {
+            core.info(`Install to darwin system: ${archivePath}`);
+
+            try {
+                // Unarchive
+                await exec.exec("unzip", ["-d", "/opt/chrome", archivePath])
+
+                // Remove archive
+                await fs.promises.unlink(archivePath);
+
+                // Add chrome to path
+                core.info(`Add chrome binary to path`);
+                //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
+                core.addPath("/opt/chrome/chrome-mac")
+                resolve();
+
+            } catch (err) {
+                core.error(`An error occured during installation: ${err}`);
+                reject(err);
+            }
+        });
+    }
+
+    private installWindows(archivePath: string, plateform: Plateform) {
+        return new Promise<void>(async (resolve, reject) => {
+            core.info(`Install to windows system: ${archivePath}`);
+
+            try {
+                // Unarchive
+                const destination = plateform.getArchitecture() == ARCHITECTURE_TYPE.AMD64 ? "C:\\Program Files" : "C:\\Program Files (x86)"
+                await exec.exec("7z", ["x", archivePath, `-o${destination}`])
+
+                // Remove archive
+                await fs.promises.unlink(archivePath);
+
+                // Add chrome to path
+                core.info(`Add chrome binary to path`);
+                //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
+                core.addPath(`{destination}\\chrome-win`)
                 resolve();
 
             } catch (err) {
@@ -76,9 +125,15 @@ export class Install {
                 // Download version
                 const archivePath = await this.downloadSetup(version, plateform);
 
-                // Install binary
+                // Install binary (Unix)
                 if (plateform.getSystem() == SYSTEM_TYPE.LINUX) {
                     await this.installUnix(archivePath);
+                // Install binary (Mac)
+                } else if (plateform.getArchitecture() == SYSTEM_TYPE.DARWIN) {
+                    await this.installDarwin(archivePath);
+                // Install binary (Windows)
+                } else if (plateform.getSystem() == SYSTEM_TYPE.WINDOWS) {
+                    await this.installWindows(archivePath, plateform);
                 }
 
                 resolve();
