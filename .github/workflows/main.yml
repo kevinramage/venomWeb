@@ -7,19 +7,19 @@ jobs:
         os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Set up Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: '1.20.3'
-      - name: Set up Chrome
-        uses: kevinramage/browsersActions/setup-chrome@develop
-        with:
-          version: 112
-      - name: Set up venom web
+      - name: Setup venom web
         uses: actions/checkout@v3
         with:
           path: venomWeb
-      - name: Set up venom
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.20.3'
+      - name: Setup Chrome
+        uses: venomWeb/.github/actions/setup-chrome@develop
+        with:
+          version: 112
+      - name: Setup venom
         uses: actions/checkout@v3
         with:
           repository: ovh/venom
