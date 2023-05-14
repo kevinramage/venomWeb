@@ -14,6 +14,8 @@ jobs:
       - name:
         run: |
           ls -la /home/runner/work/venomWeb/venomWeb
+          ls -la /home/runner/work/venomWeb/venomWeb/.github/
+          ls -la /home/runner/work/venomWeb/venomWeb/.github/actions
           ls -la /home/runner/work/venomWeb/venomWeb/.github/actions/setup-chrome
           ls -la /home/runner/work/venomWeb/venomWeb/.github/actions/setup-chrome/lib 
       - name: Setup Go
