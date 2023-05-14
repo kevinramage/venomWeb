@@ -35,7 +35,7 @@ export class Install {
             core.info(`Download setup for version ${version} and plateform ${plateform.getSystem()} - ${plateform.getArchitecture()}`)
             const url = this.getDownloadUrl(version, plateform);
             try {
-                const archivePath = await tc.downloadTool(url, os.tmpdir());
+                const archivePath = await tc.downloadTool(url);
                 resolve(archivePath);
             } catch (err) {
                 core.error(`An error during download setup: ${err}`)

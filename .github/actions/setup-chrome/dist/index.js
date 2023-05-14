@@ -7241,7 +7241,6 @@ exports.Install = void 0;
 const tc = __importStar(__nccwpck_require__(7784));
 const exec = __importStar(__nccwpck_require__(1514));
 const core = __importStar(__nccwpck_require__(2186));
-const os_1 = __importDefault(__nccwpck_require__(2037));
 const fs_1 = __importDefault(__nccwpck_require__(7147));
 const plateform_1 = __nccwpck_require__(7413);
 class Install {
@@ -7277,7 +7276,7 @@ class Install {
             core.info(`Download setup for version ${version} and plateform ${plateform.getSystem()} - ${plateform.getArchitecture()}`);
             const url = this.getDownloadUrl(version, plateform);
             try {
-                const archivePath = yield tc.downloadTool(url, os_1.default.tmpdir());
+                const archivePath = yield tc.downloadTool(url);
                 resolve(archivePath);
             }
             catch (err) {
