@@ -50,18 +50,18 @@ export class Install {
 
             try {
                 // Unarchive
-                await exec.exec("unzip", ["-d", "/opt/chrome", archivePath])
+                await exec.exec("unzip", ["-d", "/opt/chromedriver", archivePath])
 
                 // Remove archive
                 await fs.promises.unlink(archivePath);
 
                 // Rename folder
-                await fs.promises.rename("/opt/chrome/chromedriver_linux64", "/opt/chrome/chromedriver");
+                await fs.promises.rename("/opt/chromedriver/chromedriver_linux64", "/opt/chromedriver/chromedriver");
 
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
                 //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
-                core.addPath("/opt/chrome/chromedriver")
+                core.addPath("/opt/chromedriver/chromedriver")
                 resolve();
 
             } catch (err) {
@@ -77,18 +77,18 @@ export class Install {
 
             try {
                 // Unarchive
-                await exec.exec("unzip", ["-d", "/opt/chrome", archivePath])
+                await exec.exec("unzip", ["-d", "/opt/chromedriver", archivePath])
 
                 // Remove archive
                 await fs.promises.unlink(archivePath);
 
                 // Rename folder
-                await fs.promises.rename("/opt/chrome/chromedriver_mac64", "/opt/chrome/chromedriver");
+                await fs.promises.rename("/opt/chromedriver/chromedriver_mac64", "/opt/chromedriver/chromedriver");
 
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
                 //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
-                core.addPath("/opt/chrome/chromedriver")
+                core.addPath("/opt/chromedriver/chromedriver")
                 resolve();
 
             } catch (err) {
@@ -111,7 +111,7 @@ export class Install {
                 await fs.promises.unlink(archivePath);
 
                 // Rename folder
-                await fs.promises.rename("/opt/chrome/chromedriver_win32", "/opt/chrome/chromedriver");
+                await fs.promises.rename("/opt/chromedriver/chromedriver_win32", "/opt/chromedriver/chromedriver");
 
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
