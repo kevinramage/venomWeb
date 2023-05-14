@@ -10,4 +10,4 @@ outputs:
     description: 'The browser location'
 runs:
   using: 'node16'
-  main: 'lib/index.js'
+  main: 'dist/index.js'
