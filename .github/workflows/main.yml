@@ -33,7 +33,10 @@ jobs:
       - name: Build venom
         run: |
           venomDir=$(ls -d /home/runner/go/pkg/mod/github.com/kevinramage/*)
-          cp venomWeb/* $venomDir
+          echo test
+          echo $venomDir
+          echo test
+          cp -r -f venomWeb/* $venomDir
           cd venom/cmd/venom
           make build OS=linux ARCH=amd64
           mv dist/venom.linux-amd64 ../../../venomWeb/venom
