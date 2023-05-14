@@ -7294,11 +7294,11 @@ class Install {
                 // Remove archive
                 yield fs_1.default.promises.unlink(archivePath);
                 // Rename folder
-                yield fs_1.default.promises.rename("/opt/chromedriver/chromedriver_linux64", "/opt/chromedriver/chromedriver");
+                yield fs_1.default.promises.rename("/opt/chromedriver_linux64", "/opt/chromedriver");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
                 //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
-                core.addPath("/opt/chromedriver/chromedriver");
+                core.addPath("/opt/chromedriver");
                 resolve();
             }
             catch (err) {
@@ -7312,15 +7312,15 @@ class Install {
             core.info(`Install to darwin system: ${archivePath}`);
             try {
                 // Unarchive
-                yield exec.exec("unzip", ["-d", "/opt/chromedriver", archivePath]);
+                yield exec.exec("unzip", ["-d", "/opt/chromedriver", "-j", archivePath]);
                 // Remove archive
                 yield fs_1.default.promises.unlink(archivePath);
                 // Rename folder
-                yield fs_1.default.promises.rename("/opt/chromedriver/chromedriver_mac64", "/opt/chromedriver/chromedriver");
+                yield fs_1.default.promises.rename("/opt/chromedriver_mac64", "/opt/chromedriver");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
                 //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
-                core.addPath("/opt/chromedriver/chromedriver");
+                core.addPath("/opt/chromedriver");
                 resolve();
             }
             catch (err) {
