@@ -1,0 +1,13 @@
+name: 'Setup Chrome'
+description: 'Install Google Chrome'
+author: "Kevin RAMAGE"
+inputs:
+  version:
+    description: Chrome version to install
+    required: true
+outputs:
+  path:
+    description: 'The browser location'
+runs:
+  using: 'node16'
+  main: 'index.js'
