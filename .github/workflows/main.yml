@@ -12,21 +12,16 @@ jobs:
         with:
           path: venomWeb
           ref: develop-tests
-      - name:
-        run: |
-          ls -la /home/runner/work/
-          ls -la /home/runner/work/venomWeb
-          ls -la /home/runner/work/venomWeb/venomWeb
-          ls -la /home/runner/work/venomWeb/venomWeb/venomWeb/.github/
-          ls -la /home/runner/work/venomWeb/venomWeb/venomWeb/.github/actions
-          ls -la /home/runner/work/venomWeb/venomWeb/venomWeb/.github/actions/setup-chrome
-          ls -la /home/runner/work/venomWeb/venomWeb/venomWeb/.github/actions/setup-chrome/dist 
       - name: Setup Go
         uses: actions/setup-go@v4
         with:
           go-version: '1.20.3'
       - name: Setup Chrome
         uses: ./venomWeb/.github/actions/setup-chrome
+        with:
+          version: 112
+      - name: Setup Chrome Driver
+        uses: ./venomWeb/.github/actions/setup-chromedriver
         with:
           version: 112
       - name: Setup venom
