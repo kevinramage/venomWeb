@@ -7294,7 +7294,7 @@ class Install {
                 // Remove archive
                 yield fs_1.default.promises.unlink(archivePath);
                 // Rename folder
-                yield fs_1.default.promises.rename("/opt/chrome/chromedriver-linux", "/opt/chrome/chromedriver");
+                yield fs_1.default.promises.rename("/opt/chrome/chromedriver_linux64", "/opt/chrome/chromedriver");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
                 //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
@@ -7316,7 +7316,7 @@ class Install {
                 // Remove archive
                 yield fs_1.default.promises.unlink(archivePath);
                 // Rename folder
-                yield fs_1.default.promises.rename("/opt/chrome/chromedriver-mac", "/opt/chrome/chromedriver");
+                yield fs_1.default.promises.rename("/opt/chrome/chromedriver_mac64", "/opt/chrome/chromedriver");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
                 //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
@@ -7339,7 +7339,7 @@ class Install {
                 // Remove archive
                 yield fs_1.default.promises.unlink(archivePath);
                 // Rename folder
-                yield fs_1.default.promises.rename("/opt/chrome/chromedriver-win", "/opt/chrome/chromedriver");
+                yield fs_1.default.promises.rename("/opt/chrome/chromedriver_win32", "/opt/chrome/chromedriver");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
                 //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);

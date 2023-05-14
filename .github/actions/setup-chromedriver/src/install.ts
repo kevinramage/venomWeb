@@ -56,7 +56,7 @@ export class Install {
                 await fs.promises.unlink(archivePath);
 
                 // Rename folder
-                await fs.promises.rename("/opt/chrome/chromedriver-linux", "/opt/chrome/chromedriver");
+                await fs.promises.rename("/opt/chrome/chromedriver_linux64", "/opt/chrome/chromedriver");
 
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
@@ -83,7 +83,7 @@ export class Install {
                 await fs.promises.unlink(archivePath);
 
                 // Rename folder
-                await fs.promises.rename("/opt/chrome/chromedriver-mac", "/opt/chrome/chromedriver");
+                await fs.promises.rename("/opt/chrome/chromedriver_mac64", "/opt/chrome/chromedriver");
 
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
@@ -111,7 +111,7 @@ export class Install {
                 await fs.promises.unlink(archivePath);
 
                 // Rename folder
-                await fs.promises.rename("/opt/chrome/chromedriver-win", "/opt/chrome/chromedriver");
+                await fs.promises.rename("/opt/chrome/chromedriver_win32", "/opt/chrome/chromedriver");
 
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
