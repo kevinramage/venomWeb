@@ -38,11 +38,11 @@ jobs:
           echo test
           echo $venomDir
           echo test
-          cp -r -f ../../../venomWeb/* $venomDir
+          sudo cp -r -f ../../../venomWeb/* $venomDir
           make build OS=linux ARCH=amd64
           mv dist/venom.linux-amd64 ../../../venomWeb/venom
 
           cd ../../../venomWeb
           cp /opt/chromedriver/chromedriver ./chromedriver
-          ./venom -vvv --format=xml run tests/chrome/core.yml
+          sudo ./venom -vvv --format=xml run tests/chrome/core.yml
           echo $?
