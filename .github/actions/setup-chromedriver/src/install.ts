@@ -10,21 +10,21 @@ export class Install {
     private getDownloadUrl(version: string, plateform: Plateform) : string {
         if (plateform.getSystem() == SYSTEM_TYPE.WINDOWS) {
             if (plateform.getArchitecture() == ARCHITECTURE_TYPE.I686) {
-                return `https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Win%2F${version}%2Fchromedriver-win.zip?alt=media`;
+                return `https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Win%2F${version}%2Fchromedriver_win32.zip?alt=media`;
             } else if (plateform.getArchitecture() == ARCHITECTURE_TYPE.AMD64) {
-                return `https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Win_x64%2F${version}%2Fchromedriver-win.zip?alt=media`;
+                return `https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Win_x64%2F${version}%2Fchromedriver_win32.zip?alt=media`;
             }
         } else if (plateform.getSystem() == SYSTEM_TYPE.LINUX) {
             if (plateform.getArchitecture() == ARCHITECTURE_TYPE.I686) {
                 return `https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux%2F${version}%2Fchromedriver-linux.zip?alt=media`;
             } else if (plateform.getArchitecture() == ARCHITECTURE_TYPE.AMD64) {
-                return `https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F${version}%2Fchromedriver-linux.zip?alt=media`;
+                return `https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F${version}%2Fchromedriver_linux64.zip?alt=media`;
             }
         } else if (plateform.getSystem() == SYSTEM_TYPE.DARWIN) {
             if (plateform.getArchitecture() == ARCHITECTURE_TYPE.I686) {
-                return `https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Mac%2F${version}%2Fchromedriver-mac.zip?alt=media`;
+                return `https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Mac%2F${version}%2Fchromedriver_mac.zip?alt=media`;
             } else if (plateform.getArchitecture() == ARCHITECTURE_TYPE.AMD64) {
-                return `https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Mac%2F${version}%2Fchromedriver-mac.zip?alt=media`;
+                return `https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Mac%2F${version}%2Fchromedriver_mac64.zip?alt=media`;
             }
         }
         throw `Unsupported plateform: ${plateform.getSystem()} - ${plateform.getArchitecture()}`;

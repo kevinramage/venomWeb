@@ -7247,10 +7247,10 @@ class Install {
     getDownloadUrl(version, plateform) {
         if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.WINDOWS) {
             if (plateform.getArchitecture() == plateform_1.ARCHITECTURE_TYPE.I686) {
-                return `https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Win%2F${version}%2Fchromedriver-win.zip?alt=media`;
+                return `https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Win%2F${version}%2Fchromedriver_win32.zip?alt=media`;
             }
             else if (plateform.getArchitecture() == plateform_1.ARCHITECTURE_TYPE.AMD64) {
-                return `https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Win_x64%2F${version}%2Fchromedriver-win.zip?alt=media`;
+                return `https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Win_x64%2F${version}%2Fchromedriver_win32.zip?alt=media`;
             }
         }
         else if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.LINUX) {
@@ -7258,15 +7258,15 @@ class Install {
                 return `https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux%2F${version}%2Fchromedriver-linux.zip?alt=media`;
             }
             else if (plateform.getArchitecture() == plateform_1.ARCHITECTURE_TYPE.AMD64) {
-                return `https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F${version}%2Fchromedriver-linux.zip?alt=media`;
+                return `https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F${version}%2Fchromedriver_linux64.zip?alt=media`;
             }
         }
         else if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.DARWIN) {
             if (plateform.getArchitecture() == plateform_1.ARCHITECTURE_TYPE.I686) {
-                return `https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Mac%2F${version}%2Fchromedriver-mac.zip?alt=media`;
+                return `https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Mac%2F${version}%2Fchromedriver_mac.zip?alt=media`;
             }
             else if (plateform.getArchitecture() == plateform_1.ARCHITECTURE_TYPE.AMD64) {
-                return `https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Mac%2F${version}%2Fchromedriver-mac.zip?alt=media`;
+                return `https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Mac%2F${version}%2Fchromedriver_mac64.zip?alt=media`;
             }
         }
         throw `Unsupported plateform: ${plateform.getSystem()} - ${plateform.getArchitecture()}`;
