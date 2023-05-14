@@ -24,6 +24,12 @@ jobs:
         uses: ./venomWeb/.github/actions/setup-chromedriver
         with:
           version: 112
+      - name: Check installation
+        run: |
+          ls -la /opt/chromedriver
+          ls -la /opt/chrome
+          chrome -v
+          chromedriver -v
       - name: Setup venom
         uses: actions/checkout@v3
         with:
