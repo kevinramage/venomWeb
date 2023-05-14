@@ -17,10 +17,10 @@ jobs:
           ls -la /home/runner/work/
           ls -la /home/runner/work/venomWeb
           ls -la /home/runner/work/venomWeb/venomWeb
-          ls -la /home/runner/work/venomWeb/venomWeb/.github/
-          ls -la /home/runner/work/venomWeb/venomWeb/.github/actions
-          ls -la /home/runner/work/venomWeb/venomWeb/.github/actions/setup-chrome
-          ls -la /home/runner/work/venomWeb/venomWeb/.github/actions/setup-chrome/lib 
+          ls -la /home/runner/work/venomWeb/venomWeb/venomWeb/.github/
+          ls -la /home/runner/work/venomWeb/venomWeb/venomWeb/.github/actions
+          ls -la /home/runner/work/venomWeb/venomWeb/venomWeb/.github/actions/setup-chrome
+          ls -la /home/runner/work/venomWeb/venomWeb/venomWeb/.github/actions/setup-chrome/lib 
       - name: Setup Go
         uses: actions/setup-go@v4
         with:
