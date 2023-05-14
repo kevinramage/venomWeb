@@ -55,9 +55,6 @@ export class Install {
                 // Remove archive
                 await fs.promises.unlink(archivePath);
 
-                // Rename folder
-                await fs.promises.rename("/opt/chromedriver_linux64", "/opt/chromedriver");
-
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
                 //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
@@ -81,9 +78,6 @@ export class Install {
 
                 // Remove archive
                 await fs.promises.unlink(archivePath);
-
-                // Rename folder
-                await fs.promises.rename("/opt/chromedriver_mac64", "/opt/chromedriver");
 
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);

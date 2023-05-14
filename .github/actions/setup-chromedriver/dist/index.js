@@ -7293,8 +7293,6 @@ class Install {
                 yield exec.exec("unzip", ["-d", "/opt/chromedriver", "-j", archivePath]);
                 // Remove archive
                 yield fs_1.default.promises.unlink(archivePath);
-                // Rename folder
-                yield fs_1.default.promises.rename("/opt/chromedriver_linux64", "/opt/chromedriver");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
                 //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
@@ -7315,8 +7313,6 @@ class Install {
                 yield exec.exec("unzip", ["-d", "/opt/chromedriver", "-j", archivePath]);
                 // Remove archive
                 yield fs_1.default.promises.unlink(archivePath);
-                // Rename folder
-                yield fs_1.default.promises.rename("/opt/chromedriver_mac64", "/opt/chromedriver");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
                 //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
