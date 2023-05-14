@@ -38,7 +38,7 @@ jobs:
           echo test
           echo $venomDir
           echo test
-          cp -r -f venomWeb/* $venomDir
+          cp -r -f ../../../venomWeb/* $venomDir
           make build OS=linux ARCH=amd64
           mv dist/venom.linux-amd64 ../../../venomWeb/venom
 
