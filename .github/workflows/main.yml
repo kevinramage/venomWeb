@@ -10,9 +10,12 @@ jobs:
       - name: Setup venom web
         uses: actions/checkout@v3
         with:
+          path: venomWeb
           ref: develop-tests
       - name:
         run: |
+          ls -la /home/runner/work/
+          ls -la /home/runner/work/venomWeb
           ls -la /home/runner/work/venomWeb/venomWeb
           ls -la /home/runner/work/venomWeb/venomWeb/.github/
           ls -la /home/runner/work/venomWeb/venomWeb/.github/actions
