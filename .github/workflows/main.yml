@@ -9,7 +9,8 @@ jobs:
     steps:
       - name: Setup venom web
         uses: actions/checkout@v3
-        ref: develop-tests
+        with:
+          ref: develop-tests
       - name: Setup Go
         uses: actions/setup-go@v4
         with:
