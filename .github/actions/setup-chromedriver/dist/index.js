@@ -7334,14 +7334,16 @@ class Install {
             core.info(`Install to unix system: ${archivePath}`);
             try {
                 // Unarchive
+                core.info("Unarchive");
                 yield exec.exec("unzip", ["-d", "/opt/chromedriver", "-j", archivePath]);
                 // Remove archive
+                core.info("Remove archive");
                 yield fs_1.default.promises.unlink(archivePath);
-                // Add chrome to path
-                core.info(`Add chrome binary to path`);
+                // Add chromedriver to path
+                core.info(`Add chromedriver to path`);
                 core.addPath("/opt/chromedriver");
                 // Display chromedriver version
-                yield exec.exec("/opt/chromedriver/chromedriver", ["--version"]);
+                core.info("Display chrome driver version");
                 let output = "";
                 let options = {};
                 options.listeners = {
@@ -7349,7 +7351,7 @@ class Install {
                         output += data.toString();
                     },
                 };
-                yield exec.exec("/opt/chrome/chrome/chrome", ["--version"]);
+                yield exec.exec("/opt/chrome/chrome/chrome", ["--version"], options);
                 core.info("Chrome version: ");
                 core.info(output);
                 resolve();
@@ -7365,14 +7367,26 @@ class Install {
             core.info(`Install to darwin system: ${archivePath}`);
             try {
                 // Unarchive
+                core.info("Unarchive");
                 yield exec.exec("unzip", ["-d", "/opt/chromedriver", "-j", archivePath]);
                 // Remove archive
+                core.info("Remove archive");
                 yield fs_1.default.promises.unlink(archivePath);
-                // Add chrome to path
-                core.info(`Add chrome binary to path`);
+                // Add chromedriver to path
+                core.info("Add chromedriver to path");
                 core.addPath("/opt/chromedriver");
                 // Display chromedriver version
-                yield exec.exec("/opt/chromedriver/chromedriver", ["--version"]);
+                core.info("Display chromedriver version");
+                let output = "";
+                let options = {};
+                options.listeners = {
+                    stdout: (data) => {
+                        output += data.toString();
+                    },
+                };
+                yield exec.exec("/opt/chromedriver/chromedriver", ["--version"], options);
+                core.info("Chrome version: ");
+                core.info(output);
                 resolve();
             }
             catch (err) {
@@ -7394,8 +7408,17 @@ class Install {
                 yield fs_1.default.promises.rename("/opt/chromedriver/chromedriver_win32", "/opt/chromedriver/chromedriver");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
-                //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
                 core.addPath(`{destination}\\chromedriver`);
+                let output = "";
+                let options = {};
+                options.listeners = {
+                    stdout: (data) => {
+                        output += data.toString();
+                    },
+                };
+                yield exec.exec("{destination}\\chrome\\chromedriver.exe", ["--version"], options);
+                core.info("Chrome driver version: ");
+                core.info(output);
                 resolve();
             }
             catch (err) {

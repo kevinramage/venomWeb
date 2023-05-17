@@ -50,17 +50,19 @@ export class Install {
 
             try {
                 // Unarchive
+                core.info("Unarchive");
                 await exec.exec("unzip", ["-d", "/opt/chromedriver", "-j", archivePath]);
 
                 // Remove archive
+                core.info("Remove archive");
                 await fs.promises.unlink(archivePath);
 
-                // Add chrome to path
-                core.info(`Add chrome binary to path`);
+                // Add chromedriver to path
+                core.info(`Add chromedriver to path`);
                 core.addPath("/opt/chromedriver");
 
                 // Display chromedriver version
-                await exec.exec("/opt/chromedriver/chromedriver", ["--version"]);
+                core.info("Display chrome driver version");
                 let output = "";
                 let options : any = {};
                 options.listeners = {
@@ -68,7 +70,7 @@ export class Install {
                         output += data.toString();
                     },
                 };
-                await exec.exec("/opt/chrome/chrome/chrome", ["--version"]);
+                await exec.exec("/opt/chrome/chrome/chrome", ["--version"], options);
                 core.info("Chrome version: ");
                 core.info(output);
 
@@ -87,17 +89,29 @@ export class Install {
 
             try {
                 // Unarchive
+                core.info("Unarchive");
                 await exec.exec("unzip", ["-d", "/opt/chromedriver", "-j", archivePath])
 
                 // Remove archive
+                core.info("Remove archive");
                 await fs.promises.unlink(archivePath);
 
-                // Add chrome to path
-                core.info(`Add chrome binary to path`);
+                // Add chromedriver to path
+                core.info("Add chromedriver to path");
                 core.addPath("/opt/chromedriver");
 
                 // Display chromedriver version
-                await exec.exec("/opt/chromedriver/chromedriver", ["--version"]);
+                core.info("Display chromedriver version");
+                let output = "";
+                let options : any = {};
+                options.listeners = {
+                    stdout: (data: Buffer) => {
+                        output += data.toString();
+                    },
+                };
+                await exec.exec("/opt/chromedriver/chromedriver", ["--version"], options);
+                core.info("Chrome version: ");
+                core.info(output);
 
                 resolve();
 
@@ -125,8 +139,19 @@ export class Install {
 
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
-                //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
-                core.addPath(`{destination}\\chromedriver`)
+                core.addPath(`{destination}\\chromedriver`);
+
+                let output = "";
+                let options : any = {};
+                options.listeners = {
+                    stdout: (data: Buffer) => {
+                        output += data.toString();
+                    },
+                };
+                await exec.exec("{destination}\\chrome\\chromedriver.exe", ["--version"], options);
+                core.info("Chrome driver version: ");
+                core.info(output);
+
                 resolve();
 
             } catch (err) {
