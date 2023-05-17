@@ -57,8 +57,11 @@ export class Install {
 
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
-                //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
-                core.addPath("/opt/chromedriver")
+                core.addPath("/opt/chromedriver");
+
+                // Display chromedriver version
+                await exec.exec("/opt/chromedriver/chromedriver", ["--version"]);
+
                 resolve();
 
             } catch (err) {
@@ -81,8 +84,11 @@ export class Install {
 
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
-                //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
-                core.addPath("/opt/chromedriver")
+                core.addPath("/opt/chromedriver");
+
+                // Display chromedriver version
+                await exec.exec("/opt/chromedriver/chromedriver", ["--version"]);
+
                 resolve();
 
             } catch (err) {
