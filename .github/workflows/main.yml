@@ -46,4 +46,5 @@ jobs:
           ./chromedriver --version
           ./venom -vvv --format=xml run tests/chrome/core.yml || true
           ls -la
+          cat venom.log
           echo $?
