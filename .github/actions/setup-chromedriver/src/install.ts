@@ -173,13 +173,13 @@ export class Install {
                 if (plateform.getSystem() == SYSTEM_TYPE.LINUX) {
                     await this.installUnix(archivePath);
                 // Install binary (Mac)
-                } else if (plateform.getArchitecture() == SYSTEM_TYPE.DARWIN) {
+                } else if (plateform.getSystem() == SYSTEM_TYPE.DARWIN) {
                     await this.installDarwin(archivePath);
                 // Install binary (Windows)
                 } else if (plateform.getSystem() == SYSTEM_TYPE.WINDOWS) {
                     await this.installWindows(archivePath, plateform);
                 } else {
-                    throw "Invalid system";
+                    throw "Invalid system: " + plateform.getSystem();
                 }
 
                 resolve();

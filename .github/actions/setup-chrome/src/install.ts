@@ -70,7 +70,7 @@ export class Install {
                         output += data.toString();
                     },
                 };
-                await exec.exec("/opt/chrome/chrome/chrome", ["--version"]);
+                await exec.exec("/opt/chrome/chrome/chrome", ["--version"], options);
                 core.info("Chrome version: ");
                 core.info(output);
 
@@ -102,7 +102,16 @@ export class Install {
                 core.addPath("/opt/chrome/chrome");
 
                 // Display chrome version
-                await exec.exec("/opt/chrome/chrome/chrome", ["--version"]);
+                let output = "";
+                let options : any = {};
+                options.listeners = {
+                    stdout: (data: Buffer) => {
+                        output += data.toString();
+                    },
+                };
+                await exec.exec("/opt/chrome/chrome/chrome", ["--version"], options);
+                core.info("Chrome version: ");
+                core.info(output);
 
                 resolve();
 
@@ -133,7 +142,16 @@ export class Install {
                 core.addPath(`{destination}\\chrome`);
 
                 // Display chrome version
-                await exec.exec("{destination}\\chrome\\chrome.exe", ["--version"]);
+                let output = "";
+                let options : any = {};
+                options.listeners = {
+                    stdout: (data: Buffer) => {
+                        output += data.toString();
+                    },
+                };
+                await exec.exec("{destination}\\chrome\\chrome.exe", ["--version"], options);
+                core.info("Chrome version: ");
+                core.info(output);
 
                 resolve();
 
@@ -156,11 +174,13 @@ export class Install {
                 if (plateform.getSystem() == SYSTEM_TYPE.LINUX) {
                     await this.installUnix(archivePath);
                 // Install binary (Mac)
-                } else if (plateform.getArchitecture() == SYSTEM_TYPE.DARWIN) {
+                } else if (plateform.getSystem() == SYSTEM_TYPE.DARWIN) {
                     await this.installDarwin(archivePath);
                 // Install binary (Windows)
                 } else if (plateform.getSystem() == SYSTEM_TYPE.WINDOWS) {
                     await this.installWindows(archivePath, plateform);
+                } else {
+                    throw "Invalid system: " + plateform.getSystem();
                 }
 
                 resolve();

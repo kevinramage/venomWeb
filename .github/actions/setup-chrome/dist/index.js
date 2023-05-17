@@ -7350,7 +7350,7 @@ class Install {
                         output += data.toString();
                     },
                 };
-                yield exec.exec("/opt/chrome/chrome/chrome", ["--version"]);
+                yield exec.exec("/opt/chrome/chrome/chrome", ["--version"], options);
                 core.info("Chrome version: ");
                 core.info(output);
                 resolve();
@@ -7375,7 +7375,16 @@ class Install {
                 core.info(`Add chrome binary to path`);
                 core.addPath("/opt/chrome/chrome");
                 // Display chrome version
-                yield exec.exec("/opt/chrome/chrome/chrome", ["--version"]);
+                let output = "";
+                let options = {};
+                options.listeners = {
+                    stdout: (data) => {
+                        output += data.toString();
+                    },
+                };
+                yield exec.exec("/opt/chrome/chrome/chrome", ["--version"], options);
+                core.info("Chrome version: ");
+                core.info(output);
                 resolve();
             }
             catch (err) {
@@ -7399,7 +7408,16 @@ class Install {
                 core.info(`Add chrome binary to path`);
                 core.addPath(`{destination}\\chrome`);
                 // Display chrome version
-                yield exec.exec("{destination}\\chrome\\chrome.exe", ["--version"]);
+                let output = "";
+                let options = {};
+                options.listeners = {
+                    stdout: (data) => {
+                        output += data.toString();
+                    },
+                };
+                yield exec.exec("{destination}\\chrome\\chrome.exe", ["--version"], options);
+                core.info("Chrome version: ");
+                core.info(output);
                 resolve();
             }
             catch (err) {
@@ -7419,12 +7437,15 @@ class Install {
                     yield this.installUnix(archivePath);
                     // Install binary (Mac)
                 }
-                else if (plateform.getArchitecture() == plateform_1.SYSTEM_TYPE.DARWIN) {
+                else if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.DARWIN) {
                     yield this.installDarwin(archivePath);
                     // Install binary (Windows)
                 }
                 else if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.WINDOWS) {
                     yield this.installWindows(archivePath, plateform);
+                }
+                else {
+                    throw "Invalid system: " + plateform.getSystem();
                 }
                 resolve();
             }

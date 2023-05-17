@@ -7438,7 +7438,7 @@ class Install {
                     yield this.installUnix(archivePath);
                     // Install binary (Mac)
                 }
-                else if (plateform.getArchitecture() == plateform_1.SYSTEM_TYPE.DARWIN) {
+                else if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.DARWIN) {
                     yield this.installDarwin(archivePath);
                     // Install binary (Windows)
                 }
@@ -7446,7 +7446,7 @@ class Install {
                     yield this.installWindows(archivePath, plateform);
                 }
                 else {
-                    throw "Invalid system";
+                    throw "Invalid system: " + plateform.getSystem();
                 }
                 resolve();
             }
