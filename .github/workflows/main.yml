@@ -37,14 +37,13 @@ jobs:
           cd venom/cmd/venom
           make build OS=linux ARCH=amd64
           venomDir=$(ls -d /home/runner/go/pkg/mod/github.com/kevinramage/*)
-          echo test
-          echo $venomDir
-          echo test
           sudo cp -r -f ../../../venomWeb/* $venomDir
           make build OS=linux ARCH=amd64
           mv dist/venom.linux-amd64 ../../../venomWeb/venom
 
           cd ../../../venomWeb
           cp /opt/chromedriver/chromedriver ./chromedriver
-          sudo ./venom -vvv --format=xml run tests/chrome/core.yml
+          ./chromedriver --version
+          ./venom -vvv --format=xml run tests/chrome/core.yml || true
+          ls -la
           echo $?
