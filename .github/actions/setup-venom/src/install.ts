@@ -15,7 +15,7 @@ export class Install {
             core.info(`Get venomWeb dependency`);
             let options : any = {};
             options.cwd = "./venom";
-            await exec.exec("go", ["get", `kevinramage/venomWeb@${venomWebVersion}`], options);
+            await exec.exec("go", ["get", `github.com/kevinramage/venomWeb@develop-tests`], options);
 
             // Checkout venom web
             //await exec.exec("git", ["clone", "-b", venomWebVersion, "https://github.com/kevinramage/venomWeb.git", "venomWeb"]);

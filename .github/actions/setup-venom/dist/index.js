@@ -4053,7 +4053,7 @@ class Install {
                 core.info(`Get venomWeb dependency`);
                 let options = {};
                 options.cwd = "./venom";
-                yield exec.exec("go", ["get", `kevinramage/venomWeb@${venomWebVersion}`], options);
+                yield exec.exec("go", ["get", `github.com/kevinramage/venomWeb@develop-tests`], options);
                 // Checkout venom web
                 //await exec.exec("git", ["clone", "-b", venomWebVersion, "https://github.com/kevinramage/venomWeb.git", "venomWeb"]);
                 // Compile venom for target plateform (windows-latest, ubuntu-latest, macos-latest)
