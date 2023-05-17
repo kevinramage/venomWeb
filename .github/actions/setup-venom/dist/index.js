@@ -4053,25 +4053,30 @@ class Install {
                 core.info(`Get venomWeb dependency`);
                 let options = {};
                 options.cwd = "./venom";
-                yield exec.exec("go", ["get", `github.com/kevinramage/venomWeb@develop-tests`], options);
+                const dependency = "github.com/kevinramage/venomWeb@" + venomWebVersion;
+                core.info(dependency);
+                yield exec.exec("go", ["get", dependency], options);
                 // Checkout venom web
                 //await exec.exec("git", ["clone", "-b", venomWebVersion, "https://github.com/kevinramage/venomWeb.git", "venomWeb"]);
                 // Compile venom for target plateform (windows-latest, ubuntu-latest, macos-latest)
                 core.info(`Compile`);
                 options.cwd = "./venom/cmd/venom";
-                let targetPlateform = "";
+                let targetPlateform = "", execName = "";
                 if (plateform == "ubuntu-latest") {
                     targetPlateform = "OS=linux";
+                    execName = "venom.linux-amd64";
                 }
                 else if (plateform == "macos-latest") {
                     targetPlateform = "OS=darwin";
+                    execName = "venom.darwin-amd64";
                 }
                 else if (plateform == "windows-latest") {
                     targetPlateform = "OS=windows";
+                    execName = "venom.windows-amd64";
                 }
                 yield exec.exec("make", ["build", targetPlateform, "ARCH=amd64"], options);
                 // Rename build
-                yield exec.exec("mv", ["dist/venom.*", "venom"], options);
+                yield exec.exec("mv", ["dist/" + execName, "venom"], options);
                 resolve();
             }
             catch (err) {
