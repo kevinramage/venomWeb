@@ -32,8 +32,6 @@ jobs:
           path: venom
       - name: Build venom
         run: |
-          echo Chrome version
-          chrome --version
           cd venom/cmd/venom
           make build OS=linux ARCH=amd64
           venomDir=$(ls -d /home/runner/go/pkg/mod/github.com/kevinramage/*)
@@ -43,8 +41,4 @@ jobs:
 
           cd ../../../venomWeb
           cp /opt/chromedriver/chromedriver ./chromedriver
-          ./chromedriver --version
-          ./venom -vvv --format=xml run tests/chrome/core.yml || true
-          ls -la
-          cat venom.log
-          echo $?
+          ./venom -vvv --format=xml run tests/chrome/core.yml
