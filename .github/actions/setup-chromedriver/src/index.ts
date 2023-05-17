@@ -10,7 +10,7 @@ http://cros-omahaproxy.appspot.com/
 112 => 1109224 => 1109220 (Unix), 1109213 (Mac)
 https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Linux_x64/1109220/
 https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Mac/1109213/
-113 => 1121455 => 1121454 (Unix), 1121458 (Mac)
+113 => 1121455 => 1121454 (Unix), 1121448 (Mac)
 https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Linux_x64/1121454/
 https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Mac/1121448/
 114 => 1135570 => 1135561 (Unix), 1135562 (Mac)
@@ -41,7 +41,7 @@ class Index {
                     }
                 } else if ( version == "113" ) {
                     if (plateform.getSystem() == SYSTEM_TYPE.DARWIN) {
-                        versionToDownload = "1121458";
+                        versionToDownload = "1121448";
                     } else if (plateform.getSystem() == SYSTEM_TYPE.LINUX) {
                         versionToDownload = "1121454";
                     }
