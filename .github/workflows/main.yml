@@ -32,6 +32,8 @@ jobs:
           path: venom
       - name: Build venom
         run: |
+          echo Chrome version
+          chrome --version
           cd venom/cmd/venom
           make build OS=linux ARCH=amd64
           venomDir=$(ls -d /home/runner/go/pkg/mod/github.com/kevinramage/*)
