@@ -7445,6 +7445,9 @@ class Install {
                 else if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.WINDOWS) {
                     yield this.installWindows(archivePath, plateform);
                 }
+                else {
+                    throw "Invalid system";
+                }
                 resolve();
             }
             catch (err) {

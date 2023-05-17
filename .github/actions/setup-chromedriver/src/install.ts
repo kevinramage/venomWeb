@@ -178,6 +178,8 @@ export class Install {
                 // Install binary (Windows)
                 } else if (plateform.getSystem() == SYSTEM_TYPE.WINDOWS) {
                     await this.installWindows(archivePath, plateform);
+                } else {
+                    throw "Invalid system";
                 }
 
                 resolve();
