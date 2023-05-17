@@ -1,10 +1,10 @@
 name: Integration tests
 on: [push]
 jobs:
-  runIntegrationTests:
+  tests:
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [macos-latest]
         chromeVersion: ["112", "113", "114"]
     runs-on: ${{ matrix.os }}
     steps:
