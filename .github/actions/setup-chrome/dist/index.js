@@ -7176,7 +7176,7 @@ http://cros-omahaproxy.appspot.com/
 
 112 => 1109224 => 1109220
 https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Linux_x64/1109220/
-113 => 1121455 => 1121455
+113 => 1121455 => 1121454
 https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Linux_x64/1121454/
 114 => 1135570 => 1135561
 https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Linux_x64/1135561/
@@ -7197,7 +7197,7 @@ class Index {
                         versionToDownload = "1109220";
                     }
                     else if (version == "113") {
-                        versionToDownload = "1121455";
+                        versionToDownload = "1121454";
                     }
                     else if (version == "114") {
                         versionToDownload = "1135561";
