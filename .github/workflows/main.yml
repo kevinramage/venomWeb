@@ -35,6 +35,7 @@ jobs:
         run: |
           mv venom/cmd/venom/venom venomWeb/venom
           cd venomWeb
+          ls -la /opt
           ls -la /opt/chromedriver
           cp /opt/chromedriver/chromedriver ./chromedriver
           ./venom -vvv --format=xml run tests/chrome/core.yml
