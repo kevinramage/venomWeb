@@ -7342,6 +7342,16 @@ class Install {
                 core.addPath("/opt/chromedriver");
                 // Display chromedriver version
                 yield exec.exec("/opt/chromedriver/chromedriver", ["--version"]);
+                let output = "";
+                let options = {};
+                options.listeners = {
+                    stdout: (data) => {
+                        output += data.toString();
+                    },
+                };
+                yield exec.exec("/opt/chrome/chrome/chrome", ["--version"]);
+                core.info("Chrome version: ");
+                core.info(output);
                 resolve();
             }
             catch (err) {

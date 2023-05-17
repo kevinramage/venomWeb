@@ -7343,7 +7343,16 @@ class Install {
                 core.info(`Add chrome binary to path`);
                 core.addPath("/opt/chrome/chrome");
                 // Display chrome version
+                let output = "";
+                let options = {};
+                options.listeners = {
+                    stdout: (data) => {
+                        output += data.toString();
+                    },
+                };
                 yield exec.exec("/opt/chrome/chrome/chrome", ["--version"]);
+                core.info("Chrome version: ");
+                core.info(output);
                 resolve();
             }
             catch (err) {
