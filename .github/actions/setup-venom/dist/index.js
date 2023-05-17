@@ -4051,13 +4051,14 @@ class Install {
                 yield exec.exec("git", ["clone", "-b", venomVersion, "https://github.com/ovh/venom.git", "venom"]);
                 // Get venom web specific version
                 core.info(`Get venomWeb dependency`);
-                yield exec.exec("cd venom");
-                yield exec.exec("go", ["get", `kevinramage/venomWeb@${venomWebVersion}`]);
+                let options = {};
+                options.cwd = "./venom";
+                yield exec.exec("go", ["get", `kevinramage/venomWeb@${venomWebVersion}`], options);
                 // Checkout venom web
                 //await exec.exec("git", ["clone", "-b", venomWebVersion, "https://github.com/kevinramage/venomWeb.git", "venomWeb"]);
                 // Compile venom for target plateform (windows-latest, ubuntu-latest, macos-latest)
                 core.info(`Compile`);
-                yield exec.exec("cd cmd/venom");
+                options.cwd = "./venom/cmd/venom";
                 let targetPlateform = "";
                 if (plateform == "ubuntu-latest") {
                     targetPlateform = "OS=linux";
@@ -4068,9 +4069,9 @@ class Install {
                 else if (plateform == "windows-latest") {
                     targetPlateform = "OS=windows";
                 }
-                yield exec.exec("make", ["build", targetPlateform, "ARCH=amd64"]);
+                yield exec.exec("make", ["build", targetPlateform, "ARCH=amd64"], options);
                 // Rename build
-                yield exec.exec("mv", ["dist/venom.*", "venom"]);
+                yield exec.exec("mv", ["dist/venom.*", "venom"], options);
                 resolve();
             }
             catch (err) {

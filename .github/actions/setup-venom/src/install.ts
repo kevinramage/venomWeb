@@ -13,15 +13,16 @@ export class Install {
 
             // Get venom web specific version
             core.info(`Get venomWeb dependency`);
-            await exec.exec("cd venom");
-            await exec.exec("go", ["get", `kevinramage/venomWeb@${venomWebVersion}`])
+            let options : any = {};
+            options.cwd = "./venom";
+            await exec.exec("go", ["get", `kevinramage/venomWeb@${venomWebVersion}`], options);
 
             // Checkout venom web
             //await exec.exec("git", ["clone", "-b", venomWebVersion, "https://github.com/kevinramage/venomWeb.git", "venomWeb"]);
 
             // Compile venom for target plateform (windows-latest, ubuntu-latest, macos-latest)
             core.info(`Compile`);
-            await exec.exec("cd cmd/venom");
+            options.cwd = "./venom/cmd/venom";
             let targetPlateform = "";
             if (plateform == "ubuntu-latest") {
                 targetPlateform = "OS=linux";
@@ -30,10 +31,10 @@ export class Install {
             } else if (plateform == "windows-latest") {
                 targetPlateform = "OS=windows";
             }
-            await exec.exec("make", ["build", targetPlateform, "ARCH=amd64"]);
+            await exec.exec("make", ["build", targetPlateform, "ARCH=amd64"], options);
 
             // Rename build
-            await exec.exec("mv", ["dist/venom.*", "venom"]);
+            await exec.exec("mv", ["dist/venom.*", "venom"], options);
 
             resolve();
 
