@@ -7366,7 +7366,7 @@ class Install {
             core.info(`Install to darwin system: ${archivePath}`);
             try {
                 // Unarchive
-                yield exec.exec("unzip", ["-d", "/opt/chrome", archivePath]);
+                yield exec.exec("sudo unzip", ["-d", "/opt/chrome", archivePath]);
                 // Remove archive
                 yield fs_1.default.promises.unlink(archivePath);
                 // Rename folder
@@ -7382,7 +7382,7 @@ class Install {
                         output += data.toString();
                     },
                 };
-                yield exec.exec("/opt/chrome/chrome/chrome", ["--version"], options);
+                yield exec.exec("sudo /opt/chrome/chrome/chrome", ["--version"], options);
                 core.info("Chrome version: ");
                 core.info(output);
                 resolve();

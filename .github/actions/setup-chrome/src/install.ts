@@ -89,7 +89,7 @@ export class Install {
 
             try {
                 // Unarchive
-                await exec.exec("unzip", ["-d", "/opt/chrome", archivePath])
+                await exec.exec("sudo unzip", ["-d", "/opt/chrome", archivePath])
 
                 // Remove archive
                 await fs.promises.unlink(archivePath);
@@ -109,7 +109,7 @@ export class Install {
                         output += data.toString();
                     },
                 };
-                await exec.exec("/opt/chrome/chrome/chrome", ["--version"], options);
+                await exec.exec("sudo /opt/chrome/chrome/chrome", ["--version"], options);
                 core.info("Chrome version: ");
                 core.info(output);
 
