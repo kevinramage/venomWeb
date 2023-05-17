@@ -4051,13 +4051,13 @@ class Install {
                 yield exec.exec("git", ["clone", "-b", venomVersion, "https://github.com/ovh/venom.git", "venom"]);
                 // Get venom web specific version
                 core.info(`Get venomWeb dependency`);
-                yield exec.exec("cd", ["venom"]);
+                yield exec.exec("cd venom");
                 yield exec.exec("go", ["get", `kevinramage/venomWeb@${venomWebVersion}`]);
                 // Checkout venom web
                 //await exec.exec("git", ["clone", "-b", venomWebVersion, "https://github.com/kevinramage/venomWeb.git", "venomWeb"]);
                 // Compile venom for target plateform (windows-latest, ubuntu-latest, macos-latest)
                 core.info(`Compile`);
-                yield exec.exec("cd", ["cmd/venom"]);
+                yield exec.exec("cd cmd/venom");
                 let targetPlateform = "";
                 if (plateform == "ubuntu-latest") {
                     targetPlateform = "OS=linux";

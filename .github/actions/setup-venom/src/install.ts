@@ -13,7 +13,7 @@ export class Install {
 
             // Get venom web specific version
             core.info(`Get venomWeb dependency`);
-            await exec.exec("cd", ["venom"]);
+            await exec.exec("cd venom");
             await exec.exec("go", ["get", `kevinramage/venomWeb@${venomWebVersion}`])
 
             // Checkout venom web
@@ -21,7 +21,7 @@ export class Install {
 
             // Compile venom for target plateform (windows-latest, ubuntu-latest, macos-latest)
             core.info(`Compile`);
-            await exec.exec("cd", ["cmd/venom"]);
+            await exec.exec("cd cmd/venom");
             let targetPlateform = "";
             if (plateform == "ubuntu-latest") {
                 targetPlateform = "OS=linux";
