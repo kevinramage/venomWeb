@@ -6,6 +6,7 @@ vars:
     driver: "chrome"
     logLevel: DEBUG
     headless: true
+    binaryPath: /opt/chrome/chrome/chrome
 testcases:
 - name: Basic navigation
   steps:
