@@ -1,0 +1,16 @@
+name: "Setup venom"
+description: 'Install venom'
+author: "Kevin RAMAGE"
+inputs:
+  venomVersion:
+    description: venom version to install
+    required: true
+  venomWebVersion:
+    description: venom version to install
+    required: true
+  plateform:
+    description: target plateform
+    required: true
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
