@@ -24,12 +24,6 @@ jobs:
         uses: ./venomWeb/.github/actions/setup-chromedriver
         with:
           version: 112
-      - name: Setup venom
-        uses: actions/checkout@v3
-        with:
-          repository: ovh/venom
-          ref: v1.2.0-beta.1
-          path: venom
       - name: Build venom
         uses: ./venomWeb/.github/actions/setup-venom
         with:
