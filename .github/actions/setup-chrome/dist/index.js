@@ -7297,8 +7297,9 @@ class Install {
                 yield fs_1.default.promises.rename("/opt/chrome/chrome-linux", "/opt/chrome/chrome");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
-                //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
                 core.addPath("/opt/chrome/chrome");
+                // Display chrome version
+                yield exec.exec("/opt/chrome/chrome/chrome", ["--version"]);
                 resolve();
             }
             catch (err) {
@@ -7319,8 +7320,9 @@ class Install {
                 yield fs_1.default.promises.rename("/opt/chrome/chrome-mac", "/opt/chrome/chrome");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
-                //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
                 core.addPath("/opt/chrome/chrome");
+                // Display chrome version
+                yield exec.exec("/opt/chrome/chrome/chrome", ["--version"]);
                 resolve();
             }
             catch (err) {
@@ -7342,8 +7344,9 @@ class Install {
                 yield fs_1.default.promises.rename("/opt/chrome/chrome-win", "/opt/chrome/chrome");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
-                //await exec.exec("ln", ["-s", "/opt/chrome/chrome-linux/chrome", "chrome"]);
                 core.addPath(`{destination}\\chrome`);
+                // Display chrome version
+                yield exec.exec("{destination}\\chrome\\chrome.exe", ["--version"]);
                 resolve();
             }
             catch (err) {
