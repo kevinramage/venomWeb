@@ -32,8 +32,7 @@ jobs:
           plateform: ${{ matrix.os }}
       - name: Run venom
         run: |
-          ls -la venom/cmd/venom/
           mv venom/cmd/venom/venom venomWeb/venom
-          cd ../../../venomWeb
+          cd venomWeb
           cp /opt/chromedriver/chromedriver ./chromedriver
           ./venom -vvv --format=xml run tests/chrome/core.yml
