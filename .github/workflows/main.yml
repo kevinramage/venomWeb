@@ -31,14 +31,14 @@ jobs:
           ref: v1.2.0-beta.1
           path: venom
       - name: Build venom
+        uses: ./venomWeb/.github/actions/setup-venom
+        with:
+          venomVersion: v1.2.0-beta.1
+          venomWebVersion: develop-tests
+          plateform: ${{ matrix.os }}
+      - name: Run venom
         run: |
-          cd venom/cmd/venom
-          make build OS=linux ARCH=amd64
-          venomDir=$(ls -d /home/runner/go/pkg/mod/github.com/kevinramage/*)
-          sudo cp -r -f ../../../venomWeb/* $venomDir
-          make build OS=linux ARCH=amd64
-          mv dist/venom.linux-amd64 ../../../venomWeb/venom
-
+          mv venom/cmd/venom/dist venom venomWeb/venom
           cd ../../../venomWeb
           cp /opt/chromedriver/chromedriver ./chromedriver
           ./venom -vvv --format=xml run tests/chrome/core.yml
