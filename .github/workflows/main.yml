@@ -5,6 +5,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
+        chromeVersion: ["112", "113", "114"]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Setup venom web
@@ -19,11 +20,11 @@ jobs:
       - name: Setup Chrome
         uses: ./venomWeb/.github/actions/setup-chrome
         with:
-          version: 112
+          version: ${{ matrix.chromeVersion }}
       - name: Setup Chrome Driver
         uses: ./venomWeb/.github/actions/setup-chromedriver
         with:
-          version: 112
+          version: ${{ matrix.chromeVersion }}
       - name: Build venom
         uses: ./venomWeb/.github/actions/setup-venom
         with:

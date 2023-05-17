@@ -7169,18 +7169,44 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const install_1 = __nccwpck_require__(1649);
 const plateform_1 = __nccwpck_require__(7413);
+/*
+https://www.chromium.org/getting-involved/download-chromium/
+https://chromiumdash.appspot.com/branches
+http://cros-omahaproxy.appspot.com/
+
+112 => 1109224 => 1109220
+https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Linux_x64/1109220/
+113 => 1121455 => 1121455
+https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Linux_x64/1121454/
+114 => 1135570 => 1135561
+https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Linux_x64/1135561/
+*/
 class Index {
     run() {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise((resolve, reject) => {
                 try {
                     // Get input parameters
-                    const version = core.getInput("version") || "latest";
+                    const version = core.getInput("version");
                     // Detect plateform
                     const plateform = new plateform_1.Plateform();
                     plateform.detectPlateform();
+                    // Identify to download
+                    let versionToDownload = "";
+                    if (version == "112") {
+                        versionToDownload = "1109220";
+                    }
+                    else if (version == "113") {
+                        versionToDownload = "1121455";
+                    }
+                    else if (version == "114") {
+                        versionToDownload = "1135561";
+                    }
+                    else {
+                        throw "Invalid chrome version (112 or 113 or 114 version accepted)";
+                    }
                     // Install chrome version on plateform
-                    new install_1.Install().install("1125695", plateform);
+                    new install_1.Install().install(versionToDownload, plateform);
                     resolve();
                 }
                 catch (err) {
