@@ -7369,6 +7369,8 @@ class Install {
                 yield exec.exec("sudo unzip", ["-d", "/opt/chrome", archivePath]);
                 // Remove archive
                 yield fs_1.default.promises.unlink(archivePath);
+                // Add rights to folder
+                yield exec.exec("sudo chmod", ["+777", "/opt/chrome/chrome-mac"]);
                 // Rename folder
                 yield fs_1.default.promises.rename("/opt/chrome/chrome-mac", "/opt/chrome/chrome");
                 // Add chrome to path
