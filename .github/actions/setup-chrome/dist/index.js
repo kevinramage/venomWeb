@@ -7370,7 +7370,7 @@ class Install {
                 // Remove archive
                 yield fs_1.default.promises.unlink(archivePath);
                 // Rename folder
-                yield fs_1.default.promises.mkdir("/opt/chrome");
+                yield exec.exec("sudo mkdir /opt/chrome");
                 yield fs_1.default.promises.cp("./chrome-mac", "/opt/chrome/chrome");
                 yield fs_1.default.promises.unlink("./chrome-mac");
                 // Add chrome to path

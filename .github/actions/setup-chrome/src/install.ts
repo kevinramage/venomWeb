@@ -95,7 +95,7 @@ export class Install {
                 await fs.promises.unlink(archivePath);
 
                 // Rename folder
-                await fs.promises.mkdir("/opt/chrome");
+                await exec.exec("sudo mkdir /opt/chrome");
                 await fs.promises.cp("./chrome-mac", "/opt/chrome/chrome");
                 await fs.promises.unlink("./chrome-mac");
                 
