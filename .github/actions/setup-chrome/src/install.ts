@@ -95,6 +95,7 @@ export class Install {
                 await fs.promises.unlink(archivePath);
 
                 // Add rights to folder
+                await exec.exec("sudo chmod 777 /opt/chrome");
                 await exec.exec("sudo chmod 777 /opt/chrome/chrome-mac");
 
                 // Rename folder
