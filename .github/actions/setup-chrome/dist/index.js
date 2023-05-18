@@ -7366,14 +7366,13 @@ class Install {
             core.info(`Install to darwin system: ${archivePath}`);
             try {
                 // Unarchive
-                yield exec.exec("sudo unzip", ["-d", "/opt/chrome", archivePath]);
+                yield exec.exec("sudo unzip", ["-d", ".", archivePath]);
                 // Remove archive
                 yield fs_1.default.promises.unlink(archivePath);
-                // Add rights to folder
-                yield exec.exec("sudo chmod 777 /opt/chrome");
-                yield exec.exec("sudo chmod 777 /opt/chrome/chrome-mac");
                 // Rename folder
-                yield fs_1.default.promises.rename("/opt/chrome/chrome-mac", "/opt/chrome/chrome");
+                yield fs_1.default.promises.mkdir("/opt/chrome");
+                yield fs_1.default.promises.cp("./chrome-mac", "/opt/chrome/chrome");
+                yield fs_1.default.promises.unlink("./chrome-mac");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
                 core.addPath("/opt/chrome/chrome");
