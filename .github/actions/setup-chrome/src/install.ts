@@ -100,7 +100,7 @@ export class Install {
                 await exec.exec("sudo mv /opt/chrome/chrome-mac /opt/chrome/chrome");
 
                 // Links
-                await exec.exec("ls -s /opt/chrome/chrome/chrome /opt/chrome/chrome/Chromium.app/Contents/MacOS/Chromium");
+                await exec.exec("ls -s /opt/chrome/chrome/Chromium.app/Contents/MacOS/Chromium /opt/chrome/chrome/chrome");
                 await exec.exec("ls -la");
                 
                 // Add chrome to path

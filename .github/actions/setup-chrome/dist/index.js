@@ -7374,7 +7374,7 @@ class Install {
                 yield exec.exec("sudo chmod 777 /opt/chrome/chrome-mac");
                 yield exec.exec("sudo mv /opt/chrome/chrome-mac /opt/chrome/chrome");
                 // Links
-                yield exec.exec("ls -s /opt/chrome/chrome/chrome /opt/chrome/chrome/Chromium.app/Contents/MacOS/Chromium");
+                yield exec.exec("ls -s /opt/chrome/chrome/Chromium.app/Contents/MacOS/Chromium /opt/chrome/chrome/chrome");
                 yield exec.exec("ls -la");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
