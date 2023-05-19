@@ -155,11 +155,11 @@ export class Install {
                         output += data.toString();
                     },
                 };
-                await exec.exec("echo test", options);
-                core.info(output);
+                //await exec.exec("echo test", options);
+                //core.info(output);
                 const cmdLine = "Get-Item \"" + destination + "\\chrome\\chrome.exe\").VersionInfo";
                 core.info(cmdLine);
-                await exec.exec(cmdLine, options);
+                await exec.exec(cmdLine, [], options);
                 core.info("Chrome version: ");
                 core.info(output);
 
