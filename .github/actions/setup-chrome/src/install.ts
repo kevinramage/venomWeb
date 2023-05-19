@@ -89,16 +89,16 @@ export class Install {
 
             try {
                 // Unarchive
-                await exec.exec("sudo unzip", ["-d", ".", archivePath])
+                await exec.exec("sudo unzip", ["-d", "/opt/chrome", archivePath])
 
                 // Remove archive
                 await fs.promises.unlink(archivePath);
 
                 // Rename folder
-                await exec.exec("sudo mkdir /opt/chrome");
+                await exec.exec("sudo ls -la /opt/chrome");
+                await exec.exec("sudo chmod 555 /opt/chrome");
+                await exec.exec("sudo ls -la /opt/chrome");
                 await exec.exec("sudo mv ./chrome-mac ./chrome");
-                await fs.promises.cp("./chrome", "/opt/chrome/", { recursive: true});
-                await fs.promises.unlink("./chrome-mac");
                 
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
