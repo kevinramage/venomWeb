@@ -97,9 +97,11 @@ export class Install {
                 // Rename folder
                 await exec.exec("sudo chmod 777 /opt/chrome");
                 await exec.exec("sudo chmod 777 /opt/chrome/chrome-mac");
-                await exec.exec("ls -la /opt/chrome");
-                await exec.exec("ls -la /opt/chrome/chrome-mac");
                 await exec.exec("sudo mv /opt/chrome/chrome-mac /opt/chrome/chrome");
+
+                // Links
+                await exec.exec("ls -s /opt/chrome/chrome/chrome /opt/chrome/chrome/Chromium.app/Contents/MacOS/Chromium");
+                await exec.exec("ls -la");
                 
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
