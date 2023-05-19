@@ -145,7 +145,7 @@ export class Install {
 
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
-                core.addPath(destination + "\\chrome");
+                //core.addPath(destination + "\\chrome");
 
                 // Display chrome version
                 let output = "";

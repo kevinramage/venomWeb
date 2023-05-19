@@ -7423,7 +7423,7 @@ class Install {
                 yield fs_1.default.promises.rename(destination + "\\chrome-win", destination + "\\chrome");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
-                core.addPath(destination + "\\chrome");
+                //core.addPath(destination + "\\chrome");
                 // Display chrome version
                 let output = "";
                 let options = {};
