@@ -102,7 +102,7 @@ export class Install {
                 // Links
                 await exec.exec("sudo chmod 777 /opt/chrome/chrome/Chromium.app/Contents/MacOS/Chromium");
                 await exec.exec("sudo /opt/chrome/chrome/Chromium.app/Contents/MacOS/Chromium --version");
-                await exec.exec("sudo ln /opt/chrome/chrome/Chromium.app/Contents/MacOS/Chromium /opt/chrome/chrome/chrome");
+                await exec.exec("sudo ln -s /opt/chrome/chrome/Chromium.app/Contents/MacOS/Chromium /opt/chrome/chrome/chrome");
                 await exec.exec("sudo chmod 777 /opt/chrome/chrome/chrome");
                 await exec.exec("ls -la /opt/chrome/chrome");
                 
