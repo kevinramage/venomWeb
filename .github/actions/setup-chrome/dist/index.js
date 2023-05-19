@@ -7432,7 +7432,7 @@ class Install {
                         output += data.toString();
                     },
                 };
-                yield exec.exec(destination + "\\chrome\\chrome.exe", ["--version"], options);
+                yield exec.exec("\"" + destination + "\\chrome\\chrome.exe\"", ["--version"], options);
                 core.info("Chrome version: ");
                 core.info(output);
                 resolve();

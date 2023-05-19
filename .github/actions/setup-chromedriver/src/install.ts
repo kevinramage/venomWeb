@@ -142,7 +142,7 @@ export class Install {
 
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
-                core.addPath(destination + "\\chromedriver");
+                //core.addPath(destination + "\\chromedriver");
 
                 let output = "";
                 let options : any = {};
@@ -151,7 +151,7 @@ export class Install {
                         output += data.toString();
                     },
                 };
-                await exec.exec(destination + "\\chrome\\chromedriver.exe", ["--version"], options);
+                await exec.exec("\"" + destination + "\\chrome\\chromedriver.exe\"", ["--version"], options);
                 core.info("Chrome driver version: ");
                 core.info(output);
 

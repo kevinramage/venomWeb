@@ -155,7 +155,7 @@ export class Install {
                         output += data.toString();
                     },
                 };
-                await exec.exec(destination + "\\chrome\\chrome.exe", ["--version"], options);
+                await exec.exec("\"" + destination + "\\chrome\\chrome.exe\"", ["--version"], options);
                 core.info("Chrome version: ");
                 core.info(output);
 
