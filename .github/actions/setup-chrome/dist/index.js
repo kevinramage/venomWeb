@@ -7420,10 +7420,10 @@ class Install {
                 // Remove archive
                 yield fs_1.default.promises.unlink(archivePath);
                 // Rename folder
-                yield fs_1.default.promises.rename("/opt/chrome/chrome-win", "/opt/chrome/chrome");
+                yield fs_1.default.promises.rename(destination + "\\chrome-win", destination + "\\chrome");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
-                core.addPath(`{destination}\\chrome`);
+                core.addPath(destination + "\\chrome");
                 // Display chrome version
                 let output = "";
                 let options = {};
@@ -7432,7 +7432,7 @@ class Install {
                         output += data.toString();
                     },
                 };
-                yield exec.exec("{destination}\\chrome\\chrome.exe", ["--version"], options);
+                yield exec.exec(destination + "\\chrome\\chrome.exe", ["--version"], options);
                 core.info("Chrome version: ");
                 core.info(output);
                 resolve();

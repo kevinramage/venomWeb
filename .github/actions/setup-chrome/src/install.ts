@@ -141,11 +141,11 @@ export class Install {
                 await fs.promises.unlink(archivePath);
 
                 // Rename folder
-                await fs.promises.rename("/opt/chrome/chrome-win", "/opt/chrome/chrome");
+                await fs.promises.rename( destination + "\\chrome-win", destination + "\\chrome");
 
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
-                core.addPath(`{destination}\\chrome`);
+                core.addPath(destination + "\\chrome");
 
                 // Display chrome version
                 let output = "";
@@ -155,7 +155,7 @@ export class Install {
                         output += data.toString();
                     },
                 };
-                await exec.exec("{destination}\\chrome\\chrome.exe", ["--version"], options);
+                await exec.exec(destination + "\\chrome\\chrome.exe", ["--version"], options);
                 core.info("Chrome version: ");
                 core.info(output);
 

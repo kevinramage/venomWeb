@@ -7419,10 +7419,10 @@ class Install {
                 // Remove archive
                 yield fs_1.default.promises.unlink(archivePath);
                 // Rename folder
-                yield fs_1.default.promises.rename("/opt/chromedriver/chromedriver_win32", "/opt/chromedriver/chromedriver");
+                yield fs_1.default.promises.rename(destination + "\\chromedriver_win32", destination + "\\chromedriver");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
-                core.addPath(`{destination}\\chromedriver`);
+                core.addPath(destination + "\\chromedriver");
                 let output = "";
                 let options = {};
                 options.listeners = {
@@ -7430,7 +7430,7 @@ class Install {
                         output += data.toString();
                     },
                 };
-                yield exec.exec("{destination}\\chrome\\chromedriver.exe", ["--version"], options);
+                yield exec.exec(destination + "\\chrome\\chromedriver.exe", ["--version"], options);
                 core.info("Chrome driver version: ");
                 core.info(output);
                 resolve();
