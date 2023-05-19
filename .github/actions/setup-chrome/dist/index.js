@@ -7370,10 +7370,10 @@ class Install {
                 // Remove archive
                 yield fs_1.default.promises.unlink(archivePath);
                 // Rename folder
-                yield exec.exec("sudo ls -la /opt/chrome");
                 yield exec.exec("sudo chmod 777 /opt/chrome");
-                yield exec.exec("sudo ls -la /opt/chrome");
-                yield exec.exec("sudo ls -la /opt/chrome/chrome-mac");
+                yield exec.exec("sudo chmod 777 /opt/chrome/chrome-mac");
+                yield exec.exec("ls -la /opt/chrome");
+                yield exec.exec("ls -la /opt/chrome/chrome-mac");
                 yield exec.exec("sudo mv /opt/chrome/chrome-mac /opt/chrome/chrome");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
