@@ -4,8 +4,8 @@ jobs:
   tests:
     strategy:
       matrix:
-        # os: ubuntu-latest, macos-latest
-        os: [ubuntu-latest, macos-latest]
+        # os: ubuntu-latest, macos-latest, windows-latest
+        os: [windows-latest]
         # chromeVersion: 112, 113, 114
         chromeVersion: ["112"]
     runs-on: ${{ matrix.os }}
