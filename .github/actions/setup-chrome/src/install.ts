@@ -96,7 +96,8 @@ export class Install {
 
                 // Rename folder
                 await exec.exec("sudo mkdir /opt/chrome");
-                await fs.promises.cp("./chrome-mac", "/opt/chrome/chrome");
+                await exec.exec("sudo mv ./chrome-mac ./chrome");
+                await fs.promises.cp("./chrome", "/opt/chrome/", { recursive: true});
                 await fs.promises.unlink("./chrome-mac");
                 
                 // Add chrome to path
