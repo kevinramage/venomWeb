@@ -7421,6 +7421,8 @@ class Install {
                 yield fs_1.default.promises.unlink(archivePath);
                 // Rename folder
                 yield fs_1.default.promises.rename(destination + "\\chrome-win", destination + "\\chrome");
+                yield exec.exec("dir " + destination);
+                yield exec.exec("dir " + destination + "\\chrome");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
                 //core.addPath(destination + "\\chrome");

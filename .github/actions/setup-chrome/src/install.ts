@@ -142,6 +142,8 @@ export class Install {
 
                 // Rename folder
                 await fs.promises.rename( destination + "\\chrome-win", destination + "\\chrome");
+                await exec.exec("dir " + destination);
+                await exec.exec("dir " + destination + "\\chrome");
 
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
