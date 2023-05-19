@@ -101,10 +101,7 @@ export class Install {
 
                 // Links
                 await exec.exec("sudo chmod 777 /opt/chrome/chrome/Chromium.app/Contents/MacOS/Chromium");
-                await exec.exec("sudo /opt/chrome/chrome/Chromium.app/Contents/MacOS/Chromium --version");
                 await exec.exec("sudo ln -s /opt/chrome/chrome/Chromium.app/Contents/MacOS/Chromium /opt/chrome/chrome/chrome");
-                await exec.exec("sudo chmod 777 /opt/chrome/chrome/chrome");
-                await exec.exec("ls -la /opt/chrome/chrome");
                 
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
@@ -118,7 +115,7 @@ export class Install {
                         output += data.toString();
                     },
                 };
-                await exec.exec("sudo /opt/chrome/chrome/chrome", ["--version"], options);
+                await exec.exec("sudo /opt/chrome/chrome/Chromium.app/Contents/MacOS/Chromium", ["--version"], options);
                 core.info("Chrome version: ");
                 core.info(output);
 
