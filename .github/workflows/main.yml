@@ -4,7 +4,7 @@ jobs:
   tests:
     strategy:
       matrix:
-        # os: ubuntu-latest, macoslatest
+        # os: ubuntu-latest, macos-latest
         os: [macos-latest]
         # chromeVersion: 112, 113, 114
         chromeVersion: ["112"]
@@ -37,7 +37,5 @@ jobs:
         run: |
           mv venom/cmd/venom/venom venomWeb/venom
           cd venomWeb
-          ls -la /opt
-          ls -la /opt/chromedriver
           cp /opt/chromedriver/chromedriver ./chromedriver
-          ./venom -vvv --format=xml run tests/chrome/core.yml
+          ./venom -vvv --format=xml run tests/chrome/${{ matrix.os }}/core.yml
