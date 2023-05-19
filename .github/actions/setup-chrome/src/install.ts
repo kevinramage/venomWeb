@@ -147,7 +147,7 @@ export class Install {
 
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
-                //core.addPath(destination + "\\chrome");
+                core.addPath("\"C:\\Program Files\\chrome\"");
 
                 // Display chrome version
                 let output = "";
@@ -157,7 +157,7 @@ export class Install {
                         output += data.toString();
                     },
                 };
-                const cmdLine = "cd \"" + destination + "\\chrome\" && powershell (Get-Item chrome.exe).VersionInfo";
+                const cmdLine = "powershell (Get-Item chrome.exe).VersionInfo";
                 core.info(cmdLine);
                 await exec.exec(cmdLine, [], options);
                 core.info("Chrome version: ");
