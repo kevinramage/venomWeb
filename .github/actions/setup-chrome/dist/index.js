@@ -7174,15 +7174,18 @@ https://www.chromium.org/getting-involved/download-chromium/
 https://chromiumdash.appspot.com/branches
 http://cros-omahaproxy.appspot.com/
 
-112 => 1109224 => 1109220 (Unix), 1109213 (Mac)
+112 => 1109224 => 1109220 (Unix), 1109213 (Mac), 1109208 (Win)
 https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Linux_x64/1109220/
 https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Mac/1109213/
-113 => 1121455 => 1121454 (Unix), 1121448 (Mac)
+https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Win_x64/1109208/
+113 => 1121455 => 1121454 (Unix), 1121448 (Mac), 1121434 (Win)
 https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Linux_x64/1121454/
 https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Mac/1121448/
-114 => 1135570 => 1135561 (Unix), 1135562 (Mac)
+https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Win_x64/1121434/
+114 => 1135570 => 1135561 (Unix), 1135562 (Mac), 1135559 (Win)
 https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Linux_x64/1135561/
 https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Mac/1135562/
+https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Win_x64/1135559/
 */
 class Index {
     run() {
@@ -7203,6 +7206,9 @@ class Index {
                         else if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.LINUX) {
                             versionToDownload = "1109220";
                         }
+                        else if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.WINDOWS) {
+                            versionToDownload = "1109208";
+                        }
                     }
                     else if (version == "113") {
                         if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.DARWIN) {
@@ -7211,6 +7217,9 @@ class Index {
                         else if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.LINUX) {
                             versionToDownload = "1121454";
                         }
+                        else if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.WINDOWS) {
+                            versionToDownload = "1121434";
+                        }
                     }
                     else if (version == "114") {
                         if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.DARWIN) {
@@ -7218,6 +7227,9 @@ class Index {
                         }
                         else if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.LINUX) {
                             versionToDownload = "1135561";
+                        }
+                        else if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.WINDOWS) {
+                            versionToDownload = "1135559";
                         }
                     }
                     else {
