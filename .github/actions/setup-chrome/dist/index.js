@@ -7432,7 +7432,8 @@ class Install {
                         output += data.toString();
                     },
                 };
-                yield exec.exec("\"" + destination + "\\chrome\\chrome.exe\"", ["--version"], options);
+                const cmdLine = "powershell (Get-Item \"" + destination + "\\chrome\\chrome.exe\").VersionInfo";
+                yield exec.exec(cmdLine, options);
                 core.info("Chrome version: ");
                 core.info(output);
                 resolve();
