@@ -7432,9 +7432,7 @@ class Install {
                         output += data.toString();
                     },
                 };
-                yield exec.exec("powershell 'echo test'", [], options);
-                core.info(output);
-                const cmdLine = "powershell 'Get-Item \"" + destination + "\\chrome\\chrome.exe\").VersionInfo'";
+                const cmdLine = "powershell Get-Item \"" + destination + "\\chrome\\chrome.exe\").VersionInfo";
                 core.info(cmdLine);
                 yield exec.exec(cmdLine, [], options);
                 core.info("Chrome version: ");
