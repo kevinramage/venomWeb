@@ -7368,13 +7368,15 @@ class Install {
             try {
                 // Unarchive
                 core.info("Unarchive");
-                yield exec.exec("unzip", ["-d", "/opt/chromedriver", "-j", archivePath]);
+                yield exec.exec("sudo unzip", ["-d", "/opt/chromedriver", "-j", archivePath]);
                 // Remove archive
                 core.info("Remove archive");
                 yield fs_1.default.promises.unlink(archivePath);
                 // Add chromedriver to path
                 core.info("Add chromedriver to path");
                 core.addPath("/opt/chromedriver");
+                // Add rights
+                yield exec.exec("sudo chmod 777 /opt/chromedriver/chromedriver");
                 // Display chromedriver version
                 core.info("Display chromedriver version");
                 let output = "";

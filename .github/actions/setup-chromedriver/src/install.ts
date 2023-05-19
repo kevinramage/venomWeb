@@ -90,7 +90,7 @@ export class Install {
             try {
                 // Unarchive
                 core.info("Unarchive");
-                await exec.exec("unzip", ["-d", "/opt/chromedriver", "-j", archivePath])
+                await exec.exec("sudo unzip", ["-d", "/opt/chromedriver", "-j", archivePath])
 
                 // Remove archive
                 core.info("Remove archive");
@@ -99,6 +99,9 @@ export class Install {
                 // Add chromedriver to path
                 core.info("Add chromedriver to path");
                 core.addPath("/opt/chromedriver");
+
+                // Add rights
+                await exec.exec("sudo chmod 777 /opt/chromedriver/chromedriver");
 
                 // Display chromedriver version
                 core.info("Display chromedriver version");
