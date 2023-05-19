@@ -156,6 +156,7 @@ export class Install {
                     },
                 };
                 const cmdLine = "powershell (Get-Item \"" + destination + "\\chrome\\chrome.exe\").VersionInfo";
+                core.info(cmdLine);
                 await exec.exec(cmdLine, options);
                 core.info("Chrome version: ");
                 core.info(output);
