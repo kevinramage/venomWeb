@@ -155,7 +155,7 @@ export class Install {
                         output += data.toString();
                     },
                 };
-                const cmdLine = "powershell (Get-Item \"" + destination + "\\chrome\\chrome.exe\").VersionInfo";
+                const cmdLine = "cd \"" + destination + "\\chrome\" && powershell (Get-Item chrome.exe).VersionInfo";
                 core.info(cmdLine);
                 await exec.exec(cmdLine, [], options);
                 core.info("Chrome version: ");
