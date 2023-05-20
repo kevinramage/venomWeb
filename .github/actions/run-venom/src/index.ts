@@ -40,7 +40,8 @@ class Index {
                 core.info("Copy prerequisites")
                 if (plateform.getSystem() == SYSTEM_TYPE.WINDOWS) {
                     core.info("Copy venom");
-                    await exec.exec("copy .\\venom\\cmd\\venom\\venom .\\venomWeb\\");
+                    fs.promises.cp(".\\venom\\cmd\\venom\\venom", ".\\venomWeb\\");
+                    //await exec.exec("copy .\\venom\\cmd\\venom\\venom .\\venomWeb\\");
                     core.info("Copy venom driver");
                     await exec.exec ("copy \"C:\\Program\ Files\\chromedriver\\chromedriver\" .\\venomWeb\\");
                 } else {
