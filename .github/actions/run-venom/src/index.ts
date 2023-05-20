@@ -27,6 +27,7 @@ class Index {
                 output = "";
                 if (plateform.getSystem() == SYSTEM_TYPE.WINDOWS) {
                     await exec.exec("dir .\\venom\\cmd\\venom", [], options);
+                    await exec.exec("dir \"C:\\Program\ Files\\chromedriver\"", [], options);
                 } else {
                     await exec.exec("ls -la .", [], options);
                 }
@@ -36,7 +37,9 @@ class Index {
                 // Copy prerequisites
                 core.info("Copy prerequisites")
                 if (plateform.getSystem() == SYSTEM_TYPE.WINDOWS) {
+                    core.info("Copy venom");
                     await exec.exec("copy .\\venom\\cmd\\venom\\venom venomWeb\\venom");
+                    core.info("Copy venom driver");
                     await exec.exec("copy \"C:\\Program\ Files\\chromedriver\\chromedriver\" venomWeb\\chromedriver")
                 } else {
                     await exec.exec("mv venom/cmd/venom/venom venomWeb/venom");
