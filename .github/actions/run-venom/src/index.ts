@@ -26,7 +26,8 @@ class Index {
                 // Temp
                 output = "";
                 if (plateform.getSystem() == SYSTEM_TYPE.WINDOWS) {
-                    await exec.exec("dir .\\venom\\cmd\\venom", [], options);
+                    await exec.exec("dir .\\venom\\cmd\\venom\\venom", [], options);
+                    await exec.exec("dir .\\venom\\cmd\\venom\\dist", [], options);
                     await exec.exec("dir \"C:\\Program\ Files\\chromedriver\"", [], options);
                 } else {
                     await exec.exec("ls -la .", [], options);

@@ -3995,7 +3995,8 @@ class Index {
                     // Temp
                     output = "";
                     if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.WINDOWS) {
-                        yield exec.exec("dir .\\venom\\cmd\\venom", [], options);
+                        yield exec.exec("dir .\\venom\\cmd\\venom\\venom", [], options);
+                        yield exec.exec("dir .\\venom\\cmd\\venom\\dist", [], options);
                         yield exec.exec("dir \"C:\\Program\ Files\\chromedriver\"", [], options);
                     }
                     else {
