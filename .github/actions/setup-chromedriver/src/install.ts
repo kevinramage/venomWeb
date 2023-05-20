@@ -143,7 +143,7 @@ export class Install {
                 core.info("Rename folder");
                 await fs.promises.rename(destination + "\\chromedriver_win32", destination + "\\chromedriver");
                 await exec.exec("dir \"C:\\Program Files\\");
-                await exec.exec("dir \"C:\\Program Files\\chromedriver\\\"");
+                await exec.exec("dir \"C:\\Program\ Files\\chromedriver\"");
 
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);

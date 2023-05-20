@@ -7424,7 +7424,7 @@ class Install {
                 core.info("Rename folder");
                 yield fs_1.default.promises.rename(destination + "\\chromedriver_win32", destination + "\\chromedriver");
                 yield exec.exec("dir \"C:\\Program Files\\");
-                yield exec.exec("dir \"C:\\Program Files\\chromedriver\\\"");
+                yield exec.exec("dir \"C:\\Program\ Files\\chromedriver\"");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
                 core.addPath("\"C:\\Program Files\\chromedriver\\\"");
