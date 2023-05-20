@@ -27,7 +27,7 @@ class Index {
                 // Temp
                 output = "";
                 if (plateform.getSystem() == SYSTEM_TYPE.WINDOWS) {
-                    await exec.exec("powershell Get-Item C:\\Program\ Files\\chromedriver\\chromedriver.exe", [], options);
+                    await exec.exec("powershell Get-Item C:\\Program` Files\\chromedriver\\chromedriver.exe", [], options);
                 }
                 core.info("Output:");
                 core.info(output);

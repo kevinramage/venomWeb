@@ -3996,7 +3996,7 @@ class Index {
                     // Temp
                     output = "";
                     if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.WINDOWS) {
-                        yield exec.exec("powershell Get-Item C:\\Program\ Files\\chromedriver\\chromedriver.exe", [], options);
+                        yield exec.exec("powershell Get-Item C:\\Program` Files\\chromedriver\\chromedriver.exe", [], options);
                     }
                     core.info("Output:");
                     core.info(output);
