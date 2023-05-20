@@ -3987,6 +3987,8 @@ class Index {
                     // Copy prerequisites
                     core.info("Copy prerequisites");
                     if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.WINDOWS) {
+                        yield exec.exec("copy venom\\cmd\\venom\\venom venomWeb\\venom");
+                        yield exec.exec("cp \"C:\\Program\ Files\\chromedriver\\chromedriver\" venomWeb\\chromedriver");
                     }
                     else {
                         yield exec.exec("mv venom/cmd/venom/venom venomWeb/venom");

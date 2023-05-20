@@ -18,7 +18,8 @@ class Index {
                 // Copy prerequisites
                 core.info("Copy prerequisites")
                 if (plateform.getSystem() == SYSTEM_TYPE.WINDOWS) {
-
+                    await exec.exec("copy venom\\cmd\\venom\\venom venomWeb\\venom");
+                    await exec.exec("cp \"C:\\Program\ Files\\chromedriver\\chromedriver\" venomWeb\\chromedriver")
                 } else {
                     await exec.exec("mv venom/cmd/venom/venom venomWeb/venom");
                     await exec.exec("cp /opt/chromedriver/chromedriver ./venomWeb/chromedriver")
