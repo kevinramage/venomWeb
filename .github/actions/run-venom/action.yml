@@ -1,0 +1,6 @@
+name: "Run venom"
+description: 'Run venom'
+author: "Kevin RAMAGE"
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
