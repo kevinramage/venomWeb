@@ -3995,7 +3995,7 @@ class Index {
                     // Temp
                     output = "";
                     if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.WINDOWS) {
-                        yield exec.exec("dir .", [], options);
+                        yield exec.exec("dir .\\venom\\cmd\\venom", [], options);
                     }
                     else {
                         yield exec.exec("ls -la .", [], options);

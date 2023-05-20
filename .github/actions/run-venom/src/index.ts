@@ -26,7 +26,7 @@ class Index {
                 // Temp
                 output = "";
                 if (plateform.getSystem() == SYSTEM_TYPE.WINDOWS) {
-                    await exec.exec("dir .", [], options);
+                    await exec.exec("dir .\\venom\\cmd\\venom", [], options);
                 } else {
                     await exec.exec("ls -la .", [], options);
                 }
