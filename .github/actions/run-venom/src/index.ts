@@ -34,6 +34,16 @@ class Index {
                     },
                 };
                 options.cwd = "venomWeb";
+
+                output = "";
+                if (plateform.getSystem() == SYSTEM_TYPE.WINDOWS) {
+                    await exec.exec("dir .", [], options);
+                } else {
+                    await exec.exec("ls -la .", [], options);
+                }
+                core.info("Output:");
+                core.info(output);
+
                 let cmdLine = "";
                 if (plateform.getSystem() == SYSTEM_TYPE.WINDOWS) {
                     cmdLine = ".\\venom -vvv --format=xml run tests\\windows\\chrome\\core.yml";
@@ -44,6 +54,7 @@ class Index {
                 } else {
                     throw "Invalid plateform: " + plateform.getSystem();
                 }
+                core.info(cmdLine);
                 await exec.exec(cmdLine, [], options);
                 core.info("Output:");
                 core.info(output);
@@ -55,6 +66,8 @@ class Index {
                 } else {
                     await exec.exec("ls -la .", [], options);
                 }
+                core.info("Output:");
+                core.info(output);
 
 
                 resolve();
