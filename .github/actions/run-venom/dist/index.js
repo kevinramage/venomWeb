@@ -3994,7 +3994,13 @@ class Index {
                     }
                     // Run venom
                     core.info("Run venom");
+                    let output = "";
                     let options = {};
+                    options.listeners = {
+                        stdout: (data) => {
+                            output += data.toString();
+                        },
+                    };
                     options.cwd = "venomWeb";
                     let cmdLine = "";
                     if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.WINDOWS) {
@@ -4008,6 +4014,17 @@ class Index {
                     }
                     else {
                         throw "Invalid plateform: " + plateform.getSystem();
+                    }
+                    yield exec.exec(cmdLine, [], options);
+                    core.info("Output:");
+                    core.info(output);
+                    // Get result
+                    output = "";
+                    if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.WINDOWS) {
+                        yield exec.exec("dir .", [], options);
+                    }
+                    else {
+                        yield exec.exec("ls -la .", [], options);
                     }
                     resolve();
                 }

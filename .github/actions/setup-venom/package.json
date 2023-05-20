@@ -1,0 +1,38 @@
+{
+  "name": "setup-venom",
+  "version": "1.0",
+  "description": "Set up your GitHub Actions workflow with a specific venom version and venomWeb version",
+  "main": "dist/index.js",
+  "dependencies": {
+      "@actions/core": "^1.10.0",
+      "@actions/exec": "^1.1.1",
+      "@actions/io": "^1.1.3",
+      "@actions/tool-cache": "^1.7.1"
+  },
+  "devDependencies": {
+      "@types/node": "^18.13.0",
+      "@typescript-eslint/eslint-plugin": "^4.33.0",
+      "@typescript-eslint/parser": "^4.33.0",
+      "@vercel/ncc": "^0.36.1",
+      "eslint": "^7.32.0",
+      "eslint-config-prettier": "^8.6.0",
+      "eslint-plugin-prettier": "^4.2.1",
+      "prettier": "^2.8.4",
+      "typescript": "^4.9.5"
+  },
+  "scripts": {
+      "build": "tsc",
+      "package": "ncc build src/index.ts",
+      "lint": "eslint --ext .ts src/",
+      "lint:fix": "eslint --fix --ext .ts src/"
+  },
+  "keywords": [
+      "actions",
+      "node",
+      "setup",
+      "venom",
+      "venomWeb"
+  ],
+  "author": "Kevin RAMAGE",
+  "license": "MIT"
+}

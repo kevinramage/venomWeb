@@ -1,6 +1,6 @@
 {
     "name": "setup-chrome",
-    "version": "1.2.2",
+    "version": "1.0",
     "description": "Set up your GitHub Actions workflow with a specific version of chrome",
     "main": "dist/index.js",
     "dependencies": {
@@ -21,8 +21,8 @@
         "typescript": "^4.9.5"
     },
     "scripts": {
-        "build": "ncc build src/index.ts",
-        "package": "cp action.yml README.md dist/",
+        "build": "tsc",
+        "package": "ncc build src/index.ts",
         "lint": "eslint --ext .ts src/",
         "lint:fix": "eslint --fix --ext .ts src/"
     },

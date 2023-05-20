@@ -1,6 +1,7 @@
 import * as core from "@actions/core";
 import * as exec from "@actions/exec";
 import { Plateform, SYSTEM_TYPE } from "./plateform";
+import { Buffer } from "buffer";
 
 
 class Index {
@@ -25,7 +26,13 @@ class Index {
 
                 // Run venom
                 core.info("Run venom");
+                let output = "";
                 let options : any = {};
+                options.listeners = {
+                    stdout: (data: Buffer) => {
+                        output += data.toString();
+                    },
+                };
                 options.cwd = "venomWeb";
                 let cmdLine = "";
                 if (plateform.getSystem() == SYSTEM_TYPE.WINDOWS) {
@@ -37,6 +44,18 @@ class Index {
                 } else {
                     throw "Invalid plateform: " + plateform.getSystem();
                 }
+                await exec.exec(cmdLine, [], options);
+                core.info("Output:");
+                core.info(output);
+                
+                // Get result
+                output = "";
+                if (plateform.getSystem() == SYSTEM_TYPE.WINDOWS) {
+                    await exec.exec("dir .", [], options);
+                } else {
+                    await exec.exec("ls -la .", [], options);
+                }
+
 
                 resolve();
                 
