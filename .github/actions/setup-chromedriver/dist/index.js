@@ -7422,7 +7422,7 @@ class Install {
                 yield fs_1.default.promises.rename(destination + "\\chromedriver_win32", destination + "\\chromedriver");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
-                //core.addPath(destination + "\\chromedriver");
+                core.addPath("\"C:\\Program Files\\chromedriver\\\"");
                 let output = "";
                 let options = {};
                 options.listeners = {
