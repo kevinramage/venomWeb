@@ -3996,12 +3996,7 @@ class Index {
                     // Temp
                     output = "";
                     if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.WINDOWS) {
-                        yield exec.exec("dir .\\venom\\cmd\\venom\\venom", [], options);
-                        yield exec.exec("dir .\\venom\\cmd\\venom\\dist", [], options);
-                        yield exec.exec("dir \"C:\\Program\ Files\\chromedriver\"", [], options);
-                    }
-                    else {
-                        yield exec.exec("ls -la .", [], options);
+                        yield exec.exec("powershell Get-Item C:\\Program\ Files\\chromedriver\\chromedriver.exe", [], options);
                     }
                     core.info("Output:");
                     core.info(output);
@@ -4010,10 +4005,8 @@ class Index {
                     if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.WINDOWS) {
                         core.info("Copy venom");
                         fs.promises.cp(".\\venom\\cmd\\venom\\venom", ".\\venomWeb\\venom.exe");
-                        //await exec.exec("copy .\\venom\\cmd\\venom\\venom .\\venomWeb\\");
                         core.info("Copy venom driver");
                         yield fs.promises.cp("C:\\Program\ Files\\chromedriver\\chromedriver.exe", ".\\venomWeb\\chromedriver.exe");
-                        //await exec.exec ("copy  );
                     }
                     else {
                         yield exec.exec("mv venom/cmd/venom/venom venomWeb/venom");
@@ -4022,16 +4015,6 @@ class Index {
                     // Run venom
                     core.info("Run venom");
                     options.cwd = "venomWeb";
-                    // Temp
-                    output = "";
-                    if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.WINDOWS) {
-                        yield exec.exec("dir .", [], options);
-                    }
-                    else {
-                        yield exec.exec("ls -la .", [], options);
-                    }
-                    core.info("Output:");
-                    core.info(output);
                     let cmdLine = "";
                     if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.WINDOWS) {
                         cmdLine = ".\\venom -vvv --format=xml run tests\\windows\\chrome\\core.yml";
