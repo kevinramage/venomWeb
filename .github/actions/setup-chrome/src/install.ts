@@ -134,22 +134,24 @@ export class Install {
 
             try {
                 // Unarchive
+                core.info("Unarchive");
                 const destination = plateform.getArchitecture() == ARCHITECTURE_TYPE.AMD64 ? "C:\\Program Files" : "C:\\Program Files (x86)"
                 await exec.exec("7z", ["x", archivePath, `-o${destination}`])
 
                 // Remove archive
+                core.info("Remove archive");
                 await fs.promises.unlink(archivePath);
 
                 // Rename folder
+                core.info("Rename folder")
                 await fs.promises.rename( destination + "\\chrome-win", destination + "\\chrome");
-                await exec.exec("dir \"C:\\Program Files\"");
-                await exec.exec("dir \"C:\\Program Files\\chrome\"");
 
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
-                core.addPath("\"C:\\Program Files\\chrome\"");
+                core.addPath("\"C:\\Program\ Files\\chrome\"");
 
                 // Display chrome version
+                core.info("Display chrome version");
                 let output = "";
                 let options : any = {};
                 options.listeners = {
@@ -157,11 +159,9 @@ export class Install {
                         output += data.toString();
                     },
                 };
-                //const cmdLine = "powershell (Get-Item \"C:\\Program Files\\chrome\\chrome.exe\").VersionInfo";
-                //core.info(cmdLine);
-                //await exec.exec(cmdLine, [], options);
-                //core.info("Chrome version: ");
-                //core.info(output);
+                await exec.exec("powershell (Get-Item C:\\Program` Files\\chrome\\chrome.exe).VersionInfo", [], options);
+                core.info("Chrome version: ");
+                core.info(output);
 
                 resolve();
 
