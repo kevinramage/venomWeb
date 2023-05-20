@@ -132,7 +132,7 @@ export class Install {
             try {
                 // Unarchive
                 core.info("Unarchive");
-                const destination = plateform.getArchitecture() == ARCHITECTURE_TYPE.AMD64 ? "C:\\Program Files" : "C:\\Program Files (x86)"
+                const destination = plateform.getArchitecture() == ARCHITECTURE_TYPE.AMD64 ? "C:\\Program\ Files" : "C:\\Program Files (x86)"
                 await exec.exec("7z", ["x", archivePath, `-o${destination}`])
 
                 // Remove archive
@@ -142,12 +142,11 @@ export class Install {
                 // Rename folder
                 core.info("Rename folder");
                 await fs.promises.rename(destination + "\\chromedriver_win32", destination + "\\chromedriver");
-                await exec.exec("dir \"C:\\Program Files\\");
                 await exec.exec("dir \"C:\\Program\ Files\\chromedriver\"");
 
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
-                core.addPath("\"C:\\Program Files\\chromedriver\\\"");
+                core.addPath("\"C:\\Program\ Files\\chromedriver\\\"");
 
                 let output = "";
                 let options : any = {};
@@ -156,7 +155,7 @@ export class Install {
                         output += data.toString();
                     },
                 };
-                await exec.exec("\"" + destination + "\\chrome\\chromedriver.exe\"", ["--version"], options);
+                await exec.exec("\"" + destination + "\\chromedriver\\chromedriver.exe\"", ["--version"], options);
                 core.info("Chrome driver version: ");
                 core.info(output);
 
