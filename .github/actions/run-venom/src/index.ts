@@ -43,7 +43,7 @@ class Index {
                     fs.promises.cp(".\\venom\\cmd\\venom\\venom", ".\\venomWeb\\venom.exe");
                     //await exec.exec("copy .\\venom\\cmd\\venom\\venom .\\venomWeb\\");
                     core.info("Copy venom driver");
-                    await fs.promises.cp("\"C:\\Program\ Files\\chromedriver\\chromedriver.exe\"", ".\\venomWeb\\chromedriver.exe")
+                    await fs.promises.cp("\"C:\\Program Files\\chromedriver\\chromedriver.exe\"", ".\\venomWeb\\chromedriver.exe")
                     //await exec.exec ("copy  );
                 } else {
                     await exec.exec("mv venom/cmd/venom/venom venomWeb/venom");
