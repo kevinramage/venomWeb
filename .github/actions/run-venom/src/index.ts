@@ -9,24 +9,7 @@ class Index {
     async run() {
         return new Promise<void>(async (resolve, reject) => {
             try {
-    
-                // Detect plateform
-                core.info("Detect plateform")
-                const plateform = new Plateform();
-                plateform.detectPlateform();
-
-                // Copy prerequisites
-                core.info("Copy prerequisites")
-                if (plateform.getSystem() == SYSTEM_TYPE.WINDOWS) {
-                    await exec.exec("copy venom\\cmd\\venom\\venom venomWeb\\venom");
-                    await exec.exec("cp \"C:\\Program\ Files\\chromedriver\\chromedriver\" venomWeb\\chromedriver")
-                } else {
-                    await exec.exec("mv venom/cmd/venom/venom venomWeb/venom");
-                    await exec.exec("cp /opt/chromedriver/chromedriver ./venomWeb/chromedriver")
-                }
-
-                // Run venom
-                core.info("Run venom");
+                // Options
                 let output = "";
                 let options : any = {};
                 options.listeners = {
@@ -34,8 +17,37 @@ class Index {
                         output += data.toString();
                     },
                 };
+    
+                // Detect plateform
+                core.info("Detect plateform")
+                const plateform = new Plateform();
+                plateform.detectPlateform();
+
+                // Temp
+                output = "";
+                if (plateform.getSystem() == SYSTEM_TYPE.WINDOWS) {
+                    await exec.exec("dir .", [], options);
+                } else {
+                    await exec.exec("ls -la .", [], options);
+                }
+                core.info("Output:");
+                core.info(output);
+
+                // Copy prerequisites
+                core.info("Copy prerequisites")
+                if (plateform.getSystem() == SYSTEM_TYPE.WINDOWS) {
+                    await exec.exec("copy .\\venom\\cmd\\venom\\venom venomWeb\\venom");
+                    await exec.exec("copy \"C:\\Program\ Files\\chromedriver\\chromedriver\" venomWeb\\chromedriver")
+                } else {
+                    await exec.exec("mv venom/cmd/venom/venom venomWeb/venom");
+                    await exec.exec("cp /opt/chromedriver/chromedriver ./venomWeb/chromedriver")
+                }
+
+                // Run venom
+                core.info("Run venom");
                 options.cwd = "venomWeb";
 
+                // Temp
                 output = "";
                 if (plateform.getSystem() == SYSTEM_TYPE.WINDOWS) {
                     await exec.exec("dir .", [], options);

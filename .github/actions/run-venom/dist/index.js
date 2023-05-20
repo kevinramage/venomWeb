@@ -3980,22 +3980,7 @@ class Index {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
                 try {
-                    // Detect plateform
-                    core.info("Detect plateform");
-                    const plateform = new plateform_1.Plateform();
-                    plateform.detectPlateform();
-                    // Copy prerequisites
-                    core.info("Copy prerequisites");
-                    if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.WINDOWS) {
-                        yield exec.exec("copy venom\\cmd\\venom\\venom venomWeb\\venom");
-                        yield exec.exec("cp \"C:\\Program\ Files\\chromedriver\\chromedriver\" venomWeb\\chromedriver");
-                    }
-                    else {
-                        yield exec.exec("mv venom/cmd/venom/venom venomWeb/venom");
-                        yield exec.exec("cp /opt/chromedriver/chromedriver ./venomWeb/chromedriver");
-                    }
-                    // Run venom
-                    core.info("Run venom");
+                    // Options
                     let output = "";
                     let options = {};
                     options.listeners = {
@@ -4003,7 +3988,34 @@ class Index {
                             output += data.toString();
                         },
                     };
+                    // Detect plateform
+                    core.info("Detect plateform");
+                    const plateform = new plateform_1.Plateform();
+                    plateform.detectPlateform();
+                    // Temp
+                    output = "";
+                    if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.WINDOWS) {
+                        yield exec.exec("dir .", [], options);
+                    }
+                    else {
+                        yield exec.exec("ls -la .", [], options);
+                    }
+                    core.info("Output:");
+                    core.info(output);
+                    // Copy prerequisites
+                    core.info("Copy prerequisites");
+                    if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.WINDOWS) {
+                        yield exec.exec("copy .\\venom\\cmd\\venom\\venom venomWeb\\venom");
+                        yield exec.exec("copy \"C:\\Program\ Files\\chromedriver\\chromedriver\" venomWeb\\chromedriver");
+                    }
+                    else {
+                        yield exec.exec("mv venom/cmd/venom/venom venomWeb/venom");
+                        yield exec.exec("cp /opt/chromedriver/chromedriver ./venomWeb/chromedriver");
+                    }
+                    // Run venom
+                    core.info("Run venom");
                     options.cwd = "venomWeb";
+                    // Temp
                     output = "";
                     if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.WINDOWS) {
                         yield exec.exec("dir .", [], options);
