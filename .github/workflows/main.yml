@@ -34,8 +34,4 @@ jobs:
           venomWebVersion: develop-tests
           plateform: ${{ matrix.os }}
       - name: Run venom
-        run: |
-          mv venom/cmd/venom/venom venomWeb/venom
-          cd venomWeb
-          cp /opt/chromedriver/chromedriver ./chromedriver
-          ./venom -vvv --format=xml run tests/chrome/${{ matrix.os }}/core.yml
+        uses: ./venomWeb/.github/actions/run-venom
