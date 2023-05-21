@@ -57,11 +57,17 @@ webDriver.Stop()
 
 Test
 
-| Driver    |  Version | OS       | Compatibility |
-| --------  | -------- | -------- | ------------- |
+| Driver    |  Version | OS       | Compatibility      |
+| --------  | -------- | -------- | ------------------ |
 | Chrome    | 112      | Windows  | :heavy_check_mark: |
-| Chrome    | 112      | Unix     | :x: Not tested |
-| Chrome    | 112      | Max OC   | :x: Not tested |
+| Chrome    | 112      | Unix     | :heavy_check_mark: |
+| Chrome    | 112      | Max OC   | :heavy_check_mark: |
+| Chrome    | 113      | Windows  | :heavy_check_mark: |
+| Chrome    | 113      | Unix     | :heavy_check_mark: |
+| Chrome    | 113      | Max OC   | :heavy_check_mark: |
+| Chrome    | 114      | Windows  | :heavy_check_mark: |
+| Chrome    | 114      | Unix     | :heavy_check_mark: |
+| Chrome    | 114      | Max OC   | :heavy_check_mark: |
 | Gecko     | 0.33.0   | Windows  | :heavy_check_mark: |
 | Gecko     | 0.33.0   | Unix     | :x: Not tested |
 | Gecko     | 0.33.0   | Max OC   | :x: Not tested |

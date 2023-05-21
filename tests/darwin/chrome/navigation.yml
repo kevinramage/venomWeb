@@ -58,7 +58,10 @@ testcases:
           selector: ".js-site-search-form input"
           locator: CSS
         text: venom
-        wait: 2
+  - name: Wait
+    type: web
+    action:
+      wait: 2
   - name: Click on search
     type: web
     action:
