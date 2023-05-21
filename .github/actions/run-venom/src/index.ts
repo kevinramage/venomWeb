@@ -41,11 +41,11 @@ class Index {
                 options.cwd = "venomWeb";
                 let cmdLine = "";
                 if (plateform.getSystem() == SYSTEM_TYPE.WINDOWS) {
-                    cmdLine = ".\\venom.exe -vvv --format=xml run tests\\windows\\chrome\\core.yml";
+                    cmdLine = ".\\venom.exe -vvv --format=xml run tests\\windows\\chrome\\*.yml";
                 } else if (plateform.getSystem() == SYSTEM_TYPE.LINUX) {
-                    cmdLine = "./venom -vvv --format=xml run tests/linux/chrome/core.yml";
+                    cmdLine = "./venom -vvv --format=xml run tests/linux/chrome/*.yml";
                 } else if (plateform.getSystem() == SYSTEM_TYPE.DARWIN) {
-                    cmdLine = "./venom -vvv --format=xml run tests/darwin/chrome/core.yml";
+                    cmdLine = "./venom -vvv --format=xml run tests/darwin/chrome/*.yml";
                 } else {
                     throw "Invalid plateform: " + plateform.getSystem();
                 }
