@@ -68,17 +68,6 @@ testcases:
         url: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_html_file_upload_button
     assertions:
     - result.url ShouldEqual https://www.w3schools.com/howto/tryit.asp?filename=tryhow_html_file_upload_button
-  - name: Wait page loading
-    type: web
-    action:
-      wait: 2
-  - name: Accept cookie
-    type: web
-    action:
-      click:
-        find:
-          selector: "#accept-choices"
-          locator: CSS
   - name: Select frame
     type: web
     action:
@@ -104,17 +93,6 @@ testcases:
         url: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_input_type_radio
     assertions:
     - result.url ShouldEqual https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_input_type_radio
-  - name: Wait page loading
-    type: web
-    action:
-      wait: 2
-  - name: Accept cookie
-    type: web
-    action:
-      click:
-        find:
-          selector: "#accept-choices"
-          locator: CSS
   - name: Select frame
     type: web
     action:
@@ -145,17 +123,6 @@ testcases:
         url: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_input_type_checkbox
     assertions:
     - result.url ShouldEqual https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_input_type_checkbox
-  - name: Wait page loading
-    type: web
-    action:
-      wait: 2
-  - name: Accept cookie
-    type: web
-    action:
-      click:
-        find:
-          selector: "#accept-choices"
-          locator: CSS
   - name: Select frame
     type: web
     action:
@@ -186,17 +153,6 @@ testcases:
         url: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_select
     assertions:
     - result.url ShouldEqual https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_select
-  - name: Wait page loading
-    type: web
-    action:
-      wait: 2
-  - name: Accept cookie
-    type: web
-    action:
-      click:
-        find:
-          selector: "#accept-choices"
-          locator: CSS
   - name: Select frame
     type: web
     action:
