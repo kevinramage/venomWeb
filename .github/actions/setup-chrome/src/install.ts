@@ -160,8 +160,6 @@ export class Install {
                     },
                 };
                 await exec.exec("powershell (Get-Item C:\\Program` Files\\chrome\\chrome.exe).VersionInfo", [], options);
-                core.info("Chrome version: ");
-                core.info(output);
 
                 resolve();
 
