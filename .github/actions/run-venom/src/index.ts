@@ -30,7 +30,7 @@ class Index {
                     core.info("Copy venom");
                     await fs.promises.cp(".\\venom\\cmd\\venom\\venom", ".\\venomWeb\\venom.exe");
                     core.info("Copy venom driver");
-                    await fs.promises.cp("C:\\Program\ Files\\chromedriver\\chromedriver.exe", ".\\venomWeb\\chromedriver.exe")
+                    await fs.promises.cp("C:\\chromedriver\\chromedriver.exe", ".\\venomWeb\\chromedriver.exe")
                 } else {
                     await exec.exec("mv venom/cmd/venom/venom venomWeb/venom");
                     await exec.exec("cp /opt/chromedriver/chromedriver ./venomWeb/chromedriver")
@@ -51,13 +51,12 @@ class Index {
                 }
                 core.info(cmdLine);
                 await exec.exec(cmdLine, [], options);
-                core.info("Output:");
-                core.info(output);
                 
                 // Get result
                 output = "";
                 if (plateform.getSystem() == SYSTEM_TYPE.WINDOWS) {
                     await exec.exec("dir .", [], options);
+                    await exec.exec("cat venom.log", [], options);
                 } else {
                     await exec.exec("ls -la .", [], options);
                 }

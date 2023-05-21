@@ -3999,7 +3999,7 @@ class Index {
                         core.info("Copy venom");
                         yield fs.promises.cp(".\\venom\\cmd\\venom\\venom", ".\\venomWeb\\venom.exe");
                         core.info("Copy venom driver");
-                        yield fs.promises.cp("C:\\Program\ Files\\chromedriver\\chromedriver.exe", ".\\venomWeb\\chromedriver.exe");
+                        yield fs.promises.cp("C:\\chromedriver\\chromedriver.exe", ".\\venomWeb\\chromedriver.exe");
                     }
                     else {
                         yield exec.exec("mv venom/cmd/venom/venom venomWeb/venom");
@@ -4023,12 +4023,11 @@ class Index {
                     }
                     core.info(cmdLine);
                     yield exec.exec(cmdLine, [], options);
-                    core.info("Output:");
-                    core.info(output);
                     // Get result
                     output = "";
                     if (plateform.getSystem() == plateform_1.SYSTEM_TYPE.WINDOWS) {
                         yield exec.exec("dir .", [], options);
+                        yield exec.exec("cat venom.log", [], options);
                     }
                     else {
                         yield exec.exec("ls -la .", [], options);
