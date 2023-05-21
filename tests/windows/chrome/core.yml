@@ -6,7 +6,6 @@ vars:
     driver: "chrome"
     logLevel: DEBUG
     headless: true
-    binaryPath: C:\Program\ Files\chrome\chrome.exe
 testcases:
 - name: Basic navigation
   steps:
