@@ -1,0 +1,101 @@
+name: Test navigation feature
+vars:
+  web:
+    driver: "chrome"
+    width: 3100 # Required for github website to avoid issue with search bar
+    height: 1600 # Required for github website to avoid issue with search bar
+    headless: true # Required for CI/CD
+    binaryPath: C:\chrome\\chrome.exe # Required to be sure to use the good version of chrome installed on runner
+testcases:
+- name: Basic navigation
+  steps:
+  - name: Go to github website
+    type: web
+    action:
+      navigate:
+        url: https://github.com/
+    assertions:
+    # Issue with ' escape on assertion - defect to create
+    #- result.title ShouldEqual GitHub\: Let’s build from here · GitHub
+    - result.url ShouldEqual https://github.com/
+- name: Multiple navigation
+  steps:
+  - name: Go to github website
+    type: web
+    action:
+      navigate:
+        url: https://github.com/
+    assertions:
+    - result.url ShouldEqual https://github.com/
+  - name: Go to ovh venom github repository
+    type: web
+    action:
+      navigate:
+        url: https://github.com/ovh/venom
+    assertions:
+    - result.url ShouldEqual https://github.com/ovh/venom
+  - name: Go to kevinramage venomWeb repository
+    type: web
+    action:
+      navigate:
+        url: https://github.com/kevinramage/venomWeb
+    assertions:
+    - result.url ShouldEqual https://github.com/kevinramage/venomWeb
+- name: Actions during navigation
+  steps:
+  - name: Go to github website
+    type: web
+    action:
+      navigate:
+        url: https://github.com/
+    assertions:
+    - result.url ShouldEqual https://github.com/
+  - name: Search venom
+    type: web
+    action:
+      fill:
+      - find:
+          selector: ".js-site-search-form input"
+          locator: CSS
+        text: venom
+        wait: 2
+  - name: Click on search
+    type: web
+    action:
+      click:
+        find:
+          selector: "#jump-to-suggestion-search-global"
+          locator: CSS
+      syncTimeout: 1
+    assertions:
+    - result.url ShouldEqual https://github.com/search?q=venom
+  - name: Select ovh venom repository
+    type: web
+    action:
+      click:
+        find:
+          selector: "a[href='/ovh/venom']"
+          locator: CSS
+      syncTimeout: 1
+  - name: Wait
+    type: web
+    action:
+      wait: 2
+  - name: Back to previous page
+    type: web
+    action:
+      historyAction: back
+    assertions:
+    - result.url ShouldEqual https://github.com/search?q=venom
+  - name: Refresh page
+    type: web
+    action:
+      historyAction: refresh
+    assertions:
+    - result.url ShouldEqual https://github.com/search?q=venom
+  - name: Forward
+    type: web
+    action:
+      historyAction: forward
+    assertions:
+    - result.url ShouldEqual https://github.com/ovh/venom
