@@ -2,8 +2,8 @@ name: Test fill controls feature
 vars:
   web:
     driver: "chrome"
-    #width: 3100 # Required for github website to avoid issue with search bar
-    #height: 1600 # Required for github website to avoid issue with search bar
+    width: 3100 # Required for github website to avoid issue with search bar
+    height: 1600 # Required for github website to avoid issue with search bar
     headless: true # Required for CI/CD
     binaryPath: /opt/chrome/chrome/chrome # Required to be sure to use the good version of chrome installed on runner
 testcases:
@@ -19,7 +19,7 @@ testcases:
   - name: Wait page loading
     type: web
     action:
-      wait: 2
+      wait: 5
   - name: Accept cookie
     type: web
     action:
@@ -58,7 +58,7 @@ testcases:
   - name: Wait page loading
     type: web
     action:
-      wait: 2
+      wait: 5
   - name: Accept cookie
     type: web
     action:
