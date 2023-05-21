@@ -1,0 +1,71 @@
+name: Test find feature
+vars:
+  web:
+    driver: "chrome"
+    width: 3100 # Required for github website to avoid issue with search bar
+    height: 1600 # Required for github website to avoid issue with search bar
+    headless: true # Required for CI/CD
+    binaryPath: C:\chrome\\chrome.exe # Required to be sure to use the good version of chrome installed on runner
+testcases:
+- name: Test find feature
+  steps:
+  - name: Go to github website
+    type: web
+    action:
+      navigate:
+        url: https://github.com/search?q=venom
+    assertions:
+    - result.url ShouldEqual https://github.com/search?q=venom
+  - name: Find element by className
+    type: web
+    action:
+      find:
+        selector: .HeaderMenu-link--sign-up
+        locator: CSS
+    assertions:
+    - result.find ShouldEqual 1
+    - result.text ShouldEqual Sign up
+  - name: Find element by text value
+    type: web
+    action:
+      find:
+        selector: //*[contains(text(), "Sign up")]
+        locator: XPATH
+    assertions:
+    - result.find ShouldEqual 1
+    - result.text ShouldEqual Sign up
+  - name: Find element by attribute value
+    type: web
+    action:
+      find:
+        selector: input[name='q'][role="combobox"]
+        locator: CSS
+    assertions:
+    - result.find ShouldEqual 1
+    - result.value ShouldEqual venom
+  - name: Find element - First child
+    type: web
+    action:
+      find:
+        selector: .HeaderMenu-item:first-child
+        locator: CSS
+    assertions: 
+    - result.find ShouldEqual 1
+    - result.text ShouldEqual Product
+  - name: Find element - Last child
+    type: web
+    action:
+      find:
+        selector: .HeaderMenu-item:last-child
+        locator: CSS
+    assertions: 
+    - result.find ShouldEqual 1
+    - result.text ShouldEqual Pricing
+  - name: Find elements by className
+  type: web
+  action:
+    find:
+      selector: .HeaderMenu-item
+      locator: CSS
+  assertions:
+  - result.find ShouldEqual 4

@@ -1,0 +1,244 @@
+name: Test fill controls feature
+vars:
+  web:
+    driver: "chrome"
+    #width: 3100 # Required for github website to avoid issue with search bar
+    #height: 1600 # Required for github website to avoid issue with search bar
+    headless: true # Required for CI/CD
+    binaryPath: C:\chrome\\chrome.exe # Required to be sure to use the good version of chrome installed on runner
+testcases:
+- name: Test input control
+  steps:
+  - name: Go to test website
+    type: web
+    action:
+      navigate:
+        url: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_test
+    assertions:
+    - result.url ShouldEqual https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_test
+  - name: Wait page loading
+    type: web
+    action:
+      wait: 2
+  - name: Accept cookie
+    type: web
+    action:
+      click:
+        find:
+          selector: "#accept-choices"
+          locator: CSS
+  - name: Select frame
+    type: web
+    action:
+      selectFrame:
+        find:
+          selector: "#iframeResult"
+          locator: CSS
+  - name: Fill first name control
+    type: web
+    action:
+      fill:
+      - find:
+          selector: "#fname"
+          locator: CSS
+        text: first name
+      - find:
+          selector: "#lname"
+          locator: CSS
+        text: last name
+- name: Test textarea control
+  steps:
+  - name: Go to test website
+    type: web
+    action:
+      navigate:
+        url: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_textarea
+    assertions:
+    - result.url ShouldEqual https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_textarea
+  - name: Wait page loading
+    type: web
+    action:
+      wait: 2
+  - name: Accept cookie
+    type: web
+    action:
+      click:
+        find:
+          selector: "#accept-choices"
+          locator: CSS
+  - name: Select frame
+    type: web
+    action:
+      selectFrame:
+        find:
+          selector: "#iframeResult"
+          locator: CSS
+  - name: Fill textarea
+    type: web
+    action:
+      fill:
+      - find:
+          selector: "#w3review"
+          locator: CSS
+        text: Write some text
+- name: Test upload control
+  steps:
+  - name: Go to test website
+    type: web
+    action:
+      navigate:
+        url: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_html_file_upload_button
+    assertions:
+    - result.url ShouldEqual https://www.w3schools.com/howto/tryit.asp?filename=tryhow_html_file_upload_button
+  - name: Wait page loading
+    type: web
+    action:
+      wait: 2
+  - name: Accept cookie
+    type: web
+    action:
+      click:
+        find:
+          selector: "#accept-choices"
+          locator: CSS
+  - name: Select frame
+    type: web
+    action:
+      selectFrame:
+        find:
+          selector: "#iframeResult"
+          locator: CSS
+#  - name: Upload file
+#    type: web
+#    action:
+#      uploadFile:
+#        find:
+#          selector: "#myFile"
+#          locator: CSS
+#        files:
+#        - controls.yml
+- name: Test radiobutton control
+  steps:
+  - name: Go to test website
+    type: web
+    action:
+      navigate:
+        url: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_input_type_radio
+    assertions:
+    - result.url ShouldEqual https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_input_type_radio
+  - name: Wait page loading
+    type: web
+    action:
+      wait: 2
+  - name: Accept cookie
+    type: web
+    action:
+      click:
+        find:
+          selector: "#accept-choices"
+          locator: CSS
+  - name: Select frame
+    type: web
+    action:
+      selectFrame:
+        find:
+          selector: "#iframeResult"
+          locator: CSS
+  - name: Select CSS choice
+    type: web
+    action:
+      click:
+        find:
+          selector: "#css"
+          locator: CSS
+  - name: Select Javascript choice
+    type: web
+    action:
+      click:
+        find:
+          selector: "#javascript"
+          locator: CSS
+- name: Test checkbox control
+  steps:
+  - name: Go to test website
+    type: web
+    action:
+      navigate:
+        url: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_input_type_checkbox
+    assertions:
+    - result.url ShouldEqual https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_input_type_checkbox
+  - name: Wait page loading
+    type: web
+    action:
+      wait: 2
+  - name: Accept cookie
+    type: web
+    action:
+      click:
+        find:
+          selector: "#accept-choices"
+          locator: CSS
+  - name: Select frame
+    type: web
+    action:
+      selectFrame:
+        find:
+          selector: "#iframeResult"
+          locator: CSS
+  - name: Select bike option
+    type: web
+    action:
+      click:
+        find:
+          selector: "#vehicle1"
+          locator: CSS
+  - name: Select car option
+    type: web
+    action:
+      click:
+        find:
+          selector: "#vehicle2"
+          locator: CSS
+- name: Test select control
+  steps:
+  - name: Go to test website
+    type: web
+    action:
+      navigate:
+        url: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_select
+    assertions:
+    - result.url ShouldEqual https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_select
+  - name: Wait page loading
+    type: web
+    action:
+      wait: 2
+  - name: Accept cookie
+    type: web
+    action:
+      click:
+        find:
+          selector: "#accept-choices"
+          locator: CSS
+  - name: Select frame
+    type: web
+    action:
+      selectFrame:
+        find:
+          selector: "#iframeResult"
+          locator: CSS
+  - name: Select Opel option
+    type: web
+    action:
+      select:
+        find:
+          selector: "#cars"
+          locator: CSS
+        text: Opel
+  - name: Select Audi option
+    type: web
+    action:
+      select:
+        find:
+          selector: "#cars"
+          locator: CSS
+        text: "Audi"
