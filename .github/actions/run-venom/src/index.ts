@@ -41,7 +41,7 @@ class Index {
                 options.cwd = "venomWeb";
                 let cmdLine = "";
                 if (plateform.getSystem() == SYSTEM_TYPE.WINDOWS) {
-                    cmdLine = ".\\venom -vvv --format=xml run tests\\windows\\chrome\\core.yml";
+                    cmdLine = ".\\venom.exe -vvv --format=xml run tests\\windows\\chrome\\core.yml";
                 } else if (plateform.getSystem() == SYSTEM_TYPE.LINUX) {
                     cmdLine = "./venom -vvv --format=xml run tests/linux/chrome/core.yml";
                 } else if (plateform.getSystem() == SYSTEM_TYPE.DARWIN) {
