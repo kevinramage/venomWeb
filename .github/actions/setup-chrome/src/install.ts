@@ -148,8 +148,8 @@ export class Install {
 
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
-                core.addPath("\"C:\\Program Files\\chrome\"");
-                await exec.exec("chrome.exe")
+                core.addPath("C:\\Program\ Files\\chrome");
+                //await exec.exec("chrome.exe")
 
                 // Display chrome version
                 core.info("Display chrome version");
