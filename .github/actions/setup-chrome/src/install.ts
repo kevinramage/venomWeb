@@ -135,8 +135,8 @@ export class Install {
             try {
                 // Unarchive
                 core.info("Unarchive");
-                const destination = plateform.getArchitecture() == ARCHITECTURE_TYPE.AMD64 ? "C:\\Program Files" : "C:\\Program Files (x86)"
-                await exec.exec("7z", ["x", archivePath, `-o${destination}`])
+                const destination = "C:";
+                await exec.exec("7z", ["x", archivePath, `-o${destination}\\`])
 
                 // Remove archive
                 core.info("Remove archive");
@@ -148,8 +148,7 @@ export class Install {
 
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
-                core.addPath("C:\\Program\ Files\\chrome");
-                //await exec.exec("chrome.exe")
+                core.addPath(destination + "\\chrome");
 
                 // Display chrome version
                 core.info("Display chrome version");
@@ -160,7 +159,7 @@ export class Install {
                         output += data.toString();
                     },
                 };
-                await exec.exec("powershell (Get-Item C:\\Program` Files\\chrome\\chrome.exe).VersionInfo", [], options);
+                await exec.exec("powershell (Get-Item "+ destination +"\\chrome\\chrome.exe).VersionInfo", [], options);
 
                 resolve();
 

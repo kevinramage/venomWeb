@@ -7415,18 +7415,17 @@ class Install {
             try {
                 // Unarchive
                 core.info("Unarchive");
-                const destination = plateform.getArchitecture() == plateform_1.ARCHITECTURE_TYPE.AMD64 ? "C:\\Program\ Files" : "C:\\Program Files (x86)";
-                yield exec.exec("7z", ["x", archivePath, `-o${destination}`]);
+                const destination = "C:";
+                yield exec.exec("7z", ["x", archivePath, `-o${destination}\\`]);
                 // Remove archive
                 core.info("Remove archive");
                 yield fs_1.default.promises.unlink(archivePath);
                 // Rename folder
                 core.info("Rename folder");
                 yield fs_1.default.promises.rename(destination + "\\chromedriver_win32", destination + "\\chromedriver");
-                yield exec.exec("dir \"C:\\Program\ Files\\chromedriver\"");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
-                core.addPath("\"C:\\Program\ Files\\chromedriver\\\"");
+                core.addPath(destination + "\\chromedriver");
                 let output = "";
                 let options = {};
                 options.listeners = {
@@ -7434,7 +7433,7 @@ class Install {
                         output += data.toString();
                     },
                 };
-                yield exec.exec("\"" + destination + "\\chromedriver\\chromedriver.exe\"", ["--version"], options);
+                yield exec.exec(destination + "\\chromedriver\\chromedriver.exe", ["--version"], options);
                 core.info("Chrome driver version: ");
                 core.info(output);
                 resolve();

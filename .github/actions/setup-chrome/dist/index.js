@@ -7416,8 +7416,8 @@ class Install {
             try {
                 // Unarchive
                 core.info("Unarchive");
-                const destination = plateform.getArchitecture() == plateform_1.ARCHITECTURE_TYPE.AMD64 ? "C:\\Program Files" : "C:\\Program Files (x86)";
-                yield exec.exec("7z", ["x", archivePath, `-o${destination}`]);
+                const destination = "C:";
+                yield exec.exec("7z", ["x", archivePath, `-o${destination}\\`]);
                 // Remove archive
                 core.info("Remove archive");
                 yield fs_1.default.promises.unlink(archivePath);
@@ -7426,8 +7426,7 @@ class Install {
                 yield fs_1.default.promises.rename(destination + "\\chrome-win", destination + "\\chrome");
                 // Add chrome to path
                 core.info(`Add chrome binary to path`);
-                core.addPath("C:\\Program\ Files\\chrome");
-                //await exec.exec("chrome.exe")
+                core.addPath(destination + "\\chrome");
                 // Display chrome version
                 core.info("Display chrome version");
                 let output = "";
@@ -7437,7 +7436,7 @@ class Install {
                         output += data.toString();
                     },
                 };
-                yield exec.exec("powershell (Get-Item C:\\Program` Files\\chrome\\chrome.exe).VersionInfo", [], options);
+                yield exec.exec("powershell (Get-Item " + destination + "\\chrome\\chrome.exe).VersionInfo", [], options);
                 resolve();
             }
             catch (err) {
