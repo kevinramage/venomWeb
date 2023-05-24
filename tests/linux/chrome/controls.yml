@@ -94,13 +94,6 @@ testcases:
         url: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_input_type_radio
     assertions:
     - result.url ShouldEqual https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_input_type_radio
-  - name: Accept cookie
-    type: web
-    action:
-      click:
-        find:
-          selector: "#accept-choices"
-          locator: CSS
   - name: Select frame
     type: web
     action:
@@ -131,13 +124,6 @@ testcases:
         url: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_input_type_checkbox
     assertions:
     - result.url ShouldEqual https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_input_type_checkbox
-  - name: Accept cookie
-    type: web
-    action:
-      click:
-        find:
-          selector: "#accept-choices"
-          locator: CSS
   - name: Select frame
     type: web
     action:
