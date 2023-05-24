@@ -5,9 +5,9 @@ jobs:
     strategy:
       matrix:
         # os: ubuntu-latest, macos-latest, windows-latest
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest]
         # chromeVersion: 112, 113, 114
-        chromeVersion: ["112", "113", "114"]
+        chromeVersion: ["113"]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Setup venom web

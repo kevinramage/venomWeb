@@ -109,14 +109,14 @@ testcases:
     action:
       click:
         find:
-          selector: "#css"
+          selector: "label[for='css']"
           locator: CSS
   - name: Select Javascript choice
     type: web
     action:
       click:
         find:
-          selector: "#javascript"
+          selector: "label[for='javascript']"
           locator: CSS
 - name: Test checkbox control
   steps:
@@ -139,14 +139,14 @@ testcases:
     action:
       click:
         find:
-          selector: "#vehicle1"
+          selector: "label[for='vehicle1']"
           locator: CSS
   - name: Select car option
     type: web
     action:
       click:
         find:
-          selector: "#vehicle2"
+          selector: "label[for='vehicle2']"
           locator: CSS
 - name: Test select control
   steps:
