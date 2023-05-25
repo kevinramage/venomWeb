@@ -1,0 +1,74 @@
+name: Test fill controls feature
+vars:
+  web:
+    driver: "chrome"
+    width: 3100 # Required for github website to avoid issue with search bar
+    height: 1600 # Required for github website to avoid issue with search bar
+    headless: true # Required for CI/CD
+    binaryPath: /opt/chrome/chrome/Chromium.app/Contents/MacOS/Chromium # Required to be sure to use the good version of chrome installed on runner
+testcases:
+- name: Test alert control
+  steps:
+  - name: Go to test website
+    type: web
+    action:
+      navigate:
+        url: https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_alert
+    assertions:
+    - result.url ShouldEqual https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_alert
+  - name: Select frame
+    type: web
+    action:
+      selectFrame:
+        find:
+          selector: "#iframeResult"
+          locator: CSS
+  - name: Click on button
+    type: web
+    action:
+      click:
+        find:
+          selector: button
+          locator: CSS
+  - name: Confirm alert
+    type: web
+    action:
+      confirmPopup: true
+- name: Test confirm control
+  steps:
+  - name: Go to test website
+    type: web
+    action:
+      navigate:
+        url: https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_confirm
+    assertions:
+    - result.url ShouldEqual https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_confirm
+  - name: Select frame
+    type: web
+    action:
+      selectFrame:
+        find:
+          selector: "#iframeResult"
+          locator: CSS
+  - name: Click on try it button
+    type: web
+    action:
+      click:
+        find:
+          selector: "button"
+          locator: CSS
+  - name: Confirm alert
+    type: web
+    action:
+      confirmPopup: true
+  - name: Click on try it button
+    type: web
+    action:
+      click:
+        find:
+          selector: "button"
+          locator: CSS
+  - name: Cancel alert
+    type: web
+    action:
+      cancelPopup: true
