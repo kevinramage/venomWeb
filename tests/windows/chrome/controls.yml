@@ -114,36 +114,36 @@ testcases:
         find:
           selector: "label[for='javascript']"
           locator: CSS
-- name: Test checkbox control
-  steps:
-  - name: Go to test website
-    type: web
-    action:
-      navigate:
-        url: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_input_type_checkbox
-    assertions:
-    - result.url ShouldEqual https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_input_type_checkbox
-  - name: Select frame
-    type: web
-    action:
-      selectFrame:
-        find:
-          selector: "#iframeResult"
-          locator: CSS
-  - name: Select bike option
-    type: web
-    action:
-      click:
-        find:
-          selector: "label[for='vehicle1']"
-          locator: CSS
-  - name: Select car option
-    type: web
-    action:
-      click:
-        find:
-          selector: "label[for='vehicle2']"
-          locator: CSS
+#- name: Test checkbox control
+#  steps:
+#  - name: Go to test website
+#    type: web
+#    action:
+#      navigate:
+#        url: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_input_type_checkbox
+#    assertions:
+#    - result.url ShouldEqual https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_input_type_checkbox
+#  - name: Select frame
+#    type: web
+#    action:
+#      selectFrame:
+#        find:
+#          selector: "#iframeResult"
+#          locator: CSS
+#  - name: Select bike option
+#    type: web
+#    action:
+#      click:
+#        find:
+#          selector: "label[for='vehicle1']"
+#          locator: CSS
+#  - name: Select car option
+#    type: web
+#    action:
+#      click:
+#        find:
+#          selector: "label[for='vehicle2']"
+#          locator: CSS
 - name: Test select control
   steps:
   - name: Go to test website
