@@ -16,7 +16,7 @@ testcases:
         url: https://github.com/
     assertions:
     # Issue with ' escape on assertion - defect to create
-    #- result.title ShouldEqual GitHub\: Let’s build from here · GitHub
+    - "result.title ShouldEqual GitHub: Let’s build from here · GitHub"
     - result.url ShouldEqual https://github.com/
 - name: Multiple navigation
   steps:
